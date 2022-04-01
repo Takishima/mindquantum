@@ -22,7 +22,6 @@ namespace mindquantum::python {
 
 class CircuitBlock : public mindquantum::CircuitBlock {
  public:
-
 };
 
 }  // namespace mindquantum::python

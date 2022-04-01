@@ -73,7 +73,7 @@ call_cmake() {
         echo "Calling CMake with: cmake " "$@"
         echo "**********"
     fi
-    call_cmd $CMAKE "$@"
+    call_cmd "$CMAKE" "$@"
 }
 
 # ==============================================================================
@@ -88,13 +88,14 @@ function join_by {
 # ==============================================================================
 
 function version_less_equal() {
-    local a_major=$(echo $1 | cut -d. -f1)
-    local a_minor=$(echo $1 | cut -d. -f2)
-    local b_major=$(echo $2 | cut -d. -f1)
-    local b_minor=$(echo $2 | cut -d. -f2)
+    local a_major a_minor b_major b_minor
+    a_major=$(echo "$1" | cut -d. -f1)
+    a_minor=$(echo "$1" | cut -d. -f2)
+    b_major=$(echo "$2" | cut -d. -f1)
+    b_minor=$(echo "$2" | cut -d. -f2)
 
-    if [ $a_major -le $b_major ]; then
-        if [ $a_minor -le $b_minor ]; then
+    if [ "$a_major" -le "$b_major" ]; then
+        if [ "$a_minor" -le "$b_minor" ]; then
             return 0
         fi
     fi
@@ -333,7 +334,7 @@ if [ -f "$python_venv_path/bin/cmake" ]; then
     has_cmake=1
 fi
 
-cmake_version_min=$(grep -oP 'cmake_minimum_required\(VERSION\s+\K[0-9\.]+' $BASEPATH/CMakeLists.txt)
+cmake_version_min=$(grep -oP 'cmake_minimum_required\(VERSION\s+\K[0-9\.]+' "$BASEPATH/CMakeLists.txt")
 
 if [ $has_cmake -ne 1 ]; then
     if command -v cmake > /dev/null 2>&1; then

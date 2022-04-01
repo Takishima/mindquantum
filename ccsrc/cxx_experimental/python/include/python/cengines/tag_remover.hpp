@@ -15,8 +15,8 @@
 #ifndef TAG_REMOVER_HPP
 #define TAG_REMOVER_HPP
 
-#include "python/cengines/base.hpp"
 #include "cengines/cpp_engine_list.hpp"
+#include "python/cengines/base.hpp"
 
 namespace mindquantum::python::cpp {
 //! Class that only exists for compatibility with ProjectQ

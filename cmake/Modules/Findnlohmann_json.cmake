@@ -224,6 +224,7 @@ set(${_pkg}_nlohmann_json_NAMES nlohmann_json)
 set(${_pkg}_nlohmann_json_HEADER_ONLY TRUE)
 
 if(WIN32)
+
 elseif(APPLE)
   list(APPEND system_specific_paths "/usr/local/opt/nlohmann-json")
 endif()

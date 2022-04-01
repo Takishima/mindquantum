@@ -23,6 +23,7 @@ include(CheckCXXSourceCompiles)
 
 # ==============================================================================
 
+# Dummy function to create a new variable scope
 function(__test_cxx20_memory)
   set(CMAKE_CXX_STANDARD 20)
 
@@ -36,23 +37,23 @@ int main() {
 ]]
     compiler_cxx20_memory_works)
 
-  set(MQ_MEMORY_CXX20_WORKS FALSE)
+  set(_MQ_MEMORY_CXX20_WORKS FALSE)
   if(compiler_cxx20_memory_works)
-    set(MQ_MEMORY_CXX20_WORKS TRUE)
+    set(_MQ_MEMORY_CXX20_WORKS TRUE)
   endif()
 
-  set(MQ_MEMORY_CXX20_WORKS
-      ${MQ_MEMORY_CXX20_WORKS}
+  set(_MQ_MEMORY_CXX20_WORKS
+      ${_MQ_MEMORY_CXX20_WORKS}
       PARENT_SCOPE)
 
-  set(MQ_MEMORY_CXX20_WORKS
-      ${MQ_MEMORY_CXX20_WORKS}
+  set(_MQ_MEMORY_CXX20_WORKS
+      ${_MQ_MEMORY_CXX20_WORKS}
       CACHE INTERNAL compiler_cxx20_memory_works)
 endfunction()
 
 __test_cxx20_memory()
 
-if(NOT MQ_MEMORY_CXX20_WORKS)
+if(NOT _MQ_MEMORY_CXX20_WORKS)
   set(CMAKE_CXX_STANDARD 17)
 endif()
 
@@ -68,7 +69,7 @@ function(check_cxx_code_compiles cmake_identifier var cxx_standard code)
     set(CMAKE_CXX_STANDARD ${CMAKE_MATCH_1})
   endif()
 
-  if(CMAKE_CXX_STANDARD EQUAL 20 AND NOT MQ_MEMORY_CXX20_WORKS)
+  if(CMAKE_CXX_STANDARD EQUAL 20 AND NOT _MQ_MEMORY_CXX20_WORKS)
     set(CMAKE_CXX_STANDARD 17)
   endif()
 

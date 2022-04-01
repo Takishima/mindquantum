@@ -17,8 +17,8 @@
 
 #include <pybind11/pybind11.h>
 
-#include "python/cengines/base.hpp"
 #include "cengines/cpp_printer.hpp"
+#include "python/cengines/base.hpp"
 
 void init_printer(pybind11::module& module);
 
