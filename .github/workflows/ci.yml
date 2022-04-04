@@ -5,6 +5,72 @@ on:
   push:
 
 jobs:
+  standard:
+    strategy:
+      fail-fast: false
+      matrix:
+        runs-on: [ubuntu-latest]
+        python:
+        - 3.6
+        - 3.7
+        - 3.8
+        - 3.9
+        - '3.10'
+    env:
+      CMAKE_VERSION: 3.22.3
+    name: "Python ${{ matrix.python }} • ${{ matrix.runs-on }} • x64"
+    runs-on: ${{ matrix.runs-on }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get history and tags for SCM versioning to work
+        if: ${{ !env.ACT }}
+        run: |
+          git fetch --prune --unshallow
+          git fetch --depth=1 origin +refs/tags/*:refs/tags/*¨
+
+      - name: Setup Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+          architecture: 'x64'
+
+      - name: Prepare env
+        run: >
+          sudo apt-get update && apt-get install -y libboost-filesystem-dev
+          --no-install-recommends
+
+      - name: Cache CMake installer
+        if: ${{ !env.ACT }}
+        uses: actions/cache@v3
+        with:
+          path: cmake-${{ env.CMAKE_VERSION }}-linux-x86_64.sh
+          key: cmake-${{ env.CMAKE_VERSION }}
+
+      - name: Install latest CMake
+        run: |
+          if [ ! -e cmake-${{ env.CMAKE_VERSION }}-linux-x86_64.sh ]; then
+            wget https://github.com/Kitware/CMake/releases/download/v${{ env.CMAKE_VERSION }}/cmake-${{ env.CMAKE_VERSION }}-linux-x86_64.sh
+          fi
+          sudo bash cmake-${{ env.CMAKE_VERSION }}-linux-x86_64.sh --skip-license --prefix=/usr/local
+
+      - name: Cache Python virtualenv
+        if: ${{ !env.ACT }}
+        uses: actions/cache@v3
+        with:
+          path: venv
+          key: gcc-${{ matrix.gcc }}-python-venv-${{ hashFiles('build_locally.sh') }}-${{ secrets.cache_ver }}
+
+      - name: Cache compiled third-party libraries
+        if: ${{ !env.ACT }}
+        uses: actions/cache@v3
+        with:
+          path: build/.mqlibs
+          key: gcc-${{ matrix.gcc }}-third-party-libs-${{ hashFiles('third_party/**') }}-${{ secrets.cache_ver }}
+
+      - name: Configure && build
+        run: ./build_locally.sh --cxx --with-projectq --with-quest --debug-cmake --configure
   gcc:
     runs-on: ubuntu-latest
     strategy:

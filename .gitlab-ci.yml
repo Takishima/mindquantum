@@ -8,18 +8,18 @@ default:
   before_script:
     - env
     - mkdir -p cache/apt/archives/partial
-    - echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' >  /etc/apt/apt.conf.d/01-keep-debs
-    - echo 'Acquire::http::Proxy "http://172.17.0.1:3128";' >  /etc/apt/apt.conf.d/02-proxy
+    - echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/01-keep-debs
+    - echo 'Acquire::http::Proxy "http://172.17.0.1:3128";' > /etc/apt/apt.conf.d/02-proxy
     - echo "Dir::Cache ${CI_PROJECT_DIR}/cache/apt;" > /etc/apt/apt.conf.d/03-cache-debs
+    - echo 'deb http://debian.ethz.ch/debian bullseye main' > /etc/apt/sources.list
+    - echo 'deb http://debian.ethz.ch/debian-security bullseye-security main' >> /etc/apt/sources.list
+    - echo 'deb http://debian.ethz.ch/debian bullseye-updates main' >> /etc/apt/sources.list
     - echo -e "[global]\ncache-dir = ${CI_PROJECT_DIR}/cache/pip" > /usr/pip.conf
     - apt-get update && apt-get upgrade -y
-    - |
-      for i in {0..9}; do
-        apt-get install -y python3-dev python3-pip python3-setuptools \
-        python3-wheel python3-venv libboost-filesystem-dev \
-        --no-install-recommends || continue
-        break
-      done
+    - >-
+        apt-get install -y python3-dev python3-pip python3-setuptools
+        python3-wheel python3-venv libboost-filesystem-dev
+        --no-install-recommends
     - |
       if [ ! -e cmake-${CMAKE_VERSION}-linux-x86_64.sh ]; then
       wget --no-check-certificate "https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-x86_64.sh"
@@ -45,10 +45,10 @@ gcc:
       - venv
 
   script:
-    - ./build_locally.sh --cxx --with-projectq --with-quest --debug-cmake --configure
+    - ./build_locally.sh --cxx --with-projectq --with-quest --debug-cmake --configure -j 2
 
 clang:
-  image: clang:${CLANG}
+  image: silkeh/clang:${CLANG}
   inherit:
     default: true
 
@@ -69,4 +69,4 @@ clang:
       - venv
 
   script:
-    - ./build_locally.sh --cxx --with-projectq --with-quest --debug-cmake --configure
+    - ./build_locally.sh --cxx --with-projectq --with-quest --debug-cmake --configure -j 2
