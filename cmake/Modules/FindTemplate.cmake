@@ -33,6 +33,8 @@
 # ${_pkg}_${component}_TYPE - Type of component
 #                             Can be one of: LIBRARY (default), EXECUTABLE
 # ${_pkg}_${component}_TARGET_DEFINITIONS - Compile definitions added to a particular component (in uppercase)
+# ${_pkg}_CMAKE_CONFIG_NO_COMPONENTS - When looking for the package using CMake CONFIG mode, do not use components
+#                                      (TRUE/FALSE, defaults to FALSE)
 # ${_pkg}_NO_CMAKE - No search for CMake packages
 # ${_pkg}_NO_PKGCONFIG - No search for package using PkgConfig
 # ${_pkg}_USE_STATIC_LIBS - If TRUE, only look for static libs (.a on UNIX or .lib .a on Windows)
@@ -471,12 +473,26 @@ if(NOT ${_pkg}_NO_CMAKE)
   # Additional components may be required via component dependencies. Add any missing components to the list.
   _missing_dependencies(${_pkg}_FIND_COMPONENTS _${_pkg}_EXTRA_FIND_COMPONENTS)
   _debug_print_var("${CMAKE_CURRENT_LIST_FILE}" "${CMAKE_CURRENT_LIST_LINE}" "_${_pkg}_EXTRA_FIND_COMPONENTS")
+  _debug_print_var("${CMAKE_CURRENT_LIST_FILE}" "${CMAKE_CURRENT_LIST_LINE}" "${_pkg}_FIND_COMPONENTS")
+  _debug_print_var("${CMAKE_CURRENT_LIST_FILE}" "${CMAKE_CURRENT_LIST_LINE}" "${_pkg}_CMAKE_CONFIG_NO_COMPONENTS")
+
+  if(${_pkg}_CMAKE_CONFIG_NO_COMPONENTS)
+    set(_${_pkg}_FIND_COMPONENTS_ORIG ${${_pkg}_FIND_COMPONENTS})
+    set(${_pkg}_FIND_COMPONENTS)
+  endif()
 
   # Do the same find_package call but look specifically for the CMake version. Note that args are passed in the
   # ${_pkg}_FIND_xxxxx variables, so there is no need to delegate them to this find_package call.
   if(NOT ${_pkg}_FOUND)
+    message(STATUS "find_package(${_pkg} QUIET CONFIG ${_${_pkg}_FIND_PACKAGE_ARGS})")
     find_package(${_pkg} QUIET CONFIG ${_${_pkg}_FIND_PACKAGE_ARGS})
   endif()
+
+  if(_${_pkg}_FIND_COMPONENTS_ORIG)
+    set(${_pkg}_FIND_COMPONENTS ${_${_pkg}_FIND_COMPONENTS_ORIG})
+  endif()
+  _debug_print_var("${CMAKE_CURRENT_LIST_FILE}" "${CMAKE_CURRENT_LIST_LINE}" "${_pkg}_FIND_COMPONENTS")
+
   if(DEFINED ${_pkg}_DIR)
     mark_as_advanced(${_pkg}_DIR)
   endif()

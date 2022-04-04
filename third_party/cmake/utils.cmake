@@ -24,6 +24,8 @@ set(FETCHCONTENT_QUIET OFF)
 # ==============================================================================
 # Setup helper variables
 
+list(PREPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/modules)
+
 # ------------------------------------------------------------------------------
 # Default values for searching for packages using the Config method
 
@@ -817,32 +819,37 @@ endfunction()
 # mindquantum_add_pkg(<pkg_name>
 #                     [CMAKE_PKG_NO_COMPONENTS, FORCE_CONFIG_SEARCH, FORCE_EXACT_VERSION, GEN_CMAKE_CONFIG,
 #                        ONLY_MAKE, ONLY_UNPACK, SKIP_BUILD_STEP, SKIP_INSTALL_STEP]
-#                      [URL <archive-url>]
-#                      [MD5 <archive-md5>]
-#                      [GIT_REPOSITORY <git-url>]
-#                      [GIT_TAG <tag>]
-#                      [VER <version-num>]
-#                      [EXE <exec-name>]
-#                      [DIR <pkg-cache-directory>]
 #                      [CMAKE_PATH <path-to-cmakefiles-txt>]
 #                      [CUSTOM_CMAKE <custom_cmake>]
+#                      [DIR <pkg-cache-directory>]
+#                      [EXE <exec-name>]
+#                      [GIT_REPOSITORY <git-url>]
+#                      [GIT_TAG <tag>]
+#                      [MD5 <archive-md5>]
 #                      [NS_NAME <ns_name>]
+#                      [URL <archive-url>]
+#                      [VER <version-num>]
 #                      [BUILD_COMMAND  <command> [... <args>]]
-#                      [CMAKE_OPTION <cmake_option> [... <cmake_option>]]
-#                      [LIBS <lib-names> [... <lib-names>]]
-#                      [PRE_CONFIGURE_COMMAND <command> [... <args>]]
-#                      [CONFIGURE_COMMAND  <command> [... <args>]]
+#                      [BUILD_DEPENDENCIES <package> [... <package>]]
 #                      [BUILD_OPTION <option> [... <option>]]
+#                      [CMAKE_OPTION <cmake_option> [... <cmake_option>]]
+#                      [CONFIGURE_COMMAND  <command> [... <args>]]
+#                      [COPY_TO_BINARY_DIR <COPY_TO_BINARY_DIR>]
 #                      [INSTALL_COMMAND  <command> [... <args>]]
 #                      [INSTALL_INCS <directory> [... <directory>]]
 #                      [INSTALL_LIBS <directory> [... <directory>]]
-#                      [PATCHES <patch-file> [... <patch-file>]]
+#                      [LIBS <lib-names> [... <lib-names>]]
 #                      [ONLY_MAKE_INCS <directory> [... <directory>]]
 #                      [ONLY_MAKE_LIBS <directory> [... <directory>]]
+#                      [PATCHES <patch-file> [... <patch-file>]]
+#                      [PRE_CONFIGURE_COMMAND <command> [... <args>]]
 #                      [TARGET_ALIAS <alias-name> <target-library>|
 #                         TARGET_ALIAS <num> <alias-name> <target-library> [...<target-library>]]
-#                      [COPY_TO_BINARY_DIR <COPY_TO_BINARY_DIR>]
 # )
+#
+# BUILD_DEPENDENCIES is a list of lists of arguments to pass onto to `find_package()` prior to start building the
+# package.
+# e.g. (... BUILD_DEPENDENCIES "Git REQUIRED" "Boost COMPONENTS system" ...)
 # ~~~
 function(mindquantum_add_pkg pkg_name)
   # cmake-lint: disable=R0912,R0915,C0103,E1126
@@ -868,6 +875,7 @@ function(mindquantum_add_pkg pkg_name)
       VER)
   set(multiValueArgs
       BUILD_COMMAND
+      BUILD_DEPENDENCIES
       BUILD_OPTION
       CMAKE_OPTION
       CONFIGURE_COMMAND
@@ -1001,6 +1009,14 @@ function(mindquantum_add_pkg pkg_name)
   endif()
 
   if(${pkg_name}_SOURCE_DIR)
+    # Look for any dependencies (if any)
+    foreach(_pkg_dep ${PKG_BUILD_DEPENDENCIES})
+      if(ENABLE_CMAKE_DEBUG)
+        message(STATUS "Looking for build dependency for ${pkg_name}: find_package(${_pkg_dep} REQUIRED)")
+      endif(ENABLE_CMAKE_DEBUG)
+      find_package(${_pkg_dep} REQUIRED)
+    endforeach()
+
     if(PKG_ONLY_UNPACK)
       file(GLOB ${pkg_name}_SOURCE_SUBDIRS ${${pkg_name}_SOURCE_DIR}/*)
       file(COPY ${${pkg_name}_SOURCE_SUBDIRS} DESTINATION ${${pkg_name}_BASE_DIR})

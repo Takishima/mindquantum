@@ -79,6 +79,7 @@ parse:
         URL: 1
         VER: 1
         BUILD_COMMAND: +
+        BUILD_DEPENDENCIES: +
         BUILD_OPTION: +
         CMAKE_OPTION: +
         CONFIGURE_COMMAND: +

@@ -16,23 +16,10 @@
 #
 # ==============================================================================
 
-# cmake-lint: disable=C0103
+find_program(M4_EXEC m4 PATHS /usr/local/bin /usr/bin /bin /sbin)
 
-set(VER 6.2.0)
+include(FindPackageHandleStandardArgs)
 
-set(REQ_URL "https://gmplib.org/download/gmp/gmp-${VER}.tar.xz")
-set(MD5 "a325e3f09e6d91e62101e59f9bda3ec1")
+find_package_handle_standard_args(m4 REQUIRED_VARS M4_EXEC)
 
-set(gmp_CFLAGS "-fPIC -O3 -D_FORTIFY_SOURCE=2")
-set(gmp_CXXFLAGS "-fPIC -O3 -D_FORTIFY_SOURCE=2")
-
-mindquantum_add_pkg(
-  gmp
-  LIBS gmp gmpxx
-  VER ${VER}
-  URL ${REQ_URL}
-  MD5 ${MD5}
-  GEN_CMAKE_CONFIG
-  BUILD_DEPENDENCIES "m4"
-  CONFIGURE_COMMAND ./configure --enable-cxx
-  TARGET_ALIAS mindquantum::gmp gmp::gmp)
+mark_as_advanced(M4_EXEC)
