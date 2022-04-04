@@ -2,6 +2,7 @@ include: .gitlab/hashes.yml
 
 variables:
   CMAKE_VERSION: 3.22.3
+  GIT_SSL_NO_VERIFY: "true"
 
 default:
   before_script:
