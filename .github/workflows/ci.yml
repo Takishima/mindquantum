@@ -60,14 +60,14 @@ jobs:
         uses: actions/cache@v3
         with:
           path: venv
-          key: gcc-${{ matrix.gcc }}-python-venv-${{ hashFiles('build_locally.sh') }}-${{ secrets.cache_ver }}
+          key: ${{ matrix.runs-on }}-python-${{ matrix.python }}-python-venv-${{ hashFiles('build_locally.sh') }}-${{ secrets.cache_ver }}
 
       - name: Cache compiled third-party libraries
         if: ${{ !env.ACT }}
         uses: actions/cache@v3
         with:
           path: build/.mqlibs
-          key: gcc-${{ matrix.gcc }}-third-party-libs-${{ hashFiles('third_party/**') }}-${{ secrets.cache_ver }}
+          key: ${{ matrix.runs-on }}-python-${{ matrix.python }}-third-party-libs-${{ hashFiles('third_party/**') }}-${{ secrets.cache_ver }}
 
       - name: Configure && build
         run: ./build_locally.sh --cxx --with-projectq --with-quest --debug-cmake --configure
