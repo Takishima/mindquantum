@@ -38,7 +38,7 @@ jobs:
 
       - name: Prepare env
         run: >
-          sudo apt-get update && apt-get install -y libboost-filesystem-dev
+          sudo apt-get update && sudo apt-get install -y libboost-filesystem-dev
           --no-install-recommends
 
       - name: Cache CMake installer

@@ -15,10 +15,9 @@ default:
     - echo 'deb http://debian.ethz.ch/debian-security bullseye-security main' >> /etc/apt/sources.list
     - echo 'deb http://debian.ethz.ch/debian bullseye-updates main' >> /etc/apt/sources.list
     - echo -e "[global]\ncache-dir = ${CI_PROJECT_DIR}/cache/pip" > /usr/pip.conf
-    - apt-get update && apt-get upgrade -y
     - >-
-        apt-get install -y python3-dev python3-pip python3-setuptools
-        python3-wheel python3-venv libboost-filesystem-dev
+        apt-get update && apt-get install -y python3-dev python3-pip
+        python3-setuptools python3-wheel python3-venv libboost-filesystem-dev
         --no-install-recommends
     - |
       if [ ! -e cmake-${CMAKE_VERSION}-linux-x86_64.sh ]; then
