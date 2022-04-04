@@ -111,7 +111,8 @@ int main() {
 #if __cpp_lib_remove_cvref >= 201711L
     return 0;
 #else
-#error std::remove_cvref not supported
+   std::remove_cvref_t<const int&> i(0);
+   return i;
 #endif
 }
 ]])
