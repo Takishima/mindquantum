@@ -427,16 +427,14 @@ fi
 # ------------------------------------------------------------------------------
 # Build
 
-if [ $do_configure -eq 0 ]; then
-    if [[ ! -d "$build_dir" || $do_clean_build_dir -eq 1 ]]; then
-        do_configure=1
-    elif [ $do_clean_cache -eq 1 ]; then
-        do_configure=1
-        echo "Removing CMake cache at: $build_dir/CMakeCache.txt"
-        call_cmd rm -f "$build_dir/CMakeCache.txt"
-        echo "Removing CMake files at: $build_dir/CMakeFiles"
-        call_cmd  rm -rf "$build_dir/CMakeFiles"
-    fi
+if [[ ! -d "$build_dir" || $do_clean_build_dir -eq 1 ]]; then
+    do_configure=1
+elif [ $do_clean_cache -eq 1 ]; then
+    do_configure=1
+    echo "Removing CMake cache at: $build_dir/CMakeCache.txt"
+    call_cmd rm -f "$build_dir/CMakeCache.txt"
+    echo "Removing CMake files at: $build_dir/CMakeFiles"
+    call_cmd  rm -rf "$build_dir/CMakeFiles"
 fi
 
 if [ $do_configure -eq 1 ]; then

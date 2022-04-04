@@ -516,17 +516,15 @@ if($n_jobs -ne -1) {
 # ------------------------------------------------------------------------------
 # Build
 
-if ($do_configure -eq 0) {
-    if (-Not (Test-Path -Path "$build_dir" -PathType Container) -Or $do_clean_build_dir -eq 1) {
-        $do_configure=1
-    }
-    elseif ($do_clean_cache -eq 1) {
-        $do_configure=1
-        Write-Output "Removing CMake cache at: $build_dir/CMakeCache.txt"
-        Call-Cmd Remove-Item -Force "$build_dir/CMakeCache.txt" -ErrorAction SilentlyContinue
-        Write-Output "Removing CMake files at: $build_dir/CMakeFiles"
-        Call-Cmd Remove-Item -Force -Recurse "$build_dir/CMakeFiles" -ErrorAction SilentlyContinue
-    }
+if (-Not (Test-Path -Path "$build_dir" -PathType Container) -Or $do_clean_build_dir -eq 1) {
+    $do_configure=1
+}
+elseif ($do_clean_cache -eq 1) {
+    $do_configure=1
+    Write-Output "Removing CMake cache at: $build_dir/CMakeCache.txt"
+    Call-Cmd Remove-Item -Force "$build_dir/CMakeCache.txt" -ErrorAction SilentlyContinue
+    Write-Output "Removing CMake files at: $build_dir/CMakeFiles"
+    Call-Cmd Remove-Item -Force -Recurse "$build_dir/CMakeFiles" -ErrorAction SilentlyContinue
 }
 
 if ($do_configure -eq 1) {

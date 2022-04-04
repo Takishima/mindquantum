@@ -374,7 +374,6 @@ if NOT !n_jobs! == -1 set cmake_args=!cmake_args! -DJOBS:STRING=!n_jobs!
 rem ----------------------------------------------------------------------------
 rem Build
 
-if !do_configure! == 1 goto :do_configure
 if NOT exist !build_dir! goto :do_configure
 if !do_clean_build_dir! == 1 goto :do_configure
 
@@ -385,6 +384,8 @@ if !do_clean_cache! == 1 (
     if exist !build_dir!/CMakeFiles call :call_cmd rd /Q /S "!build_dir!\CMakeFiles"
     goto :do_configure
 )
+
+if !do_configure! == 1 goto :do_configure
 
 goto :done_configure
 
