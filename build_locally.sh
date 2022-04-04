@@ -179,7 +179,7 @@ help_message() {
     echo '  --ninja              Build using Ninja instead of make'
     echo '  --quiet              Disable verbose build rules'
     echo '  --show-libraries     Show all known third-party libraries'
-    echo '  --venv               Path to Python virtual environment'
+    echo '  --venv [dir]         Path to Python virtual environment'
     echo "                       Defaults to: $python_venv_path"
     echo '  --with-<library>     Build the third-party <library> from source'
     echo '                       (ignored if --local-pkgs is passed, except for projectq and quest)'
@@ -190,7 +190,7 @@ help_message() {
     echo -e '\nExample calls:'
     echo "$PROGRAM -B build"
     echo "$PROGRAM -B build --gpu"
-    echo "$PROGRAM -B build --cxx --with-boost --without-quest"
+    echo "$PROGRAM -B build --cxx --with-boost --without-quest --venv=/tmp/venv"
     echo "$PROGRAM -B build -- -DCMAKE_CUDA_COMPILER=/opt/cuda/bin/nvcc"
 }
 
