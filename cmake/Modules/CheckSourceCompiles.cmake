@@ -54,7 +54,7 @@ Check if given source compiles and links into an executable.
 
   ``CMAKE_REQUIRED_LINK_OPTIONS``
     A :ref:`;-list <CMake Language Lists>` of options to add to the link
-    command(see :command:`try_compile` for further details).
+    command (see :command:`try_compile` for further details).
 
   ``CMAKE_REQUIRED_LIBRARIES``
     A :ref:`;-list <CMake Language Lists>` of libraries to add to the link

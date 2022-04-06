@@ -16,9 +16,9 @@
 #
 # ==============================================================================
 
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.20) # mainly because of NVHPC support
 
-cmake_policy(VERSION 3.0...3.20)
+cmake_policy(VERSION 3.0...3.23)
 
 list(PREPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 list(PREPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/Modules)
