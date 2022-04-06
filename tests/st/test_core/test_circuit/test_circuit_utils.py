@@ -129,5 +129,5 @@ def test_state_evol():
 def test_qft():
     c = qft(range(4))
     s = c.get_qs()
-    s_exp = np.ones(2 ** 4) * 0.25
+    s_exp = np.ones(2**4) * 0.25
     assert np.allclose(s, s_exp)

@@ -23,7 +23,7 @@ from mindquantum.utils.type_value_check import _check_input_type
 
 
 def _rn(k):
-    return PhaseShift(2 * np.pi / 2 ** k)
+    return PhaseShift(2 * np.pi / 2**k)
 
 
 def _qft_unit(qubits):

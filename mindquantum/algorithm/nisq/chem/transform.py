@@ -371,7 +371,7 @@ class Transform:
             QubitOperator, qubit operator after ternary_tree transformation.
         """
         h = floor(log(2 * self.n_qubits + 1, 3))
-        d = self.n_qubits - (3 ** h - 1) // 2
+        d = self.n_qubits - (3**h - 1) // 2
 
         if not isinstance(self.operator, FermionOperator):
             raise TypeError('This method can be only applied for FermionOperator.')
@@ -386,9 +386,9 @@ class Transform:
                 index = ladder_operator[0]
 
                 p1 = (
-                    [2 * index // (3 ** l) % 3 for l in range(h, -1, -1)]
+                    [2 * index // (3**l) % 3 for l in range(h, -1, -1)]
                     if 2 * index < 3 * d
-                    else [(2 * index - 2 * d) // (3 ** l) % 3 for l in range(h - 1, -1, -1)]
+                    else [(2 * index - 2 * d) // (3**l) % 3 for l in range(h - 1, -1, -1)]
                 )
                 x1 = []
                 y1 = []
@@ -402,9 +402,9 @@ class Transform:
                         z1 += [_get_qubit_index(p1, l)]
 
                 p2 = (
-                    [(2 * index + 1) // (3 ** l) % 3 for l in range(h, -1, -1)]
+                    [(2 * index + 1) // (3**l) % 3 for l in range(h, -1, -1)]
                     if 2 * index < 3 * d
-                    else [(2 * index + 1 - 2 * d) // (3 ** l) % 3 for l in range(h - 1, -1, -1)]
+                    else [(2 * index + 1 - 2 * d) // (3**l) % 3 for l in range(h - 1, -1, -1)]
                 )
                 x2 = []
                 y2 = []
@@ -481,7 +481,7 @@ class Transform:
 
 
 def _get_qubit_index(p, l):
-    n = (3 ** l - 1) // 2
+    n = (3**l - 1) // 2
     for j in range(l):
         n += 3 ** (l - 1 - j) * p[j]
     return n

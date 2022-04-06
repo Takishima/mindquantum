@@ -77,9 +77,9 @@ def amplitude_encoder(x, n_qubits):
     _check_input_type('n_qubits', (int), n_qubits)
     if isinstance(x, np.ndarray):
         x = x.tolist()
-    if len(x) > 2 ** n_qubits:
-        x = x[: (2 ** n_qubits)]
-    while 2 ** n_qubits != len(x):
+    if len(x) > 2**n_qubits:
+        x = x[: (2**n_qubits)]
+    while 2**n_qubits != len(x):
         x.append(0)
 
     c = Circuit()

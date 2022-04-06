@@ -24,7 +24,7 @@ _num_type = (int, float, complex, np.int32, np.int64, np.float32, np.float64)
 def _check_seed(seed):
     """check seed"""
     _check_int_type("seed", seed)
-    _check_value_should_between_close_set("seed", 0, 2 ** 23, seed)
+    _check_value_should_between_close_set("seed", 0, 2**23, seed)
 
 
 def _check_input_type(arg_msg, require_type, arg):

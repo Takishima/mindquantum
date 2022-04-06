@@ -78,7 +78,7 @@ class Simulator:
         _check_int_type('n_qubits', n_qubits)
         _check_value_should_not_less('n_qubits', 0, n_qubits)
         if seed is None:
-            seed = np.random.randint(1, 2 ** 23)
+            seed = np.random.randint(1, 2**23)
         _check_seed(seed)
         if backend not in SUPPORTED_SIMULATOR:
             raise ValueError(f"backend {backend} not supported, now we support {SUPPORTED_SIMULATOR}!")

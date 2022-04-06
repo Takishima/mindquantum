@@ -48,7 +48,7 @@ def test_power():
     # check power and multiply
     w = (1 + 2j) * FermionOperator(' 4^ 3 9 3^ ') + 4 * FermionOperator(' 2 ')
     w_2 = w * w
-    w_3 = w ** 2
+    w_3 = w**2
     assert w_2 == w_3
 
 

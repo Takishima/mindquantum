@@ -50,7 +50,7 @@ def test_power():
     """
     w = (1 + 2j) * QubitExcitationOperator(' 4^ 3 9 3^ ') + 4 * QubitExcitationOperator(' 2 ')
     w_2 = w * w
-    w_3 = w ** 2
+    w_3 = w**2
     assert w_2 == w_3
 
 

@@ -53,13 +53,13 @@ def random_circuit(n_qubits, gate_num, sd_rate=0.5, ctrl_rate=0.2, seed=None):
     _check_input_type('sd_rate', float, sd_rate)
     _check_input_type('ctrl_rate', float, ctrl_rate)
     if seed is None:
-        seed = np.random.randint(1, 2 ** 23)
+        seed = np.random.randint(1, 2**23)
     _check_int_type('seed', seed)
     _check_value_should_not_less('n_qubits', 1, n_qubits)
     _check_value_should_not_less('gate_num', 1, gate_num)
     _check_value_should_between_close_set('sd_rate', 0, 1, sd_rate)
     _check_value_should_between_close_set('ctrl_rate', 0, 1, ctrl_rate)
-    _check_value_should_between_close_set('seed', 0, 2 ** 32 - 1, seed)
+    _check_value_should_between_close_set('seed', 0, 2**32 - 1, seed)
     if n_qubits == 1:
         sd_rate = 1
         ctrl_rate = 0
