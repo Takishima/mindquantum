@@ -1,0 +1,102 @@
+# To use:
+#
+#     pre-commit run -a
+#
+# Or:
+#
+#     pre-commit install  # (runs every time you commit in git)
+#
+# To update this file:
+#
+#     pre-commit autoupdate
+#
+# See https://github.com/pre-commit/pre-commit
+
+---
+
+ci:
+  skip: [check-manifest]
+
+exclude: >-
+  (?x)^(
+    .*/kernel[0-9]+\.hpp|
+    third_party/patch/.*
+  )$
+
+repos:
+  - repo: meta
+    hooks:
+      - id: check-useless-excludes
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-yaml
+      - id: check-toml
+      - id: debug-statements
+      - id: end-of-file-fixer
+        exclude: ^(.*patch[0-9]*)$
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+        exclude: ^(.*patch[0-9]*)$
+      - id: fix-encoding-pragma
+        exclude: ^(.*patch[0-9]*)$
+
+  # Changes tabs to spaces
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.1.10
+    hooks:
+      - id: remove-tabs
+        exclude: ^(.*patch[0-9]*)$
+
+  - repo: https://github.com/jumanjihouse/pre-commit-hooks
+    rev: 2.1.5
+    hooks:
+      - id: shellcheck
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.1.0
+    hooks:
+      - id: codespell
+        files: (.*ccsrc/.*|.*mindquantum/.*|.*\.txt|.*\.cmake|.*\.md)
+        args: [-q, '7', -S, '.git,third_party', -I, .codespell.allow]
+
+  - repo: https://github.com/cheshirekow/cmake-format-precommit
+    rev: v0.6.13
+    hooks:
+      - id: cmake-format
+        additional_dependencies: [pyyaml]
+      - id: cmake-lint
+        exclude: ^(cmake/Modules/.*)$
+        additional_dependencies: [pyyaml]
+
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+        name: isort (python)
+
+  - repo: https://github.com/psf/black
+    rev: 22.3.0
+    hooks:
+      - id: black
+        language_version: python3
+
+  - repo: https://github.com/Takishima/cmake-pre-commit-hooks/
+    rev: 'v1.5.2'
+    hooks:
+      - id: clang-format
+        args: [-i]
+      - id: clang-tidy
+        stages: [manual]
+        args: [-Bbuild, -B.pre-commit-build]
+        exclude: >-
+          (?x)^(
+            .*/kernel[0-9]+\.hpp|
+            .*third_party/.*|
+            .*\.cu
+          )$
