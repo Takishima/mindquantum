@@ -186,6 +186,7 @@ set(${_pkg}_Eigen_NAMES Eigen)
 set(${_pkg}_Eigen_HEADER_ONLY TRUE)
 
 if(WIN32)
+
 elseif(APPLE)
   list(APPEND system_specific_paths "/usr/local/opt/eigen")
 endif()
