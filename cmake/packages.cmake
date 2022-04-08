@@ -77,6 +77,22 @@ list(APPEND PARALLEL_LIBS Threads::Threads)
 find_package(Patch REQUIRED)
 
 # ==============================================================================
+# CUDA
+
+if(ENABLE_CUDA)
+  find_package(CUDAToolkit)
+  if(CUDAToolkit_FOUND)
+    set(MQ_CUDA_VERSION "${CUDAToolkit_VERSION_MAJOR}.${CUDAToolkit_VERSION_MINOR}")
+  else()
+    message(STATUS "Disabling CUDA since unable to locate CUDAToolkit")
+    # cmake-lint: disable=C0103
+    set(ENABLE_CUDA
+        OFF
+        CACHE INTERNAL "Enable building of CUDA/NVHPC libraries")
+  endif()
+endif()
+
+# ==============================================================================
 
 # Only helps set the Python executable for CMake >= 3.16
 if(DEFINED PYTHON_EXECUTABLE)

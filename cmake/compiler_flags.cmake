@@ -84,6 +84,62 @@ endif()
 
 # ------------------------------------------------------------------------------
 
+if(ENABLE_CUDA)
+  add_library(NVCXX_try_compile_flagcheck INTERFACE)
+  add_library(NVCXX_try_compile INTERFACE)
+  add_library(mindquantum_nvcxx INTERFACE)
+
+  test_compile_option(
+    nvhpc_flagcheck_flags
+    TARGETS NVCXX_try_compile_flagcheck
+    FLAGCHECK
+    LANGS NVCXX
+    FLAGS "--flagcheck")
+
+  test_compile_option(
+    nvhpc_cuda_flags
+    TRY_COMPILE_TARGET NVCXX_try_compile_flagcheck
+    TARGETS NVCXX_try_compile NVCXX_try_compile_flagcheck mindquantum_nvcxx
+    FLAGCHECK
+    LANGS NVCXX
+    FLAGS "-stdpar" "-cuda")
+
+  if(NOT nvhpc_cuda_flags_NVCXX)
+    message(STATUS "NVHPC does not support -stdpar -cuda, disabling CUDA/NVHPC")
+    # cmake-lint: disable=C0103
+    set(ENABLE_CUDA
+        OFF
+        CACHE INTERNAL "Enable building of CUDA/NVHPC libraries")
+  endif()
+
+  set(_flag -gpu=cuda${MQ_CUDA_VERSION})
+  test_compile_option(
+    nvhpc_cuda_version_flags FLAGCHECK
+    TRY_COMPILE_TARGET NVCXX_try_compile_flagcheck
+    TARGETS NVCXX_try_compile NVCXX_try_compile_flagcheck mindquantum_nvcxx
+    LANGS NVCXX
+    FLAGS "${_flag}")
+
+  if(NOT nvhpc_cuda_version_flags_NVCXX)
+    message(STATUS "NVHPC does not support ${_flag}, disabling CUDA/NVHPC")
+    # cmake-lint: disable=C0103
+    set(ENABLE_CUDA
+        OFF
+        CACHE INTERNAL "Enable building of CUDA/NVHPC libraries")
+  endif()
+
+  foreach(_cc ${CMAKE_CUDA_ARCHITECTURES})
+    test_compile_option(
+      nvhpc_gpu_compute_capability FLAGCHECK
+      TRY_COMPILE_TARGET NVCXX_try_compile_flagcheck
+      TARGETS NVCXX_try_compile NVCXX_try_compile_flagcheck mindquantum_nvcxx
+      LANGS NVCXX
+      FLAGS "-gpu=cc${_cc}")
+  endforeach()
+endif()
+
+# ------------------------------------------------------------------------------
+
 test_compile_option(
   _compile_flags_release
   LANGS CXX DPCXX

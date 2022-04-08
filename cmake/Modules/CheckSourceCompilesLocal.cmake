@@ -9,7 +9,7 @@ cmake_policy(PUSH)
 cmake_policy(SET CMP0054 NEW) # if() quoted variables not dereferenced
 cmake_policy(SET CMP0057 NEW) # if() supports IN_LIST
 
-function(CMAKE_CHECK_SOURCE_COMPILES _lang _source _var)
+function(CMAKE_CHECK_SOURCE_COMPILES_LOCAL _lang _source _var)
   if(NOT DEFINED "${_var}")
     if("${_lang}" STREQUAL "C")
       set(_lang_textual "C")
@@ -31,14 +31,7 @@ function(CMAKE_CHECK_SOURCE_COMPILES _lang _source _var)
       set(_lang_ext "ispc")
     elseif(_lang STREQUAL "NVCXX")
       set(_lang_textual "NVCXX")
-      set(_lang_ext "cpp")
-      get_property(_flags GLOBAL PROPERTY _nvcxx_try_compile_extra_flags)
-      if(_flags)
-        string(APPEND CMAKE_REQUIRED_FLAGS " ${_flags}")
-        list(APPEND CMAKE_REQUIRED_LINK_OPTIONS ${_flags})
-      endif()
-      set(CMAKE_EXTRA_CONTENT "set(CMAKE_NVCXX_FLAGS_INIT \"${CMAKE_NVCXX_FLAGS_INIT} -v\")\n
-set(CMAKE_NVCXX_LDFLAGS_INIT \"${CMAKE_NVCXX_LDFLAGS_INIT} -v\")")
+      set(_lang_ext "nvcpp")
     elseif("${_lang}" STREQUAL "OBJC")
       set(_lang_textual "Objective-C")
       set(_lang_ext "m")
@@ -76,7 +69,7 @@ set(CMAKE_NVCXX_LDFLAGS_INIT \"${CMAKE_NVCXX_LDFLAGS_INIT} -v\")")
     endforeach()
 
     if(NOT _SRC_EXT)
-      set(_SRC_EXT ${_lang_ext})
+      set(_src_ext ${_lang_ext})
     endif()
 
     if(CMAKE_REQUIRED_LINK_OPTIONS)
@@ -101,43 +94,18 @@ set(CMAKE_NVCXX_LDFLAGS_INIT \"${CMAKE_NVCXX_LDFLAGS_INIT} -v\")")
 
     set(_srcdir "${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp")
     set(_src "${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/src.${_src_ext}")
+    message(STATUS "_src = ${_src}")
     file(MAKE_DIRECTORY ${_srcdir})
     file(WRITE "${_src}" "${_source}\n")
+    set(CMAKE_SOURCE_FILE ${_src})
 
-    set(_cleanup_required FALSE)
-    if(_lang STREQUAL "NVCXX" OR _lang STREQUAL "DPCXX")
-      set(_cleanup_required TRUE)
-
-      set(LANG ${_lang})
-      set(CMAKE_LANG_FLAGS ${CMAKE_${LANG}_FLAGS})
-      set(CMAKE_LANG_STANDARD ${CMAKE_${_lang}_STANDARD})
-      set(CMAKE_LANG_STANDARD_REQUIRED ${CMAKE_${_lang}_STANDARD_REQUIRED})
-      set(CMAKE_LANG_EXTENSIONS ${CMAKE_${_lang}_EXTENSIONS})
-      list(INSERT CMAKE_REQUIRED_DEFINITIONS 0 -D${_var})
-
-      string(RANDOM _random)
-      set(CMAKE_EXEC_NAME cmTC_${_random})
-
-      _protect_arguments(CMAKE_REQUIRED_DEFINITIONS)
-      string(REPLACE ";" "\n                " CMAKE_REQUIRED_DEFINITIONS "${CMAKE_REQUIRED_DEFINITIONS}")
-
-      configure_file(${CMAKE_CURRENT_LIST_DIR}/try_compile/CMakeLists.txt.in ${_srcdir}/CMakeLists.txt @ONLY)
-      try_compile(
-        ${_var} ${CMAKE_BINARY_DIR}/CMakeTmp
-        ${_srcdir} CMAKE_TRY_COMPILE
-        CMAKE_FLAGS -DCOMPILE_DEFINITIONS:STRING=${CMAKE_REQUIRED_FLAGS}
-                    "${CHECK_${_lang}_SOURCE_COMPILES_ADD_INCLUDES}"
-        OUTPUT_VARIABLE OUTPUT)
-    else()
-      try_compile(
-        ${_var} ${CMAKE_BINARY_DIR}
-        ${_src}
-        COMPILE_DEFINITIONS -D${_var} ${CMAKE_REQUIRED_DEFINITIONS} ${CHECK_${_lang}_SOURCE_COMPILES_ADD_LINK_OPTIONS}
-                            ${CHECK_${_lang}_SOURCE_COMPILES_ADD_LIBRARIES}
-        CMAKE_FLAGS -DCOMPILE_DEFINITIONS:STRING=${CMAKE_REQUIRED_FLAGS}
-                    "${CHECK_${_lang}_SOURCE_COMPILES_ADD_INCLUDES}"
-        OUTPUT_VARIABLE OUTPUT)
-    endif()
+    try_compile(
+      ${_var} ${CMAKE_BINARY_DIR}
+      ${_src}
+      COMPILE_DEFINITIONS -D${_var} ${CMAKE_REQUIRED_DEFINITIONS} ${CHECK_${_lang}_SOURCE_COMPILES_ADD_LINK_OPTIONS}
+                          ${CHECK_${_lang}_SOURCE_COMPILES_ADD_LIBRARIES}
+      CMAKE_FLAGS -DCOMPILE_DEFINITIONS:STRING=${CMAKE_REQUIRED_FLAGS} "${CHECK_${_lang}_SOURCE_COMPILES_ADD_INCLUDES}"
+      OUTPUT_VARIABLE OUTPUT)
 
     foreach(_regex ${_FAIL_REGEX})
       if("${OUTPUT}" MATCHES "${_regex}")

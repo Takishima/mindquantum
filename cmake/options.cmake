@@ -133,6 +133,8 @@ endif()
 # ==============================================================================
 # CUDA related options
 
+include(CheckLanguage)
+
 if(CUDA_ALLOW_UNSUPPORTED_COMPILER)
   set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -allow-unsupported-compiler")
 endif()
@@ -140,48 +142,46 @@ endif()
 if(ENABLE_CUDA)
   list(PREPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/NVCXX)
 
-  enable_language(CUDA)
+  if(NOT CMAKE_CUDA_ARCHITECTURES AND "$ENV{CUDAARCHS}" STREQUAL "")
+    set(CMAKE_CUDA_ARCHITECTURES
+        60
+        61
+        62
+        70
+        72
+        75
+        80
+        86)
 
-  if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.17)
-    find_package(CUDAToolkit REQUIRED)
+    # NB: CUDAARCHS requires CMake 3.20
+    message(STATUS "Neither of CMAKE_CUDA_ARCHITECTURES (CMake variable) or CUDAARCHS (env. variable; CMake 3.20+) "
+                   "have been defined. Defaulting to ${CMAKE_CUDA_ARCHITECTURES}")
+  elseif(NOT "$ENV{CUDAARCHS}" STREQUAL "")
+    message(STATUS "CUDAARCHS environment variable present: $ENV{CUDAARCHS}")
+  endif()
+
+  check_language(NVCXX)
+
+  if(CMAKE_NVCXX_COMPILER AND CUDAToolkit_FOUND)
+    enable_language(NVCXX)
+    enable_language(CUDA)
+
+    if(CMAKE_NVCXX_COMPILER_VERSION VERSION_LESS 20.11)
+      # NB: essentially because of missing '-x c++' argument for CMake flag detection
+      message(
+        FATAL_ERROR "MindQuantum is not compatible with the current version of NVHPC (${CMAKE_NVCXX_COMPILER_VERSION})")
+    endif()
+
+    if(CMAKE_NVCXX_COMPILER_VERSION VERSION_LESS 21.3)
+      list(SORT CMAKE_CUDA_ARCHITECTURES ORDER ASCENDING)
+      list(GET CMAKE_CUDA_ARCHITECTURES 0 CMAKE_CUDA_ARCHITECTURES)
+      message(STATUS "NVHPC < 21.3, can only specify one CUDA_ARCHITECTURE. Only keeping: ${CMAKE_CUDA_ARCHITECTURES}")
+    endif()
   else()
-    find_package(CUDA REQUIRED)
-
-    if(CUDA_LIBRARIES)
-      if(NOT TARGET CUDA::cudart)
-        add_library(CUDA::cudart IMPORTED INTERFACE)
-        target_include_directories(CUDA::cudart SYSTEM INTERFACE "${CUDA_INCLUDE_DIRS}")
-        target_link_libraries(CUDA::cudart INTERFACE "${CUDA_LIBRARIES}")
-      endif()
-    endif()
-
-    if(CUDA_cudart_static_LIBRARY)
-      if(NOT TARGET CUDA::cudart_static)
-        add_library(CUDA::cudart_static IMPORTED INTERFACE)
-        target_include_directories(CUDA::cudart_static SYSTEM INTERFACE "${CUDA_INCLUDE_DIRS}")
-        target_link_libraries(CUDA::cudart_static INTERFACE "${CUDA_cudart_static_LIBRARY}" Threads::Threads)
-      endif()
-    endif()
-
-    find_library(
-      CUDA_driver_LIBRARY
-      NAMES cuda_driver cuda
-      HINTS ${CUDA_TOOLKIT_ROOT_DIR} ENV CUDA_PATH
-      PATH_SUFFIXES nvidia/current lib64 lib/x64 lib)
-    if(NOT CUDA_driver_LIBRARY)
-      # Don't try any stub directories until we have exhausted all other search locations.
-      find_library(
-        CUDA_driver_LIBRARY
-        NAMES cuda_driver cuda
-        HINTS ${CUDA_TOOLKIT_ROOT_DIR} ENV CUDA_PATH
-        PATH_SUFFIXES lib64/stubs lib/x64/stubs lib/stubs stubs)
-    endif()
-    mark_as_advanced(CUDA_driver_LIBRARY)
-    if(CUDA_driver_LIBRARY)
-      add_library(CUDA::cuda_driver IMPORTED INTERFACE)
-      target_include_directories(CUDA::cuda_driver SYSTEM INTERFACE "${CUDA_INCLUDE_DIRS}")
-      target_link_libraries(CUDA::cuda_driver INTERFACE "${CUDA_driver_LIBRARY}")
-    endif()
+    message(STATUS "Disabling CUDA due to inexistent CUDA/NVHPC compiler or error during compiler setup")
+    set(ENABLE_CUDA
+        OFF
+        CACHE INTERNAL "Enable building of CUDA/NVHPC libraries")
   endif()
 endif()
 

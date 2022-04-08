@@ -284,20 +284,29 @@ endfunction()
 # ~~~
 # Convenience function to test for the existence of some compiler flags for a a particular language
 #
-# check_compiler_flag(<lang> <var_prefix> <flags1> [<flags2>...])
+# check_compiler_flag(<lang> <var_prefix> [FLAGCHECK] [TRY_COMPILE_TARGET <target>] <flags1> [<flags2>...])
 #
 # Check whether a compiler option is valid for the <lang> compiler. For each set of compiler options provided in the
 # lists <flagsN>, it will test whether one of the element can be used by the corresponding compiler. If a flag is valid,
 # it will be added to the GLOBAL property named <prefix>_<lang> as well as to a variable with the same name. If the
 # property already exists, any valid flag is appended to the current value.
 #
+# If FLAGCHECK is specified, call the compiler directly using execute_process() instead of using
+# cmake_check_compiler_flag() as we expect that no output file will be produced.
+
 # Each call to this function also sets the _added_count variable to the number of flags added automatically (if any).
 # ~~~
 function(check_compiler_flags lang var_prefix)
+  cmake_parse_arguments(PARSE_ARGV 2 CCF "FLAGCHECK" "TRY_COMPILE_TARGET" "")
+
   # cmake-lint: disable=C0103,E1120
   set(_${lang}_opts)
 
-  foreach(_flag_list ${ARGN})
+  if(CCF_TRY_COMPILE_TARGET AND TARGET ${lang}_try_compile)
+    get_target_property(_flags ${CCF_TRY_COMPILE_TARGET} INTERFACE_COMPILE_OPTIONS)
+  endif()
+
+  foreach(_flag_list ${CCF_UNPARSED_ARGUMENTS})
     separate_arguments(_flag_list)
 
     foreach(_flag ${_flag_list})
@@ -306,7 +315,47 @@ function(check_compiler_flags lang var_prefix)
       string(REGEX REPLACE "^-+" "" _flag_name ${_flag_name})
       string(REGEX REPLACE "[-:/,=]" "_" _flag_name ${_flag_name})
 
-      cmake_check_compiler_flag(${lang} ${_flag} ${lang}_compiler_has_${_flag_name})
+      if(NOT CCF_FLAGCHECK)
+        set(CMAKE_REQUIRED_FLAGS ${_flags})
+        cmake_check_compiler_flag(${lang} ${_flag} ${lang}_compiler_has_${_flag_name})
+      else()
+        set(_var ${lang}_compiler_has_${_flag_name})
+        set(_lang_textual NVHPC-C++)
+
+        if(NOT DEFINED "${_var}")
+          message(CHECK_START "Performing Test ${_var}")
+          set(_cmd ${CMAKE_${lang}_COMPILER} ${_flag} ${_flags})
+          execute_process(
+            COMMAND ${_cmd}
+            RESULT_VARIABLE _result
+            OUTPUT_VARIABLE _output
+            ERROR_VARIABLE _error)
+
+          if(_result EQUAL 0)
+            set(${_var}
+                1
+                CACHE INTERNAL "Test ${_var}")
+            message(CHECK_PASS "Success")
+            file(APPEND ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeOutput.log
+                 "Performing ${_lang_textual} FLAG CHECK Test ${_var} with the following command line:\n${_cmd}\n"
+                 "has succeeded\n\n")
+          else()
+            message(CHECK_FAIL "Failed")
+            set(${_var}
+                ""
+                CACHE INTERNAL "Test ${_var}")
+            file(
+              APPEND
+              ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeError.log
+              "Performing ${_lang_textual} FLAG CHECK Test ${_var} with the following command line:\n${_cmd}\n"
+              "has failed with the following output:\n"
+              "${_output}\n"
+              "And the following error output:\n"
+              "${_error}\n\n")
+          endif()
+        endif()
+      endif()
+
       if(${lang}_compiler_has_${_flag_name})
         list(APPEND _${lang}_opts ${_flag})
         break()
@@ -350,8 +399,10 @@ endfunction()
 # test_compile_option(<prefix>
 #                     LANGS <lang1> [<lang2>...]
 #                     FLAGS <flags1> [<flags2>...]
-#                     [AUTO_ADD_CO]
-#                     [GENEX <genex>])
+#                     [AUTO_ADD_CO, FLAGCHECK]
+#                     [GENEX <genex>]
+#                     [TRY_COMPILE_TARGET <target>]
+#                     [TARGETS <target1> [<target2>...]])
 #
 # Check that a compiler option can be applied to each of the specified languages <lang>. For each set of compiler
 # options provided in the lists <flagsN>, it will test whether one of the element can be used by the corresponding
@@ -366,7 +417,8 @@ endfunction()
 #
 # ~~~
 function(test_compile_option prefix)
-  cmake_parse_arguments(PARSE_ARGV 1 TEST_CO "AUTO_ADD_CO" "GENEX" "LANGS;FLAGS")
+  # cmake-lint: disable=R0912,R0915,C0103
+  cmake_parse_arguments(PARSE_ARGV 1 TEST_CO "AUTO_ADD_CO;FLAGCHECK" "GENEX;TRY_COMPILE_TARGET" "LANGS;FLAGS;TARGETS")
 
   if(NOT TEST_CO_LANGS)
     message(FATAL_ERROR "Missing LANGS argument")
@@ -375,33 +427,77 @@ function(test_compile_option prefix)
     message(FATAL_ERROR "Missing FLAGS argument")
   endif()
 
-  if(NOT TEST_CO_GENEX)
-    set(TEST_CO_GENEX "$<COMPILE_LANGUAGE:@lang@>")
+  set(_mode_no_target 1)
+  set(_mode_target 2)
+
+  set(_mode ${_mode_no_target})
+
+  if(TEST_CO_TARGETS)
+    set(_mode ${_mode_target})
   endif()
 
-  # cmake-lint: disable=C0103
-  foreach(lang ${TEST_CO_LANGS})
-    is_language_enabled(${lang} _enabled)
-    if(_enabled)
-      check_compiler_flags(${lang} ${prefix} ${TEST_CO_FLAGS})
+  set(_ccf_args)
+  if(TEST_CO_FLAGCHECK)
+    list(APPEND _ccf_args FLAGCHECK)
+  endif()
+  if(TEST_CO_TRY_COMPILE_TARGET)
+    list(APPEND _ccf_args TRY_COMPILE_TARGET ${TEST_CO_TRY_COMPILE_TARGET})
+  endif()
 
-      set(${prefix}_${lang}
-          ${${prefix}_${lang}}
-          PARENT_SCOPE)
-
-      if(TEST_CO_AUTO_ADD_CO AND _added_flags)
-        string(CONFIGURE "${TEST_CO_GENEX}" _genex @ONLY)
-        list(LENGTH ${prefix}_${lang} _L)
-        math(EXPR _start_idx "${_L} - ${_added_count}")
-        list(SUBLIST ${prefix}_${lang} ${_start_idx} -1 _added_flags)
-        foreach(_flag ${_added_flags})
-          add_compile_options("$<${_genex}:${_flag}>")
-        endforeach()
-      endif()
-    else()
-      set(${prefix}_${lang} PARENT_SCOPE)
+  if(_mode EQUAL _mode_target)
+    if(TEST_CO_GENEX OR TEST_CO_AUTO_ADD_CO)
+      message(FATAL_ERROR "Cannot specify GENEX or AUTO_ADD_CO if TARGETS is specified!")
     endif()
-  endforeach()
+
+    foreach(lang ${TEST_CO_LANGS})
+      is_language_enabled(${lang} _enabled)
+      if(_enabled)
+        check_compiler_flags(${lang} ${prefix} ${_ccf_args} ${TEST_CO_FLAGS})
+
+        set(${prefix}_${lang}
+            ${${prefix}_${lang}}
+            PARENT_SCOPE)
+
+        if(_added_count)
+          list(LENGTH ${prefix}_${lang} _L)
+          math(EXPR _start_idx "${_L} - ${_added_count}")
+          list(SUBLIST ${prefix}_${lang} ${_start_idx} -1 _added_flags)
+          foreach(_target ${TEST_CO_TARGETS})
+            target_compile_options(${_target} INTERFACE ${_added_flags})
+          endforeach()
+        endif()
+      else()
+        set(${prefix}_${lang} PARENT_SCOPE)
+      endif()
+    endforeach()
+  elseif(_mode EQUAL _mode_no_target)
+    if(NOT TEST_CO_GENEX)
+      set(TEST_CO_GENEX "$<COMPILE_LANGUAGE:@lang@>")
+    endif()
+    # cmake-lint: disable=C0103
+    foreach(lang ${TEST_CO_LANGS})
+      is_language_enabled(${lang} _enabled)
+      if(_enabled)
+        check_compiler_flags(${lang} ${prefix} ${_ccf_args} ${TEST_CO_FLAGS})
+
+        set(${prefix}_${lang}
+            ${${prefix}_${lang}}
+            PARENT_SCOPE)
+
+        if(TEST_CO_AUTO_ADD_CO AND _added_flags)
+          string(CONFIGURE "${TEST_CO_GENEX}" _genex @ONLY)
+          list(LENGTH ${prefix}_${lang} _L)
+          math(EXPR _start_idx "${_L} - ${_added_count}")
+          list(SUBLIST ${prefix}_${lang} ${_start_idx} -1 _added_flags)
+          foreach(_flag ${_added_flags})
+            add_compile_options("$<${_genex}:${_flag}>")
+          endforeach()
+        endif()
+      else()
+        set(${prefix}_${lang} PARENT_SCOPE)
+      endif()
+    endforeach()
+  endif()
 endfunction()
 
 # ==============================================================================

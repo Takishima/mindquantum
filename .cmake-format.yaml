@@ -32,15 +32,25 @@ parse:
         OUTPUT: 1
         CONTENT: 1
         NEWLINE_STYLE: 1
+    check_compiler_flags:
+      pargs:
+        nargs: 2+
+        flags:
+          - FLAGCHECK
+      kwargs:
+        TRY_COMPILE_TARGET: 1
     test_compile_option:
       pargs:
         nargs: 1+
         flags:
           - AUTO_ADD_CO
+          - FLAGCHECK
       kwargs:
         LANGS: +
         FLAGS: +
         GENEX: 1
+        TRY_COMPILE_TARGET: 1
+        TARGETS: +
     test_link_option:
       pargs:
         nargs: 1+

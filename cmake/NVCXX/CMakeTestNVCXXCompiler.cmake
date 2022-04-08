@@ -35,7 +35,7 @@ endif()
 if(NOT CMAKE_NVCXX_COMPILER_WORKS)
   PrintTestCompilerStatus("NVCXX")
   __testcompiler_settrycompiletargettype()
-  file(WRITE ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/testCXXCompiler.cxx "#ifndef __cplusplus\n"
+  file(WRITE ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/testCXXCompiler.nvcpp "#ifndef __cplusplus\n"
        "# error \"The CMAKE_NVCXX_COMPILER is set to a C compiler\"\n" "#endif\n" "int main(){return 0;}\n")
   # Clear result from normal variable.
   unset(CMAKE_NVCXX_COMPILER_WORKS)
@@ -44,12 +44,12 @@ if(NOT CMAKE_NVCXX_COMPILER_WORKS)
     STATUS
       "  try_compile(
     CMAKE_NVCXX_COMPILER_WORKS ${CMAKE_BINARY_DIR}
-    ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/testCXXCompiler.cxx
+    ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/testCXXCompiler.nvcpp
     OUTPUT_VARIABLE __CMAKE_NVCXX_COMPILER_OUTPUT)
 ")
   try_compile(
     CMAKE_NVCXX_COMPILER_WORKS ${CMAKE_BINARY_DIR}
-    ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/testCXXCompiler.cxx
+    ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/testCXXCompiler.nvcpp
     OUTPUT_VARIABLE __CMAKE_NVCXX_COMPILER_OUTPUT)
   # Move result from cache to normal variable.
   set(CMAKE_NVCXX_COMPILER_WORKS ${CMAKE_NVCXX_COMPILER_WORKS})

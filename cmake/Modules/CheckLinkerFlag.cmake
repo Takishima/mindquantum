@@ -59,7 +59,7 @@ function(CHECK_LINKER_FLAG _lang _flag _var)
     set(ENV{${v}} C)
   endforeach()
 
-  if(_lang MATCHES "^(C|CXX)$")
+  if(_lang MATCHES "^(C|CXX|NVCXX)$")
     set(_source "int main() { return 0; }")
   elseif("${_lang}" STREQUAL "Fortran")
     set(_source "       program test\n       stop\n       end program")
