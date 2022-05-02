@@ -44,7 +44,7 @@ jobs:
           --no-install-recommends
 
       - name: Setup CCache
-        uses: hendrikmuhs/ccache-action@v1.2.1
+        uses: hendrikmuhs/ccache-action@v1.2.2
         with:
           key: ${{ matrix.runs-on }}-python-${{ matrix.python }}-ccache
 
@@ -121,7 +121,7 @@ jobs:
           --no-install-recommends
 
       - name: Setup CCache
-        uses: hendrikmuhs/ccache-action@v1.2.1
+        uses: hendrikmuhs/ccache-action@v1.2.2
         with:
           key: gcc-${{ matrix.gcc }}-ccache
 
@@ -201,7 +201,7 @@ jobs:
           --no-install-recommends
 
       - name: Setup CCache
-        uses: hendrikmuhs/ccache-action@v1.2.1
+        uses: hendrikmuhs/ccache-action@v1.2.2
         with:
           key: clang-${{ matrix.clang }}-ccache
 
@@ -699,7 +699,7 @@ jobs:
           --no-install-recommends
 
       - name: Setup CCache
-        uses: hendrikmuhs/ccache-action@v1.2.1
+        uses: hendrikmuhs/ccache-action@v1.2.2
         with:
           key: nvhpc-${{ matrix.nvhpc }}-ccache
 
@@ -785,7 +785,7 @@ jobs:
   #         --no-install-recommends
 
   #     - name: Setup CCache
-  #       uses: hendrikmuhs/ccache-action@v1.2.1
+  #       uses: hendrikmuhs/ccache-action@v1.2.2
   #       with:
   #         key: nvhpc-${{ matrix.nvhpc }}-ccache
 
