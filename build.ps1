@@ -29,6 +29,7 @@ Param(
     [switch]$Delocate,
     [Alias("N")][switch]$DryRun,
     [ValidateNotNullOrEmpty()][string]$G,
+    [switch]$Gitee,
     [switch]$Gpu,
     [Alias("H")][switch]$Help,
     [Alias("J")][ValidateRange("Positive")][int]$Jobs,
@@ -142,6 +143,7 @@ $build_args = @()
 $cmake_option_names = @{
     cmake_debug_mode = 'ENABLE_CMAKE_DEBUG'
     enable_cxx = 'ENABLE_CXX_EXPERIMENTAL'
+    enable_gitee = 'ENABLE_GITEE'
     enable_gpu = 'ENABLE_CUDA'
     enable_projectq = 'ENABLE_PROJECTQ'
     enable_tests = 'BUILD_TESTING'
@@ -333,6 +335,9 @@ Dry run; only print commands but do not execute them
 
 .PARAMETER Delocate
 Delocate the binary wheels after build is finished (enabled by default; pass -NoDelocate to disable)
+
+.PARAMETER Gitee
+Use Gitee (where possible) instead of Github/Gitlab
 
 .PARAMETER Gpu
 Enable GPU support

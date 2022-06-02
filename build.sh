@@ -115,6 +115,7 @@ args=()
 declare -A cmake_option_names
 cmake_option_names[cmake_debug_mode]=ENABLE_CMAKE_DEBUG
 cmake_option_names[enable_cxx]=ENABLE_CXX_EXPERIMENTAL
+cmake_option_names[enable_gitee]=ENABLE_GITEE
 cmake_option_names[enable_gpu]=ENABLE_CUDA
 cmake_option_names[enable_projectq]=ENABLE_PROJECTQ
 cmake_option_names[enable_tests]=BUILD_TESTING

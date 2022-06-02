@@ -33,6 +33,7 @@ Param(
     [Alias("N")][switch]$DryRun,
     [Alias("Docs")][switch]$Doc,
     [ValidateNotNullOrEmpty()][string]$G,
+    [switch]$Gitee,
     [switch]$Gpu,
     [Alias("H")][switch]$Help,
     [switch]$Install,
@@ -193,6 +194,7 @@ $cmake_args = @('-DIN_PLACE_BUILD:BOOL=ON'
                 "-DENABLE_CMAKE_DEBUG:BOOL={0}" -f $CMAKE_BOOL[$cmake_debug_mode]
                 "-DENABLE_CUDA:BOOL={0}" -f $CMAKE_BOOL[$enable_gpu]
                 "-DENABLE_CXX_EXPERIMENTAL:BOOL={0}" -f $CMAKE_BOOL[$enable_cxx]
+                "-DENABLE_GITEE:BOOL={0}" -f $CMAKE_BOOL[$enable_gitee]
                 "-DBUILD_TESTING:BOOL={0}" -f $CMAKE_BOOL[$enable_tests]
                 "-DCLEAN_3RDPARTY_INSTALL_DIR:BOOL={0}" -f $CMAKE_BOOL[$do_clean_3rdparty]
                 "-DUSE_VERBOSE_MAKEFILE:BOOL={0}" -f $CMAKE_BOOL[-not $cmake_make_silent]
@@ -353,6 +355,9 @@ Dry run; only print commands but do not execute them
 
 .PARAMETER Doc
 Setup the Python virtualenv for building the documentation and ask CMake to build the documentation
+
+.PARAMETER Gitee
+Use Gitee (where possible) instead of Github/Gitlab
 
 .PARAMETER Gpu
 Enable GPU support

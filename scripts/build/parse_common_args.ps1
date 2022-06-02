@@ -75,6 +75,7 @@ function Help-Message() {
     Write-Output '  -Cxx                (experimental) Enable MindQuantum C++ support'
     Write-Output '  -Debug              Build in debug mode'
     Write-Output '  -DebugCMake         Enable debugging mode for CMake configuration step'
+    Write-Output '  -Gitee              Use Gitee (where possible) instead of Github/Gitlab'
     Write-Output '  -Gpu                Enable GPU support'
     Write-Output '  -J,-Jobs [N]        Number of parallel jobs for building'
     Write-Output ("                      Defaults to: {0}" -f $n_jobs_default)
@@ -163,6 +164,10 @@ if ($Debug.IsPresent) {
 
 if ($DebugCMake.IsPresent) {
     Set-Value 'cmake_debug_mode'
+}
+
+if ($Gitee.IsPresent) {
+    Set-Value 'enable_gitee'
 }
 
 if ($Gpu.IsPresent) {

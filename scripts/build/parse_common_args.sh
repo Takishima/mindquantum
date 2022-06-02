@@ -105,6 +105,7 @@ help_message() {
     echo '  --cxx                (experimental) Enable MindQuantum C++ support'
     echo '  --debug              Build in debug mode'
     echo '  --debug-cmake        Enable debugging mode for CMake configuration step'
+    echo '  --gitee              Use Gitee (where possible) instead of Github/Gitlab'
     echo '  --gpu                Enable GPU support'
     echo '  -j,--jobs [N]        Number of parallel jobs for building'
     echo "                       Defaults to: $n_jobs_default"
@@ -217,6 +218,9 @@ while getopts "${getopts_args}" OPT; do
         debug-cmake )       no_arg;
                             set_var cmake_debug_mode
                              ;;
+        gitee )             no_arg;
+                            set_var enable_gitee
+                            ;;
         gpu )               no_arg;
                             set_var enable_gpu
                             ;;
