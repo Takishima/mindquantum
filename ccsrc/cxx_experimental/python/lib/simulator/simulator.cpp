@@ -41,8 +41,6 @@ void mindquantum::python::init_simulator(pybind11::module& module) {
              static_cast<bool (pq_simulator::*)(const CircuitBlock&)>(
                  &pq_simulator::run_circuit<mindquantum::CircuitBlock>),
              py::arg("CircuitBlock"))
-        .def("is_classical", &pq_simulator::is_classical)
-        .def("get_classical_value", &pq_simulator::get_classical_value)
         .def("measure_qubits", &pq_simulator::measure_qubits_return)
         .def("cheat", &pq_simulator::cheat);
 }

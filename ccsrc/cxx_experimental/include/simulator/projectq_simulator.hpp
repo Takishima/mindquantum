@@ -38,12 +38,14 @@ class Simulator : public BaseSimulator<Simulator> {
      * \return True if the qubit is allocated, false otherwise
      */
     MQ_NODISCARD bool has_qubit(const qubit_t& qubit) const;
+
     //! Check whether a qubit is already allocated by the simulator
     /*!
      * \param qubit qubits A list of qubits to allocate
      * \return True if the allocation was successful, false otherwise
      */
     MQ_NODISCARD bool allocate_qubits(const qubits_t& qubits);
+
     //! Check whether a qubit is already allocated by the simulator
     /*!
      * \param inst A quantum instruction
@@ -51,26 +53,19 @@ class Simulator : public BaseSimulator<Simulator> {
      */
     MQ_NODISCARD bool run_instruction(const instruction_t& inst);
 
-    MQ_NODISCARD auto is_classical(const qubit_t& qubit, double tol = 1.e-12) {
-        return sim_.is_classical(qubit_id_t{qubit}, tol);
-    }
-
-    MQ_NODISCARD auto get_classical_value(const qubit_t& qubit, double tol = 1.e-12) {
-        return sim_.get_classical_value(qubit_id_t{qubit}, tol);
-    }
-
-    MQ_NODISCARD auto measure_qubits_return(const qubits_t& qubits) {
-        std::vector<qubit_id_t> targets;
-        std::for_each(begin(qubits), end(qubits),
-                      [&targets](const auto& qubit) { targets.emplace_back(qubit_id_t{qubit}); });
-    }
-
+    //! Access to the current state vector
     MQ_NODISCARD auto cheat() {
         return sim_.cheat();
     }
 
-    MQ_NODISCARD auto run() {
-        return sim_.run();
+    //! Perform a measurement on a set of qubits
+    /*!
+     * \param qubits List of qubits to measure
+     */
+    MQ_NODISCARD auto measure_qubits_return(const qubits_t& qubits) {
+        std::vector<qubit_id_t> targets;
+        std::for_each(begin(qubits), end(qubits),
+                      [&targets](const auto& qubit) { targets.emplace_back(qubit_id_t{qubit}); });
     }
 
  private:

@@ -19,7 +19,6 @@
 target_sources(
   mindquantum_cxx
   PRIVATE ${CMAKE_CURRENT_LIST_DIR}/qubit_operator2single_qubit.cpp ${CMAKE_CURRENT_LIST_DIR}/time_evolution.cpp
-          ${CMAKE_CURRENT_LIST_DIR}/toffoli2cnotandtgate.cpp ${CMAKE_CURRENT_LIST_DIR}/gate_decomposer.cpp
-          ${CMAKE_CURRENT_LIST_DIR}/atom_storage.cpp)
+          ${CMAKE_CURRENT_LIST_DIR}/gate_decomposer.cpp ${CMAKE_CURRENT_LIST_DIR}/atom_storage.cpp)
 
 target_link_libraries(mindquantum_cxx PUBLIC mindquantum::symengine)
