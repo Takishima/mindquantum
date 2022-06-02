@@ -26,7 +26,11 @@ if(TWEEDLEDUM_DIR)
   list(APPEND CMAKE_MODULE_PATH ${TWEEDLEDUM_DIR}/cmake)
   add_subdirectory(${TWEEDLEDUM_DIR} ${CMAKE_CURRENT_BINARY_DIR}/tweedledum EXCLUDE_FROM_ALL)
 else()
-  set(GIT_URL "https://github.com/boschmitt/tweedledum.git")
+  if(ENABLE_GITEE)
+    set(GIT_URL "https://gitee.com/dnguyen/tweedledum.git")
+  else()
+    set(GIT_URL "https://github.com/boschmitt/tweedledum.git")
+  endif()
   set(GIT_TAG "e73beb23a3feeba02a851e3f8131e3c85a29de2b")
 
   set(CMAKE_OPTION

@@ -21,7 +21,7 @@
 set(VER 8.1.1)
 
 if(ENABLE_GITEE)
-  set(REQ_URL "https://github.com/fmtlib/fmt/archive/${VER}.tar.gz")
+  set(REQ_URL "https://gitee.com/jinyubaba/fmt/repository/archive/${VER}.tar.gz")
   set(MD5 "fe7f1585844b14c647bd332ad5562832")
 else()
   set(REQ_URL "https://github.com/fmtlib/fmt/archive/${VER}.tar.gz")

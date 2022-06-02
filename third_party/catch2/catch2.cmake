@@ -18,8 +18,13 @@
 
 # cmake-lint: disable=C0103
 
-set(REQ_URL "https://github.com/catchorg/Catch2/archive/refs/tags/v2.13.9.tar.gz")
-set(MD5 "feda9b6fd01621d404537d38df56ff83")
+if(ENABLE_GITEE)
+  set(REQ_URL "https://gitee.com/czy233/Catch2/repository/archive/v2.13.9.tar.gz")
+  set(MD5 "8a934426e0241b3561fa1b8ea897ef29")
+else()
+  set(REQ_URL "https://github.com/catchorg/Catch2/archive/refs/tags/v2.13.9.tar.gz")
+  set(MD5 "feda9b6fd01621d404537d38df56ff83")
+endif()
 
 set(CMAKE_OPTION
     -DCATCH_BUILD_TESTING=OFF

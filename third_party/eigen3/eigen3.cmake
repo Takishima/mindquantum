@@ -17,8 +17,14 @@
 # ==============================================================================
 
 set(VER 3.4.0)
-set(MD5 "4c527a9171d71a72a9d4186e65bea559")
-set(REQ_URL "https://gitlab.com/libeigen/eigen/-/archive/${VER}/eigen-${VER}.tar.gz")
+
+if(ENABLE_GITEE)
+  set(REQ_URL "https://gitee.com/paddle-mirror/eigen/repository/archive/${VER}.tar.gz")
+  set(MD5 "4c527a9171d71a72a9d4186e65bea559")
+else()
+  set(REQ_URL "https://gitlab.com/libeigen/eigen/-/archive/${VER}/eigen-${VER}.tar.gz")
+  set(MD5 "4c527a9171d71a72a9d4186e65bea559")
+endif()
 
 set(CMAKE_OPTION -DBUILD_TESTING=OFF -DEIGEN_BUILD_DOC=OFF -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
                  -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -G${CMAKE_GENERATOR})
