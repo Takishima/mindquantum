@@ -142,31 +142,31 @@ repos:
       - id: clang-format
         args: [-i]
         additional_dependencies: ['clang-format']
-      - id: clang-tidy
-        stages: [manual]
-        args: [-Bbuild, -B.pre-commit-build]
-        exclude: >-
-          (?x)^(
-            .*/kernel[0-9]+\.hpp|
-            .*third_party/.*|
-            .*\.cu
-          )$
+  #     - id: clang-tidy
+  #       stages: [manual]
+  #       args: [-Bbuild, -B.pre-commit-build]
+  #       exclude: >-
+  #         (?x)^(
+  #           .*/kernel[0-9]+\.hpp|
+  #           .*third_party/.*|
+  #           .*\.cu
+  #         )$
 
-  - repo: https://github.com/pocc/pre-commit-hooks
-    rev: v1.3.5
-    hooks:
-      - id: cppcheck
-        args: [--force,
-               --inline-suppr,
-               --std=c++17,
-               --language=c++,
-               --suppressions-list=.cppcheck.suppressions]
-      - id: cpplint
-        args: [--root=src,
-               '--extensions=cxx,cu,hh,cpp,hxx,cuh,h++,cc,c,hpp,c++,h,tpp,txx,cl',
-               '--filter=-build/header_guard,-build/c++11',
-               --quiet,
-               --repository=mindquantum,
-               --linelength=120,
-               --recursive]
-        additional_dependencies: ['cpplint']
+  # - repo: https://github.com/pocc/pre-commit-hooks
+  #   rev: v1.3.5
+  #   hooks:
+  #     - id: cppcheck
+  #       args: [--force,
+  #              --inline-suppr,
+  #              --std=c++17,
+  #              --language=c++,
+  #              --suppressions-list=.cppcheck.suppressions]
+  #     - id: cpplint
+  #       args: [--root=src,
+  #              '--extensions=cxx,cu,hh,cpp,hxx,cuh,h++,cc,c,hpp,c++,h,tpp,txx,cl',
+  #              '--filter=-build/header_guard,-build/c++11',
+  #              --quiet,
+  #              --repository=mindquantum,
+  #              --linelength=120,
+  #              --recursive]
+  #       additional_dependencies: ['cpplint']

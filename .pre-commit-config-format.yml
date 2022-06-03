@@ -100,3 +100,4 @@ repos:
     hooks:
       - id: clang-format
         args: [-i]
+        additional_dependencies: ['clang-format']
