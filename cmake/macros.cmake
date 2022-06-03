@@ -194,11 +194,77 @@ endfunction()
 # ==============================================================================
 
 # ~~~
+# Apply a patch file
+#
+# _apply_patch_file(ERROR_VARIABLE <var-name>
+#                   INPUT_FILE <patch-file>
+#                   OUTPUT_VARIABLE <var-name>
+#                   RESULT_VARIABLE <var-name>
+#                   RESULTS_VARIABLE <var-name>
+#                   WORKING_DIRECTORY <dir>
+#                   PATCH_ARGS <arg1> [... <argN>])
+#
+# This function will first run the patch command in dry-run mode in order to test the application of the patch. If that
+# is successful, the patch will be applied using the same arguments. Otherwise, nothing will happen.
+#
+# The caller is responsible for testing if the patch was applied successfully or not based on the value of the
+# RESULT_VARIABLE variable.
+# ~~~
+function(_apply_patch_file)
+  cmake_parse_arguments(
+    APF "" "WORKING_DIRECTORY;INPUT_FILE;OUTPUT_VARIABLE;ERROR_VARIABLE;RESULT_VARIABLE;RESULTS_VARIABLE" "PATCH_ARGS"
+    ${ARGN})
+
+  set(_execute_patch_args)
+  if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.18 AND ENABLE_CMAKE_DEBUG)
+    list(APPEND _execute_patch_args ECHO_OUTPUT_VARIABLE ECHO_ERROR_VARIABLE)
+  endif()
+
+  debug_print(STATUS "  -> calling patch command (dry-run) with: ${Patch_EXECUTABLE} ${APF_PATCH_ARGS}")
+  execute_process(
+    COMMAND "${Patch_EXECUTABLE}" ${APF_PATCH_ARGS} --dry-run
+    INPUT_FILE "${APF_INPUT_FILE}"
+    WORKING_DIRECTORY "${APF_WORKING_DIRECTORY}"
+    OUTPUT_VARIABLE _stdout
+    ERROR_VARIABLE _stderr RESULTS_VARIABLE _results
+    RESULT_VARIABLE _result ${_execute_patch_args})
+
+  if(_result EQUAL "0")
+    debug_print(STATUS "  -> dry-run patch successful, applying patch for real")
+    execute_process(
+      COMMAND "${Patch_EXECUTABLE}" ${APF_PATCH_ARGS}
+      INPUT_FILE "${APF_INPUT_FILE}"
+      WORKING_DIRECTORY "${APF_WORKING_DIRECTORY}"
+      OUTPUT_VARIABLE _stdout
+      ERROR_VARIABLE _stderr RESULTS_VARIABLE _results
+      RESULT_VARIABLE _result)
+  else()
+    debug_print(STATUS "  -> application of patch failed (dry-run)")
+  endif()
+
+  set(${APF_OUTPUT_VARIABLE}
+      ${_stdout}
+      PARENT_SCOPE)
+  set(${APF_ERROR_VARIABLE}
+      ${_stderr}
+      PARENT_SCOPE)
+  set(${APF_RESULT_VARIABLE}
+      ${_result}
+      PARENT_SCOPE)
+  set(${APF_RESULTS_VARIABLE}
+      ${_results}
+      PARENT_SCOPE)
+endfunction()
+
+# ==============================================================================
+
+# ~~~
 # Apply a list of patches by calling `patch -p1 <patch-file>`
 #
 # apply_patches(<working_directory> [<patch-file> [... <patch-file>]])
 # ~~~
 function(apply_patches working_directory)
+  # cmake-lint: disable=R0915
   set(_execute_patch_args)
   if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.18 AND ENABLE_CMAKE_DEBUG)
     list(APPEND _execute_patch_args ECHO_OUTPUT_VARIABLE ECHO_ERROR_VARIABLE)
@@ -244,23 +310,44 @@ function(apply_patches working_directory)
 
     if(NOT EXISTS "${_lf_patch_lock_file}" AND NOT EXISTS "${_crlf_patch_lock_file}")
       message(STATUS "Applying patch ${_patch_file}")
+      set(_patch_args -p1)
+      if(WIN32)
+        list(APPEND _patch_args --binary)
+      endif()
+
       # First try LF patch
-      execute_process(
-        COMMAND "${Patch_EXECUTABLE}" -p1
+      _apply_patch_file(
+        PATCH_ARGS ${_patch_args}
         INPUT_FILE "${_lf_patch_file}"
         WORKING_DIRECTORY "${working_directory}"
         OUTPUT_VARIABLE _lf_stdout
-        ERROR_VARIABLE _lf_stderr RESULTS_VARIABLE _lf_results_out
-        RESULT_VARIABLE _result ${_execute_patch_args})
+        ERROR_VARIABLE _lf_stderr
+        RESULTS_VARIABLE _lf_results_out
+        RESULT_VARIABLE _result)
+
+      if(NOT _result EQUAL "0" AND WIN32)
+        # If not successful, try LF patch again without --binary
+        debug_print(STATUS "  -> trying LF patch again without --binary on Windows")
+        _apply_patch_file(
+          PATCH_ARGS -p1
+          INPUT_FILE "${_lf_patch_file}"
+          WORKING_DIRECTORY "${working_directory}"
+          OUTPUT_VARIABLE _lf_stdout
+          ERROR_VARIABLE _lf_stderr
+          RESULTS_VARIABLE _lf_results_out
+          RESULT_VARIABLE _result ${_execute_patch_args})
+      endif()
+
       if(NOT _result EQUAL "0")
         # If not successful, try CRLF patch
         debug_print(STATUS "  -> trying CRLF patch since LF patch failed")
-        execute_process(
-          COMMAND "${Patch_EXECUTABLE}" -p1
+        _apply_patch_file(
+          PATCH_ARGS -p1
           INPUT_FILE "${_crlf_patch_file}"
           WORKING_DIRECTORY "${working_directory}"
           OUTPUT_VARIABLE _crlf_stdout
-          ERROR_VARIABLE _crlf_stderr RESULTS_VARIABLE _crlf_results_out
+          ERROR_VARIABLE _crlf_stderr
+          RESULTS_VARIABLE _crlf_results_out
           RESULT_VARIABLE _result ${_execute_patch_args})
         if(NOT _result EQUAL "0")
           debug_print(SEND_ERROR "STDOUT(LF):\n${_lf_stdout}" "STDERR(LF):\n${_lf_stderr}"

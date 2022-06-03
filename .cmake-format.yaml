@@ -68,6 +68,15 @@ parse:
         FLAGS: +
         CMAKE_OPTION: 1
         GENEX: 1
+    _apply_patch_file:
+      kwargs:
+        PATCH_ARGS: +
+        ERROR_VARIABLE: 1
+        INPUT_FILE: 1
+        OUTPUT_VARIABLE: 1
+        RESULTS_VARIABLE: 1
+        RESULT_VARIABLE: 1
+        WORKING_DIRECTORY: 1
     __find_package:
       pargs:
         nargs: 1+
