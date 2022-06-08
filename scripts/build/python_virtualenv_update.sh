@@ -67,7 +67,15 @@ if [[ "${created_venv:-0}" -eq 1 || "${do_update_venv:-0}" -eq 1 ]]; then
             "$PYTHON" setup.py gen_reqfile --include-extras=tests --output "$tmp_file"
             popd > /dev/null || exit 1
 
-            mapfile -t -O "${#pkgs[@]}" pkgs <<< "$(grep '\S' "$tmp_file")"
+            if [ "${BASH_VERSINFO[0]}" -lt 4 ]; then
+                while IFS= read -r line || [ -n "$line" ]; do
+                    if [ -n "$line" ]; then
+                        pkgs+=("$line")
+                    fi
+                done < "$(grep '\S' "$tmp_file")"
+            else
+                mapfile -t -O "${#pkgs[@]}" pkgs <<< "$(grep '\S' "$tmp_file")"
+            fi
             rm -f "$tmp_file"
         fi
     fi

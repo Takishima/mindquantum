@@ -70,13 +70,19 @@ function assign_value() {
 
     eval_str="$name"
 
-    if [[ ${value,,} =~ ^(yes|true)$ ]]; then
+    if [ "${BASH_VERSINFO[0]}" -lt 4 ]; then
+        value_lower=$(echo "$value" | tr "[:upper:]" "[:lower:]")
+    else
+        value_lower=${value,,}
+    fi
+
+    if [[ ${value_lower} =~ ^(yes|true)$ ]]; then
         eval_str="$eval_str=1"
-    elif [[ ${value,,} =~ ^(no|false)$ ]]; then
+    elif [[ ${value_lower} =~ ^(no|false)$ ]]; then
         eval_str="$eval_str=0"
-    elif [[ ${value,,} =~ ^[0-9]+$ ]]; then
+    elif [[ ${value_lower} =~ ^[0-9]+$ ]]; then
         eval_str="$eval_str=$value"
-    elif [[ ${value,,} =~ \"\ \" ]]; then
+    elif [[ ${value_lower} =~ \"\ \" ]]; then
         eval_str="$eval_str=( $value )"
     else
         eval_str="$eval_str=\"$value\""

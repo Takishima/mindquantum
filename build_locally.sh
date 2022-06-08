@@ -76,8 +76,7 @@ function parse_extra_args() {
         configure-only ) no_arg;
                          set_var configure_only
                          ;;
-        docs )           ;&
-        doc )            no_arg;
+        doc | docs )     no_arg;
                          set_var do_docs
                          ;;
         install)         no_arg;
