@@ -71,11 +71,11 @@ parse_with_libraries() {
         set_var enable_projectq "$2"
     elif [ "$2" -eq 1 ]; then
         local_pkgs+=("$1")
-        declare -gi _local_pkgs_was_set=1
+        declare_bool_true _local_pkgs_was_set
     else
         for index in "${!local_pkgs[@]}" ; do [[ ${local_pkgs[$index]} == "$1" ]] && unset -v 'local_pkgs[$index]' ; done
         local_pkgs=("${local_pkgs[@]}")
-        declare -gi _local_pkgs_was_set=1
+        declare_bool_true _local_pkgs_was_set
     fi
 }
 

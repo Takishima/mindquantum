@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# shellcheck disable=SC2154
+# shellcheck disable=SC2154,SC2034
 
 BASEPATH=$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}" )" &> /dev/null && pwd )
 ROOTDIR="$BASEPATH"
@@ -112,20 +112,20 @@ cd "${ROOTDIR}"
 
 args=()
 
-declare -A cmake_option_names
-cmake_option_names[cmake_debug_mode]=ENABLE_CMAKE_DEBUG
-cmake_option_names[enable_cxx]=ENABLE_CXX_EXPERIMENTAL
-cmake_option_names[enable_gitee]=ENABLE_GITEE
-cmake_option_names[enable_gpu]=ENABLE_CUDA
-cmake_option_names[enable_projectq]=ENABLE_PROJECTQ
-cmake_option_names[enable_tests]=BUILD_TESTING
-cmake_option_names[do_clean_3rdparty]=CLEAN_3RDPARTY_INSTALL_DIR
+declare_AA cmake_option_names
+set_AA cmake_option_names cmake_debug_mode ENABLE_CMAKE_DEBUG
+set_AA cmake_option_names enable_cxx ENABLE_CXX_EXPERIMENTAL
+set_AA cmake_option_names enable_gitee ENABLE_GITEE
+set_AA cmake_option_names enable_gpu ENABLE_CUDA
+set_AA cmake_option_names enable_projectq ENABLE_PROJECTQ
+set_AA cmake_option_names enable_tests BUILD_TESTING
+set_AA cmake_option_names do_clean_3rdparty CLEAN_3RDPARTY_INSTALL_DIR
 
-for var in "${!cmake_option_names[@]}"; do
+for var in $(get_AA_keys cmake_option_names); do
     if [ "${!var}" -eq 1 ]; then
-        args+=(--set "${cmake_option_names[$var]}")
+        args+=(--set "$(get_AA_value cmake_option_names "$var")")
     else
-        args+=(--unset "${cmake_option_names[$var]}")
+        args+=(--unset "$(get_AA_value cmake_option_names "$var")")
     fi
 done
 
