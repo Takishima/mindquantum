@@ -1,0 +1,172 @@
+# To use:
+#
+#     pre-commit run -a
+#
+# Or:
+#
+#     pre-commit install  # (runs every time you commit in git)
+#
+# To update this file:
+#
+#     pre-commit autoupdate
+#
+# See https://github.com/pre-commit/pre-commit
+
+---
+
+ci:
+  skip: [check-manifest, pylint, cppcheck, cpplint]
+
+repos:
+  - repo: meta
+    hooks:
+      - id: check-useless-excludes
+
+  - repo: https://gitee.com/mirrors_pre-commit/pre-commit-hooks
+    rev: v4.2.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-yaml
+      - id: check-toml
+      - id: debug-statements
+      - id: end-of-file-fixer
+        exclude: ^(.*patch[0-9]*)$
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+        exclude: ^(.*patch[0-9]*)$
+      - id: fix-encoding-pragma
+        exclude: ^(.*patch[0-9]*)$
+
+  # Changes tabs to spaces
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.2.0
+    hooks:
+      - id: remove-tabs
+        exclude: ^(.*patch[0-9]*)$
+
+  - repo: https://gitee.com/mirrors_PyCQA/doc8.git
+    rev: 0.11.2
+    hooks:
+      - id: doc8
+        args: [--ignore-path-errors, docs/api_python/mindquantum.algorithm.nisq.uccsd0_singlet_generator.rst;D001,
+               --ignore-path-errors, docs/api_python/mindquantum.algorithm.nisq.quccsd_generator.rst;D001,
+               --ignore-path-errors,
+               docs/api_python/mindquantum.algorithm.nisq.uccsd_singlet_get_packed_amplitudes.rst;D001]
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.8.0.4
+    hooks:
+      - id: shellcheck
+        args: [-x]
+
+  - repo: https://gitee.com/mirrors_codespell-project/codespell
+    rev: v2.1.0
+    hooks:
+      - id: codespell
+        files: (.*ccsrc/.*|.*mindquantum/.*|.*\.txt|.*\.cmake|.*\.md)
+        args: [-S, '.git,third_party', -I, .codespell.allow]
+
+  - repo: https://gitee.com/mirrors_adrienverge/yamllint.git
+    rev: v1.26.3
+    hooks:
+      - id: yamllint
+
+  - repo: https://github.com/cheshirekow/cmake-format-precommit
+    rev: v0.6.13
+    hooks:
+      - id: cmake-format
+        additional_dependencies: [pyyaml]
+      - id: cmake-lint
+        exclude: ^(cmake/Modules/.*)$
+        additional_dependencies: [pyyaml]
+
+  - repo: https://gitee.com/mirrors_pre-commit/mirrors-isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+        name: isort (python)
+
+  - repo: https://gitee.com/mirrors_psf/black.git
+    rev: 22.3.0
+    hooks:
+      - id: black
+        language_version: python3
+
+  - repo: https://gitee.com/mirrors/flake8
+    rev: 4.0.1
+    hooks:
+      - id: flake8
+        name: flake8-strict
+        exclude: (test_.*\.py)$
+        additional_dependencies: [flake8-comprehensions, flake8-breakpoint,
+                                  flake8-eradicate, flake8-mutable, pep8-naming,
+                                  flake8-docstrings, flake8-secure-coding-standard]
+      - id: flake8
+        name: flake8-test-files
+        files: (test_.*\.py)$
+        additional_dependencies: [flake8-comprehensions, flake8-breakpoint,
+                                  flake8-eradicate, flake8-mutable]
+
+  - repo: https://gitee.com/mirrors_PyCQA/pylint
+    rev: v3.0.0a4
+    hooks:
+      - id: pylint
+        name: pylint-strict
+        exclude: (test_.*\.py)$
+        args: [--score=n, --load-plugins=pylint_secure_coding_standard]
+        # This is a slow hook, so only run this if --hook-stage manual is passed
+        stages: [manual]
+        additional_dependencies: [pybind11>=2.6, numpy, scipy, projectq, openfermion, sympy, matplotlib, rich,
+                                  pylint-secure-coding-standard]
+      - id: pylint
+        name: pylint-test-files
+        files: (test_.*\.py)$
+        args: [--score=n, --load-plugins=pylint_pytest]
+        # This is a slow hook, so only run this if --hook-stage manual is passed
+        stages: [manual]
+        additional_dependencies: [pybind11>=2.6, numpy, scipy, projectq, openfermion, sympy, matplotlib, rich, pytest,
+                                  pylint-pytest]
+
+  - repo: https://gitee.com/mirrors_mgedmin/check-manifest
+    rev: '0.48'
+    hooks:
+      - id: check-manifest
+        additional_dependencies: ['setuptools-scm[toml]', 'pybind11>=2.6']
+
+  - repo: https://github.com/Takishima/cmake-pre-commit-hooks/
+    rev: 'v1.5.2'
+    hooks:
+      - id: clang-format
+        args: [-i]
+        additional_dependencies: ['clang-format']
+  #     - id: clang-tidy
+  #       stages: [manual]
+  #       args: [-Bbuild, -B.pre-commit-build]
+  #       exclude: >-
+  #         (?x)^(
+  #           .*/kernel[0-9]+\.hpp|
+  #           .*third_party/.*|
+  #           .*\.cu
+  #         )$
+
+  # - repo: https://gitee.com/btcong/pre-commit-hooks
+  #   rev: v1.3.5
+  #   hooks:
+  #     - id: cppcheck
+  #       args: [--force,
+  #              --inline-suppr,
+  #              --std=c++17,
+  #              --language=c++,
+  #              --suppressions-list=.cppcheck.suppressions]
+  #     - id: cpplint
+  #       args: [--root=src,
+  #              '--extensions=cxx,cu,hh,cpp,hxx,cuh,h++,cc,c,hpp,c++,h,tpp,txx,cl',
+  #              '--filter=-build/header_guard,-build/c++11',
+  #              --quiet,
+  #              --repository=mindquantum,
+  #              --linelength=120,
+  #              --recursive]
+  #       additional_dependencies: ['cpplint']
