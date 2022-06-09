@@ -391,8 +391,8 @@ class RX(RotSelfHermMat):
         RX(a+2b)
 
     Args:
-        coeff (Union[int, float, str, dict, ParameterResolver]): the parameters of
-            parameterized gate, see above for detail explanation. Default: None.
+        pr (Union[int, float, str, dict, ParameterResolver]): the parameters of
+            parameterized gate, see above for detail explanation.
 
     Examples:
         >>> from mindquantum.core.gates import RX
@@ -438,8 +438,8 @@ class RY(RotSelfHermMat):
                          \sin(\theta/2)&\cos(\theta/2)\end{pmatrix}
 
     Args:
-        coeff (Union[int, float, str, dict, ParameterResolver]): the parameters of
-            parameterized gate, see above for detail explanation. Default: None.
+        pr (Union[int, float, str, dict, ParameterResolver]): the parameters of
+            parameterized gate, see above for detail explanation.
     """
 
     def __init__(self, pr):
@@ -462,8 +462,8 @@ class RZ(RotSelfHermMat):
                          0&\exp(i\theta/2)\end{pmatrix}
 
     Args:
-        coeff (Union[int, float, str, dict, ParameterResolver]): the parameters of
-            parameterized gate, see above for detail explanation. Default: None.
+        pr (Union[int, float, str, dict, ParameterResolver]): the parameters of
+            parameterized gate, see above for detail explanation.
     """
 
     def __init__(self, pr):
@@ -485,8 +485,8 @@ class ZZ(RotSelfHermMat):
         {\rm ZZ_\theta}=\cos(\theta)I\otimes I-i\sin(\theta)\sigma_Z\otimes\sigma_Z
 
     Args:
-        coeff (Union[int, float, str, dict, ParameterResolver]): the parameters of
-            parameterized gate, see above for detail explanation. Default: None.
+        pr (Union[int, float, str, dict, ParameterResolver]): the parameters of
+            parameterized gate, see above for detail explanation.
     """
 
     def __init__(self, pr):
@@ -531,8 +531,8 @@ class XX(RotSelfHermMat):
         {\rm XX_\theta}=\cos(\theta)I\otimes I-i\sin(\theta)\sigma_x\otimes\sigma_x
 
     Args:
-        coeff (Union[int, float, str, dict, ParameterResolver]): the parameters of
-            parameterized gate, see above for detail explanation. Default: None.
+        pr (Union[int, float, str, dict, ParameterResolver]): the parameters of
+            parameterized gate, see above for detail explanation.
     """
 
     def __init__(self, pr):
@@ -585,8 +585,8 @@ class YY(RotSelfHermMat):
         {\rm YY_\theta}=\cos(\theta)I\otimes I-i\sin(\theta)\sigma_y\otimes\sigma_y
 
     Args:
-        coeff (Union[int, float, str, dict, ParameterResolver]): the parameters of
-            parameterized gate, see above for detail explanation. Default: None.
+        pr (Union[int, float, str, dict, ParameterResolver]): the parameters of
+            parameterized gate, see above for detail explanation.
     """
 
     def __init__(self, pr):
@@ -653,8 +653,8 @@ class GlobalPhase(RotSelfHermMat):
                         0&\exp(-i\theta)\end{pmatrix}
 
     Args:
-        coeff (Union[int, float, str, dict, ParameterResolver]): the parameters of
-            parameterized gate, see above for detail explanation. Default: None.
+        pr (Union[int, float, str, dict, ParameterResolver]): the parameters of
+            parameterized gate, see above for detail explanation.
     """
 
     def __init__(self, pr):
@@ -688,8 +688,8 @@ class PhaseShift(ParameterOppsGate):
                          0&\exp(i\theta)\end{pmatrix}
 
     Args:
-        coeff (Union[int, float, str, dict, ParameterResolver]): the parameters of
-            parameterized gate, see above for detail explanation. Default: None.
+        pr (Union[int, float, str, dict, ParameterResolver]): the parameters of
+            parameterized gate, see above for detail explanation.
     """
 
     def __init__(self, pr):
@@ -705,7 +705,7 @@ class PhaseShift(ParameterOppsGate):
         Get the matrix of this none parameterized gate.
 
         Args:
-            pr (Union[ParameterResolver, dict]): The parameter value for parameterized gate. Defaults, None.
+            pr (Union[ParameterResolver, dict]): The parameter value for parameterized gate. Default: None.
         """
         val = 0
         if self.coeff.is_const():
@@ -719,7 +719,7 @@ class PhaseShift(ParameterOppsGate):
 
     def diff_matrix(self, pr=None, about_what=None):
         """
-        Get the  matrix of this none parameterized gate.
+        Get the matrix of this none parameterized gate.
 
         Args:
             pr (Union[ParameterResolver, dict]): The parameter value for parameterized gate. Defaults, None.

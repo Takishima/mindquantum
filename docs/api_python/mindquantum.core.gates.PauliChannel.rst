@@ -17,3 +17,7 @@
     - **px** (int, float) - 作用的泡利门是X门的概率。
     - **py** (int, float) - 作用的泡利门是Y门的概率。
     - **pz** (int, float) - 作用的泡利门是Z门的概率。
+
+    .. py:method:: define_projectq_gate()
+
+        定义对应的projectq门。

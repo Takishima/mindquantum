@@ -15,5 +15,23 @@
     **参数：**
 
     - **constant** (numbers.Number) - 算子中的常量项，以浮点数形式给出。例如，核排斥能量。
-    - **one_body_tensor** (numpy.ndarray) - 单体项的系数（h[p,q]）。这是一个 :math:`n_\text{qubits}\times n_\text{qubits}` 的NumPy浮点数组。默认情况下，存储带有键值的NumPy数组 :math:`a^\dagger_p a_q` (1,0) 。
-    - **two_body_tensor** (numpy.ndarray) - 双体项的系数 (h[p, q, r, s]) 。这是一个 :math:`n_\text{qubits}\times n_\text{qubits}\times n_\text{qubits}\times n_\text{qubits}` 的NumPy浮点数组。默认情况下，存储带有键值的NumPy数组 :math:`a^\dagger_p a^\dagger_q a_r a_s` (1, 1, 0, 0) 。
+    - **one_body_tensor** (numpy.ndarray) - 单体项的系数（h[p,q]）。这是一个 :math:`n_\text{qubits}\times n_\text{qubits}` 的NumPy浮点数组。默认情况下，存储带有键值的NumPy数组 :math:`a^\dagger_p a_q` (1,0)。
+    - **two_body_tensor** (numpy.ndarray) - 双体项的系数 (h[p, q, r, s]) 。这是一个 :math:`n_\text{qubits}\times n_\text{qubits}\times n_\text{qubits}\times n_\text{qubits}` 的NumPy浮点数组。默认情况下，存储带有键值的NumPy数组 :math:`a^\dagger_p a^\dagger_q a_r a_s` (1, 1, 0, 0)。
+
+    .. py:method:: unique_iter(complex_valued=False)
+
+        迭代不在同一对称组中的所有项。
+
+        **四点对称：**
+
+        1. pq = qp。
+        2. pqrs = srqp = qpsr = rspq。
+
+        **八点对称（当complex_valued为False时）：**
+
+        1. pq = qp。
+        2. pqrs = rqps = psrq = srqp = qpsr = rspq = spqr = qrsp。
+
+        **参数：**
+
+        - **complex_valued** (bool) - 算子是否有复数系数。默认值：False。

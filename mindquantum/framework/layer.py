@@ -24,7 +24,8 @@ from .operations import MQAnsatzOnlyOps, MQN2AnsatzOnlyOps, MQN2Ops, MQOps
 
 class MQLayer(nn.Cell):
     """
-    MindQuantum trainable layer. The parameters of ansatz circuit are trainable parameters.
+    Quantum neural network include encoder and ansatz circuit. The encoder circuit
+    encode classical data into quantum state, while the ansatz circuit act as trainable circuit.
 
     Args:
         expectation_with_grad (GradOpsWrapper): a grad ops that receive encoder data and
@@ -95,12 +96,13 @@ class MQN2Layer(nn.Cell):
     """
     MindQuantum trainable layer.
 
-    The parameters of ansatz circuit are trainable parameters.  This layer will calculate the square of absolute value
-    of expectation automatically.
+    Quantum neural network include encoder and ansatz circuit. The encoder circuit encode classical data into quantum
+    state, while the ansatz circuit act as trainable circuit.  This layer will calculate the square of absolute value of
+    expectation automatically.
 
     Args:
         expectation_with_grad (GradOpsWrapper): a grad ops that receive encoder data and
-            ansatz data and return the square of absolute value of expectation value and
+            ansatz data and return the expectation value and
             gradient value of parameters respect to expectation.
         weight (Union[Tensor, str, Initializer, numbers.Number]): Initializer for the
             convolution kernel. It can be a Tensor, a string, an Initializer or a number.
@@ -167,7 +169,7 @@ class MQAnsatzOnlyLayer(nn.Cell):
     """
     MindQuantum trainable layer.
 
-    The parameters of ansatz circuit are trainable parameters.
+    Quantum neural network only include ansatz circuit.  The ansatz circuit act as trainable circuit.
 
     Args:
         expectation_with_grad (GradOpsWrapper): a grad ops that receive encoder data and
@@ -232,8 +234,8 @@ class MQN2AnsatzOnlyLayer(nn.Cell):
     """
     MindQuantum trainable layer.
 
-    The parameters of ansatz circuit are trainable parameters.  This layer will calculate the square of absolute value
-    of expectation automatically.
+    Quantum neural network only include ansatz circuit. The ansatz circuit act as trainable circuit.
+    This layer will calculate the square of absolute value of expectation automatically.
 
     Args:
         expectation_with_grad (GradOpsWrapper): a grad ops that receive encoder data and

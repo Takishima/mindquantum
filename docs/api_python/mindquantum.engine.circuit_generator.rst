@@ -4,8 +4,4 @@
 
     **参数：**
 
-    - **n_qubits** (int) – 量子线路的量子比特数。
-
-    .. note::
-
-    更多信息请参考:class:`CircuitEngine.generator`。
+    - **n_qubits** (int) - 量子线路的量子比特数。

@@ -54,7 +54,7 @@ class ParameterResolver:
             be 1. Default: None.
         const (number.Number): the constant part of this parameter resolver.
             Default: None.
-        dtype (type): the value type of this parameter resolver. Default: numpy.float64.
+        dtype (type): the value type of this parameter resolver. Default: None.
 
     Examples:
         >>> from mindquantum.core import ParameterResolver
@@ -965,7 +965,7 @@ resolver discards the imaginary part."
         Apply linear combination between this parameter resolver with input pr.
 
         Args:
-            pr (Union[dict, ParameterResolver]): The parameter resolver you
+            other (Union[dict, ParameterResolver]): The parameter resolver you
                 want to do linear combination.
 
         Returns:

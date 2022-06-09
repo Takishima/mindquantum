@@ -381,10 +381,10 @@ parameters and ansatz parameters."
     @property
     def is_noise_circuit(self):
         """
-        To check whether this circuit has pauli channel.
+        To check whether this circuit has noise channel.
 
         Returns:
-            bool, whether this circuit has pauli channel.
+            bool, whether this circuit has noise channel.
         """
         return self.all_noises.size != 0
 
@@ -490,7 +490,7 @@ parameters and ansatz parameters."
 
     @property
     def n_qubits(self):
-        """Return the number of qubits."""
+        """Get the total number of qubits used."""
         if self.all_qubits:
             return max(self.all_qubits.keys()) + 1
         return 0
@@ -597,7 +597,7 @@ parameters and ansatz parameters."
         Get the encoder parameter name of this circuit.
 
         Returns:
-            list, a list that contains the parameter name that work as encoder.
+            list, a list that contains the parameter name that works as encoder.
 
         Examples:
             >>> from mindquantum.core.gates import RX, RY
@@ -612,10 +612,10 @@ parameters and ansatz parameters."
     @property
     def ansatz_params_name(self):
         """
-        Get the encoder parameter name of this circuit.
+        Get the ansatz parameter name of this circuit.
 
         Returns:
-            list, a list that contains the parameter name that work as encoder.
+            list, a list that contains the parameter name that works as ansatz.
 
         Examples:
             >>> from mindquantum.core.gates import RX, RY
@@ -1077,7 +1077,7 @@ parameters and ansatz parameters."
 
     def as_encoder(self, inplace=True):
         """
-        To set this circuit to encoder or not.
+        To set this circuit to encoder.
 
         Args:
             inplace (bool): Whether to set inplace. Defaults: True.

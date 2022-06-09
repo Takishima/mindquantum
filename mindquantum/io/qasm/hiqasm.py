@@ -47,7 +47,7 @@ def random_hiqasm(n_qubits, gate_num, version='0.1', seed=42):
         seed (int): The random seed to generate this random quantum circuit. Default: 42.
 
     Returns:
-        str, quantum in HIQASM format.
+        str, quantum circuit in HIQASM format.
 
     Examples:
         >>> from mindquantum.io.qasm import random_HiQASM
@@ -271,21 +271,23 @@ class HiQASM:
         from mindquantum.core import gates as gates
 
         n_ctrl_qubits = len(ctrl_qubits)
+        if gate.parameterized:
+            raise ValueError(f"Cannot convert parameterzed gate {gate} to hiqasm format.")
 
         if isinstance(gate, (gates.RX, gates.RY, gates.RZ)):
             if n_ctrl_qubits == 0:
-                self.cmds.append(f'{gate.name} q[{obj_qubits[0]}] {gate.coeff}')
+                self.cmds.append(f'{gate.name} q[{obj_qubits[0]}] {gate.coeff.const}')
             elif n_ctrl_qubits == 1:
-                self.cmds.append(f'C{gate.name} q[{ctrl_qubits[0]}],q[{obj_qubits[0]}] {gate.coeff}')
+                self.cmds.append(f'C{gate.name} q[{ctrl_qubits[0]}],q[{obj_qubits[0]}] {gate.coeff.const}')
             elif n_ctrl_qubits == 2:
                 self.cmds.append(
-                    f'CC{gate.name} q[{ctrl_qubits[0]}],q[{ctrl_qubits[1]}],q[{obj_qubits[0]}] {gate.coeff}'
+                    f'CC{gate.name} q[{ctrl_qubits[0]}],q[{ctrl_qubits[1]}],q[{obj_qubits[0]}] {gate.coeff.const}'
                 )
             else:
                 _not_implement(version, gate)
         elif isinstance(gate, (gates.XX, gates.YY, gates.ZZ)):
             if n_ctrl_qubits == 0:
-                self.cmds.append(f'{gate.name} q[{obj_qubits[0]}],q[{obj_qubits[1]}] {gate.coeff}')
+                self.cmds.append(f'{gate.name} q[{obj_qubits[0]}],q[{obj_qubits[1]}] {gate.coeff.const}')
             else:
                 _not_implement(version, gate)
         else:
