@@ -18,12 +18,6 @@
 
 find_program(M4_EXEC m4 PATHS /usr/local/bin /usr/bin /bin /sbin)
 
-get_cmake_property(_variableNames VARIABLES)
-list(SORT _variableNames)
-foreach(_variableName ${_variableNames})
-  message(STATUS "${_variableName}=${${_variableName}}")
-endforeach()
-
 if(NOT M4_EXEC AND m4_FIND_REQUIRED)
   message(
     SEND_ERROR "Unable to locate m4 executable. "
