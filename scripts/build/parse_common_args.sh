@@ -18,7 +18,7 @@
 [ "${_sourced_parse_common_args}" != "" ] && return || _sourced_parse_common_args=.
 
 BASEPATH=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-ROOTDIR=$(realpath "$BASEPATH/../..")
+ROOTDIR="$BASEPATH/../.."
 PROGRAM=$(basename "$0")
 
 # ==============================================================================
@@ -49,6 +49,11 @@ set_variable_from_ini -C "$BASEPATH/default_values.conf"
 
 # shellcheck source=SCRIPTDIR/common_functions.sh
 . "$BASEPATH/common_functions.sh"
+
+# ==============================================================================
+
+# NB: here since the `realpath` function might not exist
+ROOTDIR=$(realpath "$BASEPATH/../..")
 
 # ==============================================================================
 

@@ -2,6 +2,10 @@
 
 BASEPATH=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
+# Load common bash helper functions
+# shellcheck source=SCRIPTDIR/../scripts/bash_compat.sh
+. "$BASEPATH/../scripts/bash_compat.sh"
+
 root_dir=$(realpath "$BASEPATH/..")
 
 # ==============================================================================

@@ -18,6 +18,22 @@
 
 # ==============================================================================
 
+if ! command -v realpath > /dev/null 2>&1; then
+    function realpath() {
+        pushd "$(dirname "$1")" > /dev/null 2>&1 || exit 1
+        LINK=$(readlink "$(basename "$1")")
+        while [ "$LINK" ]; do
+            cd "$(dirname "$LINK")"  || exit 1
+            LINK=$(readlink "$(basename "$1")")
+        done
+        REALPATH="$PWD/$(basename "$1")"
+        popd > /dev/null 2>&1 || exit 1
+        echo "$REALPATH"
+    }
+fi
+
+# ==============================================================================
+
 function declare_var() {
     local name value
     name="$1" && shift

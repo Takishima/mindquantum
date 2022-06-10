@@ -56,7 +56,8 @@ fi
 
 # ==============================================================================
 
-cmake_version_min=$(tr -d '\r' < "$ROOTDIR/CMakeLists.txt" | grep -oP 'cmake_minimum_required\(VERSION\s+\K[0-9\.]+')
+cmake_version_min=$(tr -d '\r' < CMakeLists.txt | grep -oE 'cmake_minimum_required\(VERSION\s+[0-9\.]+\s*\)' \
+                        | grep -oE '[0-9.]+')
 
 if [ $has_cmake -ne 1 ]; then
     if command -v cmake > /dev/null 2>&1; then
