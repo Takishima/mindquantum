@@ -203,17 +203,20 @@ function(__exec_cmd)
   cmake_parse_arguments(EXEC "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
   # cmake-format: off
-  debug_print(STATUS "  execute_process("
-                     "      COMMAND ${EXEC_COMMAND}"
-                     "      WORKING_DIRECTORY ${EXEC_WORKING_DIRECTORY}"
-                     "      ...)")
+  debug_print(
+    STATUS "  execute_process("
+    "      COMMAND ${EXEC_COMMAND}"
+    "      WORKING_DIRECTORY ${EXEC_WORKING_DIRECTORY}"
+    "      ...)"
+  )
   execute_process(
     COMMAND ${EXEC_COMMAND}
     WORKING_DIRECTORY ${EXEC_WORKING_DIRECTORY}
     OUTPUT_VARIABLE _stdout
     ERROR_VARIABLE _stderr
     RESULTS_VARIABLE _results_out
-    RESULT_VARIABLE RESULT)
+    RESULT_VARIABLE RESULT
+  )
   # cmake-format: on
   if(NOT RESULT EQUAL "0")
     debug_print(SEND_ERROR "STDOUT:\n${_stdout}" "STDERR:\n${_stderr}" "RESULTS OUT:\n${_results_out}")
@@ -1215,6 +1218,12 @@ function(mindquantum_add_pkg pkg_name)
     else()
       set(PREFIX ${${pkg_name}_BASE_DIR})
       set(MAKE ${_make_exec})
+      if(DEFINED ENV{CC})
+        set(${pkg_name}_MAKE_CC "CC=$ENV{CC}")
+      endif()
+      if(DEFINED ENV{CXX})
+        set(${pkg_name}_MAKE_CXX "CXX=$ENV{CXX}")
+      endif()
       if(${pkg_name}_CFLAGS)
         set(${pkg_name}_MAKE_CFLAGS "CFLAGS=${${pkg_name}_CFLAGS}")
       endif()
@@ -1233,8 +1242,8 @@ function(mindquantum_add_pkg pkg_name)
       if(PKG_CONFIGURE_COMMAND)
         message(STATUS "Calling configure script for ${pkg_name}")
         __exec_cmd(
-          COMMAND ${PKG_CONFIGURE_COMMAND} ${${pkg_name}_MAKE_CFLAGS} ${${pkg_name}_MAKE_CXXFLAGS}
-                  ${${pkg_name}_MAKE_LDFLAGS} --prefix=${${pkg_name}_BASE_DIR}
+          COMMAND ${PKG_CONFIGURE_COMMAND} ${${pkg_name}_MAKE_CC} ${${pkg_name}_MAKE_CXX} ${${pkg_name}_MAKE_CFLAGS}
+                  ${${pkg_name}_MAKE_CXXFLAGS} ${${pkg_name}_MAKE_LDFLAGS} --prefix=${${pkg_name}_BASE_DIR}
           WORKING_DIRECTORY ${${pkg_name}_SOURCE_DIR})
       endif()
       string(CONFIGURE "${PKG_BUILD_OPTION}" PKG_BUILD_OPTION @ONLY ESCAPE_QUOTES)
