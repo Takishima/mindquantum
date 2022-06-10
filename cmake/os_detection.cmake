@@ -36,9 +36,18 @@ elseif(CYGWIN)
   set(OS_NAME "Cygwin")
 elseif(UNIX)
   if(APPLE)
-    set(OS_NAME
-        "OSX"
-        CACHE STRING "Operating system name" FORCE)
+    set(OS_NAME "MacOS")
+    find_program(sw_vers_exec sw_vers)
+    if(sw_vers_exec)
+      execute_process(
+        COMMAND ${sw_vers_exec} -productVersion
+        OUTPUT_VARIABLE _macos_version
+        OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_QUIET)
+      set(OS_RELEASE "${_macos_version}")
+      set(OS_RELEASE
+          "${_macos_version}"
+          CACHE STRING "OS version")
+    endif()
   else()
     # Tested with:
     #
@@ -85,7 +94,7 @@ elseif(UNIX)
   endif() # APPLE
 endif() # UNIX
 
-message(STATUS "Detected system: ${OS_NAME}")
+message(STATUS "Detected system: ${OS_NAME} (${OS_RELEASE})")
 
 # ==============================================================================
 

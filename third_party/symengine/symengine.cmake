@@ -66,6 +66,10 @@ if(gmp_DIR)
   list(APPEND PATCHES ${CMAKE_CURRENT_LIST_DIR}/patch/find-gmp-using-config-method.patch003)
 endif()
 
+if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+  list(APPEND PATCHES ${CMAKE_CURRENT_LIST_DIR}/patch/apple-clang-debug-build-fix.patch004)
+endif()
+
 mindquantum_add_pkg(
   SymEngine
   VER ${VER}
@@ -77,7 +81,13 @@ mindquantum_add_pkg(
 
 if(TARGET mindquantum::gmp)
   get_target_property(_link_libraries symengine INTERFACE_LINK_LIBRARIES)
-  if(NOT gmp IN_LIST _link_libraries AND NOT mindquantum::gmp IN_LIST _link_libraries)
+
+  if(gmp IN_LIST _link_libraries)
+    list(REMOVE_ITEM _link_libraries gmp)
+    set_target_properties(symengine PROPERTIES INTERFACE_LINK_LIBRARIES "${_link_libraries}")
+  endif()
+
+  if(NOT mindquantum::gmp IN_LIST _link_libraries)
     target_link_libraries(symengine INTERFACE mindquantum::gmp)
   endif()
 endif()
