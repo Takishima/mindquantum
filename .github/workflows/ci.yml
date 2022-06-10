@@ -168,6 +168,57 @@ jobs:
 
   # ============================================================================
 
+  macos:
+    runs-on: macos-latest
+    name: "MacOS • x64"
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get history and tags for SCM versioning to work
+        if: env.ACT != 'true'
+        run: |
+          git fetch --prune --unshallow
+          git fetch --depth=1 origin +refs/tags/*:refs/tags/*¨
+
+      - name: Setup Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+          architecture: 'x64'
+
+      - name: Setup CCache
+        uses: hendrikmuhs/ccache-action@v1.2.2
+        with:
+          key: macos-ccache
+          max-size: 75M
+
+      - name: Cache Python virtualenv
+        if: env.ACT != 'true'
+        uses: actions/cache@v3
+        with:
+          path: venv
+          key: macos-python-venv-${{ hashFiles('build_locally.sh', 'scripts/build/**.sh') }}-${{ secrets.cache_ver }}
+
+      - name: Cache compiled third-party libraries
+        if: env.ACT != 'true'
+        uses: actions/cache@v3
+        with:
+          path: build/.mqlibs
+          key: macos-third-party-libs-${{ hashFiles('third_party/**') }}-${{ secrets.cache_ver }}
+
+      - name: Configure
+        run: >-
+          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --only-pytest
+          --configure-only -c --clean-3rdparty --prefix="${{ github.workspace }}/install"
+
+      - name: Build
+        run: ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache
+
+      - name: Install
+        run: ./build_locally.sh --install  # NB: no need to pass the other parameters
+
+  # ============================================================================
+
   gcc:
     runs-on: ubuntu-latest
     strategy:
@@ -336,8 +387,6 @@ jobs:
 
   msvc:
     runs-on: windows-latest
-    strategy:
-      fail-fast: false
     name: "MSVC • x64"
     steps:
       - uses: actions/checkout@v2
@@ -659,8 +708,6 @@ jobs:
 
   cygwin:
     runs-on: windows-latest
-    strategy:
-      fail-fast: false
     name: "Cygwin • x64"
     env:
       CYGWIN_NOWINPATH: 1  # only have cygwin's executables on PATH
