@@ -171,6 +171,9 @@ jobs:
   macos:
     runs-on: macos-latest
     name: "MacOS • x64"
+    env:
+      CC: /usr/bin/clang
+      CXX: /usr/bin/clang++
     steps:
       - uses: actions/checkout@v2
 
@@ -209,7 +212,7 @@ jobs:
       - name: Configure
         run: >-
           ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --only-pytest
-          --configure-only -c --clean-3rdparty --prefix="${{ github.workspace }}/install"
+          --with-gmp --configure-only -c --clean-3rdparty --prefix="${{ github.workspace }}/install"
 
       - name: Build
         run: ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache
