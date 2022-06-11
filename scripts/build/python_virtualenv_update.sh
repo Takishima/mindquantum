@@ -64,7 +64,7 @@ if [[ "${created_venv:-0}" -eq 1 || "${do_update_venv:-0}" -eq 1 ]]; then
             tmp_file=$(mktemp req_mq_XXX)
 
             pushd "$ROOTDIR" > /dev/null || exit 1
-            "$PYTHON" setup.py gen_reqfile --include-extras=tests --output "$tmp_file"
+            "$PYTHON" setup.py gen_reqfile --include-extras=test --output "$tmp_file"
             popd > /dev/null || exit 1
 
             if [ "${BASH_VERSINFO[0]}" -lt 4 ]; then

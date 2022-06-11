@@ -285,6 +285,7 @@ shift $((OPTIND-1)) # remove parsed options and args from $@ list
 # ==============================================================================
 
 if [ -f "$config_file" ]; then
+    config_file=$(realpath "$config_file")
     echo "Reading INI/Unix conf configuration file: $config_file"
     debug_print 'NB: overriding values only if not specified on the command line'
 

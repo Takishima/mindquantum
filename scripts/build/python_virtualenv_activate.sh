@@ -41,6 +41,28 @@ fi
 
 # ==============================================================================
 
+if [ -n "$VIRTUAL_ENV" ]; then
+    debug_print "Currently activated virtualenv: $VIRTUAL_ENV"
+    echo "Already inside a virtualenv, skipping activation"
+
+    if [ "$do_clean_venv" -eq 1 ]; then
+        die "Cannot delete a currently active virtualenv"
+    fi
+
+    if [ "$do_update_venv" -eq 1 ]; then
+        real_python_prefix=$("$PYTHON" -c 'import sys; print(sys.base_prefix)')
+        for path_suffix in bin Scripts; do
+            python_exec="$real_python_prefix/$path_suffix/$PYTHON"
+            if [ -x "$python_exec" ]; then
+                call_cmd "$python_exec" -m venv --upgrade "$python_venv_path"
+            fi
+        done
+    fi
+    return
+fi
+
+# ==============================================================================
+
 if [ "$do_clean_venv" -eq 1 ]; then
     echo "Deleting virtualenv folder: $python_venv_path"
     call_cmd rm -rf "$python_venv_path"

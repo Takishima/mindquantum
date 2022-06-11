@@ -143,11 +143,12 @@ function is_abspath {
 
 # __set_variable_from_ini <section> <check_set> <check_null> <dry_run>
 function __set_variable_from_ini {
-    local section check_set check_null do_dry_run var value eval_str null_test
+    local section check_set check_null do_dry_run var value eval_str null_test root_dir
     section=$1 && shift
     check_set=$1 && shift
     check_null=$1 && shift
     do_dry_run=$1 && shift
+    root_dir=$(realpath "$ROOTDIR")
 
     for var in $(get_AA_keys "configuration_${section/./_}"); do
         value=$(get_AA_value "configuration_${section/./_}" "$var")
@@ -165,7 +166,7 @@ function __set_variable_from_ini {
         if [[ $section =~ ^.*(path|paths)$ ]]; then
             if [ -n "$value" ]; then
                 if ! is_abspath "$value"; then
-                    value="\"$ROOTDIR/$value\""
+                    value="\"$root_dir/$value\""
                 fi
             fi
             eval_str="declare_var $var $value"

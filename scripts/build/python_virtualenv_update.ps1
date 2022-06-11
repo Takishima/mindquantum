@@ -62,7 +62,7 @@ if ($created_venv -or $do_update_venv) {
             $tmp_file = (New-TemporaryFile).Name
 
             pushd "$ROOTDIR"
-            Invoke-Expression -Command "$PYTHON setup.py gen_reqfile --include-extras=tests --output `"$tmp_file`""
+            Invoke-Expression -Command "$PYTHON setup.py gen_reqfile --include-extras=test --output `"$tmp_file`""
             popd
 
             $tmp = Get-Content -Path "$tmp_file" | Select-String -Pattern '^\s*$' -NotMatch
