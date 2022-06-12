@@ -1,0 +1,16 @@
+diff -Npur symengine-orig/CMakeLists.txt symengine-src/CMakeLists.txt
+--- symengine-orig/CMakeLists.txt	2022-06-12 21:48:19.964559063 +0200
++++ symengine-src/CMakeLists.txt	2022-06-12 21:49:24.880004350 +0200
+@@ -336,9 +336,10 @@ if (HAVE_SYMENGINE_GMP)
+     if(WITH_GMPXX)
+       list(APPEND _comps gmpxx)
+     endif()
+-    find_package(gmp COMPONENTS ${_comps} REQUIRED)
++    find_package(gmp COMPONENTS ${_comps} CONFIG REQUIRED)
+ 
+-    set(SYMENGINE_PKG_FINDS "${SYMENGINE_PKG_FINDS}\nfind_package(gmp COMPONENTS ${_comps} REQUIRED)")
++    set(SYMENGINE_PKG_FINDS "${SYMENGINE_PKG_FINDS}\nset(gmp_DIR \"${gmp_DIR}\")")
++    set(SYMENGINE_PKG_FINDS "${SYMENGINE_PKG_FINDS}\nfind_package(gmp COMPONENTS ${_comps} CONFIG REQUIRED)")
+ 
+     set(GMP_INCLUDE_DIRS ${gmp_INCLUDE_DIRS})
+     set(GMP_LIBRARIES ${gmp_LIBRARIES})

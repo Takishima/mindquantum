@@ -48,8 +48,10 @@ elseif("${OS_NAME}" STREQUAL "MinGW")
   endif()
 endif()
 
-set(PATCHES ${CMAKE_CURRENT_LIST_DIR}/patch/fix-cmakelists.patch001
-            ${CMAKE_CURRENT_LIST_DIR}/patch/remove-msvc-mt-option.patch002)
+set(PATCHES
+    ${CMAKE_CURRENT_LIST_DIR}/patch/fix-cmakelists.patch001
+    ${CMAKE_CURRENT_LIST_DIR}/patch/remove-msvc-mt-option.patch002
+    ${CMAKE_CURRENT_LIST_DIR}/patch/fix-finding-gmp.patch003)
 
 if(gmp_DIR)
   # If gmp_DIR is defined then we can find gmp using the CONFIG method -> patch SymEngine accordingly.
@@ -58,11 +60,11 @@ if(gmp_DIR)
   # files during its normal installation. In all other case, the FindGMP code from SymEngine should be able to locate
   # gmp successfully.
   list(APPEND CMAKE_OPTION -Dgmp_DIR=${gmp_DIR})
-  list(APPEND PATCHES ${CMAKE_CURRENT_LIST_DIR}/patch/find-gmp-using-config-method.patch003)
+  list(APPEND PATCHES ${CMAKE_CURRENT_LIST_DIR}/patch/find-gmp-using-config-method.patch004)
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-  list(APPEND PATCHES ${CMAKE_CURRENT_LIST_DIR}/patch/apple-clang-debug-build-fix.patch004)
+  list(APPEND PATCHES ${CMAKE_CURRENT_LIST_DIR}/patch/apple-clang-debug-build-fix.patch005)
 endif()
 
 mindquantum_add_pkg(

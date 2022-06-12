@@ -40,6 +40,9 @@
 set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
 set(PYBIND11_PYTHON_VERSION ${Python_VERSION}) # maybe not strictly required
 
+include(${CMAKE_CURRENT_LIST_DIR}/../commands/to_cmake_path.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/../commands/find_python_module.cmake)
+
 # Message printing function
 macro(_pybind11_message)
   if(NOT pybind11_FIND_QUIETLY)

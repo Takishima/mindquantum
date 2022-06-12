@@ -32,7 +32,9 @@ include(macros)
 # ==============================================================================
 # Create the MindQuantum project
 
-project(MindQuantum LANGUAGES CXX)
+project(MindQuantum LANGUAGES C CXX)
+# NB: we enable C since some of the third-party libraries require C to be compiled properly
+setup_language(C)
 setup_language(CXX)
 
 # Set a default build type if none was specified
