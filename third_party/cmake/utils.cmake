@@ -552,21 +552,6 @@ endif()
 
   # ----------------------------------------------------------------------------
 
-  set(_config_content
-      [[
-get_filename_component(_IMPORT_PREFIX "${CMAKE_CURRENT_LIST_FILE}" PATH)
-get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
-get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
-get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
-if("${_IMPORT_PREFIX}" STREQUAL "/")
-  set(_IMPORT_PREFIX "")
-endif()
-]]
-      "include (\"\${CMAKE_CURRENT_LIST_DIR}/${pkg_name}Targets.cmake\")\n")
-  file(WRITE ${dest_dir}/${pkg_name}Config.cmake ${_config_content})
-
-  # ----------------------------------------------------------------------------
-
   set(_targets_prefix_content
       [[
 cmake_policy(PUSH)
@@ -637,11 +622,17 @@ cmake_policy(POP)
 
   real_path("${root_dir}" root_dir_absolute)
   set(_library_content)
+
+  set(_include_dirs)
+  set(_libraries)
+  set(_libraries_debug)
+  set(_imported_targets)
   foreach(_tgt ${tgt_list})
     if(NOT TARGET ${_tgt})
       continue()
     endif()
 
+    list(APPEND _imported_targets ${_tgt})
     list(APPEND _library_content "if(NOT TARGET ${_tgt})\n")
 
     get_target_property(_type ${_tgt} TYPE)
@@ -670,6 +661,7 @@ cmake_policy(POP)
     endif()
 
     if(_imported_location)
+      list(APPEND _libraries "${_imported_location}")
       list(APPEND _library_content "\n  set_target_properties(${_tgt} PROPERTIES\n")
       list(APPEND _library_content "      IMPORTED_LOCATION \"${_imported_location}\"")
       list(APPEND _library_content "  )\n")
@@ -702,6 +694,18 @@ cmake_policy(POP)
         if(NOT "${_val}" STREQUAL "")
           string(REPLACE ";" "\;" _val "${_val}")
           list(APPEND _library_content "       ${_prop} \"${_val}\"\n")
+          if(_prop STREQUAL "INCLUDE_DIRECTORIES" OR _prop STREQUAL "INTERFACE_INCLUDE_DIRECTORIES")
+            list(APPEND _include_dirs "${_val}")
+          endif()
+          if(_prop STREQUAL "IMPORTED_LOCATION"
+             OR _prop STREQUAL "IMPORTED_LOCATION_RELEASE"
+             OR _prop STREQUAL "IMPORTED_LOCATION_NOCONFIG"
+             OR _prop STREQUAL "IMPORTED_LOCATION_NONE")
+            list(APPEND _libraries "${_val}")
+          endif()
+          if(_prop STREQUAL "IMPORTED_LOCATION_DEBUG")
+            list(APPEND _libraries_debug "${_val}")
+          endif()
         endif()
       endif()
     endforeach()
@@ -717,6 +721,34 @@ cmake_policy(POP)
 
   file(WRITE ${dest_dir}/${pkg_name}Targets.cmake ${_targets_prefix_content} ${_library_content}
        ${_targets_suffix_content})
+
+  # ----------------------------------------------------------------------------
+
+  list(REMOVE_DUPLICATES _libraries_debug)
+  if(NOT _libraries)
+    list(APPEND _libraries ${_libraries_debug})
+  endif()
+  list(REMOVE_DUPLICATES _include_dirs)
+  list(REMOVE_DUPLICATES _libraries)
+  string(REPLACE ";" "\;" _imported_targets "${_imported_targets}")
+  string(REPLACE ";" "\;" _include_dirs "${_include_dirs}")
+  string(REPLACE ";" "\;" _libraries "${_libraries}")
+  set(_config_content
+      [[
+get_filename_component(_IMPORT_PREFIX "${CMAKE_CURRENT_LIST_FILE}" PATH)
+get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
+get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
+get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
+if("${_IMPORT_PREFIX}" STREQUAL "/")
+  set(_IMPORT_PREFIX "")
+endif()
+]]
+      "include(\"\${CMAKE_CURRENT_LIST_DIR}/${pkg_name}Targets.cmake\")\n"
+      "set(${pkg_name}_INCLUDE_DIRS \"${_include_dirs}\")\n"
+      "set(${pkg_name}_LIBRARIES \"${_libraries}\")\n"
+      "set(${pkg_name}_IMPORTED_TARGETS \"${_imported_targets}\")\n")
+
+  file(WRITE ${dest_dir}/${pkg_name}Config.cmake ${_config_content})
 endfunction()
 
 # ==============================================================================
