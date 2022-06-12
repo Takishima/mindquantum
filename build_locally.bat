@@ -349,6 +349,10 @@ if !do_clean_cache! == 1 (
     if exist !build_dir!\CMakeCache.txt call :call_cmd del /Q "!build_dir!\CMakeCache.txt"
     echo Removing CMake files at: !build_dir!/CMakeFiles
     if exist !build_dir!/CMakeFiles call :call_cmd rd /Q /S "!build_dir!\CMakeFiles"
+    echo Removing CMake files at: !build_dir!/cmake-ldtest-C
+    if exist !build_dir!/cmake-ldtest-C call :call_cmd rd /Q /S "!build_dir!\cmake-ldtest-C"
+    echo Removing CMake files at: !build_dir!/cmake-ldtest-CXX
+    if exist !build_dir!/cmake-ldtest-CXX call :call_cmd rd /Q /S "!build_dir!\cmake-ldtest-CXX"
     goto :do_configure
 )
 

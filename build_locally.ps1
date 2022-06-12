@@ -276,6 +276,8 @@ elseif ($do_clean_cache) {
     Call-Cmd Remove-Item -Force "$build_dir/CMakeCache.txt" -ErrorAction SilentlyContinue
     Write-Output "Removing CMake files at: $build_dir/CMakeFiles"
     Call-Cmd Remove-Item -Force -Recurse "$build_dir/CMakeFiles" -ErrorAction SilentlyContinue
+    Write-Output "Removing CMake files at: $build_dir/cmake-ldtest*"
+    Call-Cmd Remove-Item -Force -Recurse "$build_dir/cmake-ldtest*" -ErrorAction SilentlyContinue
 }
 
 if ($do_configure) {

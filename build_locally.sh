@@ -219,6 +219,8 @@ elif [ "$do_clean_cache" -eq 1 ]; then
     call_cmd rm -f "$build_dir/CMakeCache.txt"
     echo "Removing CMake files at: $build_dir/CMakeFiles"
     call_cmd  rm -rf "$build_dir/CMakeFiles"
+    echo "Removing CMake files at: $build_dir/cmake-ldtest*"
+    call_cmd  rm -rf "$build_dir/cmake-ldtest*"
 fi
 
 if [ "$do_configure" -eq 1 ]; then
