@@ -726,13 +726,20 @@ if(NOT ${_pkg}_NO_PKGCONFIG)
         # ======================================================================
         # Finalize
 
-        # Report ${_pkg}_LIBRARIES
+        # Report ${_pkg}_LIBRARIES and ${_pkg}_INCLUDE_DIRS
+        set(${_pkg}_INCLUDE_DIRS "")
         set(${_pkg}_LIBRARIES "")
-        foreach(_comp IN LISTS ${_pkg}_FIND_COMPONENTS)
-          if(${_pkg}_${_comp}_FOUND)
-            list(APPEND ${_pkg}_LIBRARIES ${${_prefix}_LINK_LIBRARIES})
+        foreach(_target IN LISTS ${_pkg}_IMPORTED_TARGETS)
+          get_target_property(_include_dirs ${_target} INTERFACE_INCLUDE_DIRECTORIES)
+          if(_include_dirs)
+            list(APPEND ${_pkg}_INCLUDE_DIRS ${_include_dirs})
+          endif()
+          get_target_property(_imported_location ${_target} IMPORTED_LOCATION)
+          if(_imported_location)
+            list(APPEND ${_pkg}_LIBRARIES ${_imported_location})
           endif()
         endforeach()
+        list(REMOVE_DUPLICATES ${_pkg}_INCLUDE_DIRS)
         list(REMOVE_DUPLICATES ${_pkg}_LIBRARIES)
 
         # Configure display of cache entries in GUI.
