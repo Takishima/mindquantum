@@ -189,6 +189,10 @@ jobs:
           python-version: ${{ matrix.python }}
           architecture: 'x64'
 
+      # NB: This step should not be required... investigate and remove it once gmp compilation issue is resolved
+      - name: Prepare env
+        run: brew install gmp
+
       - name: Setup CCache
         uses: hendrikmuhs/ccache-action@v1.2.2
         with:
@@ -212,7 +216,7 @@ jobs:
       - name: Configure
         run: >-
           ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --only-pytest
-          --with-gmp --configure-only -c --clean-3rdparty --prefix="${{ github.workspace }}/install"
+          --configure-only -c --clean-3rdparty --prefix="${{ github.workspace }}/install"
 
       - name: Build
         run: ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache
