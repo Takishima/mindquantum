@@ -1214,10 +1214,13 @@ function(mindquantum_add_pkg pkg_name)
         endif()
       endif()
 
+      string(REPLACE ";" "\\\\\\\;" _cmake_module_path "${CMAKE_MODULE_PATH}")
+
       message(STATUS "Calling CMake configure for ${pkg_name}")
       __exec_cmd(
         COMMAND
-          ${CMAKE_COMMAND} ${${pkg_name}_CMAKE_COMPILERS} -G${CMAKE_GENERATOR} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+          ${CMAKE_COMMAND} ${${pkg_name}_CMAKE_COMPILERS} -DCMAKE_MODULE_PATH="${_cmake_module_path}"
+          -DCMAKE_VERBOSE_MAKEFILE=${CMAKE_VERBOSE_MAKEFILE} -G${CMAKE_GENERATOR} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
           ${PKG_CMAKE_OPTION} ${${pkg_name}_CMAKE_CFLAGS} ${${pkg_name}_CMAKE_CXXFLAGS} ${${pkg_name}_CL_RT_FLAG}
           ${${pkg_name}_CMAKE_LDFLAGS} -DCMAKE_INSTALL_PREFIX=${${pkg_name}_BASE_DIR}
           ${${pkg_name}_SOURCE_DIR}/${PKG_CMAKE_PATH}
