@@ -358,22 +358,27 @@ function(_update_exec_search_dirs_with_prebuilt_paths componentlibvar basedir)
       PARENT_SCOPE)
 endfunction()
 
+# Copy IMPORTED_LOCATION* to IMPORTED_IMPLIB*
+function(_copy_imported_location_to_implib target imported implib)
+  get_target_property(_imported_location ${target} ${imported})
+  if(_imported_location)
+    set_target_properties(${target} PROPERTIES ${implib} "${_imported_location}")
+  endif()
+endfunction()
+
 # Set import library paths on Windows
 function(_windows_set_import_library_path target basename)
   if(COMMAND ${_pkg}_windows_set_import_library_path)
     cmake_language(CALL ${_pkg}_windows_set_import_library_path ${target} ${basename})
-  else()
+  elseif(
+    MSYS
+    OR MINGW
+    OR CYGWIN)
     get_target_property(_type ${target} TYPE)
     if(_type MATCHES ".*_LIBRARY")
-      get_target_property(_imported_location ${target} IMPORTED_LOCATION)
-      if(_imported_location)
-        set_target_properties(${target} PROPERTIES IMPORTED_IMPLIB "${_imported_location}")
-      endif()
+      _copy_imported_location_to_implib(${target} IMPORTED_LOCATION IMPORTED_IMPLIB)
       foreach(_name DEBUG RELEASE NONE NOCONFIG)
-        get_target_property(_imported_location ${target} IMPORTED_LOCATION_${_name})
-        if(_imported_location)
-          set_target_properties(${target} PROPERTIES IMPORTED_IMPLIB_${_name} "${_imported_location}")
-        endif()
+        _copy_imported_location_to_implib(${target} IMPORTED_LOCATION_${_name} IMPORTED_IMPLIB_${_name})
       endforeach()
     endif()
   endif()
@@ -672,7 +677,9 @@ if(NOT ${_pkg}_NO_PKGCONFIG)
           endif()
           if(_imported_location)
             set_target_properties(${_tgt_name} PROPERTIES IMPORTED_LOCATION "${_imported_location}")
-            if(MSYS OR MINGW)
+            if(MSYS
+               OR MINGW
+               OR CYGWIN)
               set_target_properties(${_tgt_name} PROPERTIES IMPORTED_IMPLIB "${_imported_location}")
             endif()
           endif()
