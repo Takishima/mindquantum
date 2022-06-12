@@ -30,7 +30,7 @@ include(external_targets)
 # If the CMake generator is not `make`, then look for it NB: this is potentially used when installing packages in the
 # local prefix path
 
-if("${CMAKE_GENERATOR}" STREQUAL "Unix Makefiles")
+if(CMAKE_GENERATOR MATCHES ".*Makefiles")
   set(_make_exec ${CMAKE_MAKE_PROGRAM})
 elseif(NOT WIN32)
   find_program(
@@ -1217,9 +1217,10 @@ function(mindquantum_add_pkg pkg_name)
       message(STATUS "Calling CMake configure for ${pkg_name}")
       __exec_cmd(
         COMMAND
-          ${CMAKE_COMMAND} ${PKG_CMAKE_OPTION} ${${pkg_name}_CMAKE_COMPILERS} ${${pkg_name}_CMAKE_CFLAGS}
-          ${${pkg_name}_CMAKE_CXXFLAGS} ${${pkg_name}_CL_RT_FLAG} ${${pkg_name}_CMAKE_LDFLAGS}
-          -DCMAKE_INSTALL_PREFIX=${${pkg_name}_BASE_DIR} ${${pkg_name}_SOURCE_DIR}/${PKG_CMAKE_PATH}
+          ${CMAKE_COMMAND} ${${pkg_name}_CMAKE_COMPILERS} -G${CMAKE_GENERATOR} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+          ${PKG_CMAKE_OPTION} ${${pkg_name}_CMAKE_CFLAGS} ${${pkg_name}_CMAKE_CXXFLAGS} ${${pkg_name}_CL_RT_FLAG}
+          ${${pkg_name}_CMAKE_LDFLAGS} -DCMAKE_INSTALL_PREFIX=${${pkg_name}_BASE_DIR}
+          ${${pkg_name}_SOURCE_DIR}/${PKG_CMAKE_PATH}
         WORKING_DIRECTORY ${_cmake_build_dir})
 
       message(STATUS "Building CMake targets for ${pkg_name}")
