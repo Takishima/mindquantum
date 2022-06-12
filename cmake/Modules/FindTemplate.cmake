@@ -82,6 +82,7 @@
 # The FPHSA helper provides standard way of reporting final search results to the user including the version and
 # component checks.
 include(FindPackageHandleStandardArgs)
+include(CMakePrintHelpers)
 
 # Save project's policies
 cmake_policy(PUSH)
@@ -574,9 +575,7 @@ if(NOT ${_pkg}_NO_PKGCONFIG)
     if(${_pkg}_FIND_COMPONENTS)
       set(_${_pkg}_pkgconfig_found)
       set(_${_pkg}_pkgconfig_args)
-      if(${_pkg}_DEBUG)
-        set(_${_pkg}_indent "[ ${CMAKE_CURRENT_LIST_FILE}:${CMAKE_CURRENT_LIST_LINE} ] ")
-      else()
+      if(NOT ${_pkg}_DEBUG)
         list(APPEND _${_pkg}_pkgconfig_args QUIET)
       endif()
 
@@ -604,22 +603,20 @@ if(NOT ${_pkg}_NO_PKGCONFIG)
           continue()
         endif()
 
-        list(APPEND CMAKE_MESSAGE_INDENT "${_${_pkg}_indent}")
         _debug_print("${CMAKE_CURRENT_LIST_FILE}" "${CMAKE_CURRENT_LIST_LINE}"
                      "pkg_search_module(${_prefix} ${_${_pkg}_pkgconfig_args} ${${_pkg}_${_comp}_PKGCONFIG_NAMES})")
 
+        list(APPEND CMAKE_MESSAGE_INDENT "[ ${CMAKE_CURRENT_LIST_FILE}:${CMAKE_CURRENT_LIST_LINE} ] ")
         pkg_search_module(${_prefix} ${_${_pkg}_pkgconfig_args} ${${_pkg}_${_comp}_PKGCONFIG_NAMES})
         list(POP_BACK CMAKE_MESSAGE_INDENT)
         if(${_prefix}_FOUND)
           list(APPEND _${_pkg}_pkgconfig_found ${_comp})
-          _debug_print_var("${CMAKE_CURRENT_LIST_FILE}" "${CMAKE_CURRENT_LIST_LINE}" "${_prefix}_INCLUDE_DIR")
+          _debug_print_var("${CMAKE_CURRENT_LIST_FILE}" "${CMAKE_CURRENT_LIST_LINE}" "${_prefix}_INCLUDE_DIRS")
           _debug_print_var("${CMAKE_CURRENT_LIST_FILE}" "${CMAKE_CURRENT_LIST_LINE}" "${_prefix}_LINK_LIBRARIES")
           _debug_print_var("${CMAKE_CURRENT_LIST_FILE}" "${CMAKE_CURRENT_LIST_LINE}" "${_prefix}_LDFLAGS_OTHER")
           _debug_print_var("${CMAKE_CURRENT_LIST_FILE}" "${CMAKE_CURRENT_LIST_LINE}" "${_prefix}_CFLAGS_OTHER")
         endif()
       endforeach()
-
-      unset(_${_pkg}_indent)
 
       # If we found a ${_pkg} PkgConfig package, then we're done. Print out what we found. Otherwise let the rest of the
       # module try to find it.
@@ -689,7 +686,9 @@ if(NOT ${_pkg}_NO_PKGCONFIG)
           if(${_prefix}_CFLAGS_OTHER)
             set_target_properties(${_tgt_name} PROPERTIES INTERFACE_COMPILE_OPTIONS "${${_prefix}_CFLAGS_OTHER}")
           endif()
+          list(APPEND ${_pkg}_IMPORTED_TARGETS ${_tgt_name})
         endforeach()
+        list(REMOVE_DUPLICATES ${_pkg}_IMPORTED_TARGETS)
 
         # NB: no adjustments with ${_pkg}_${_uppercomp}_DEPENDENCIES here since PkgConfig takes cares of this for us.
         # This has the downside that the dependencies are included into one single CMake targets rather than using
@@ -710,6 +709,18 @@ if(NOT ${_pkg}_NO_PKGCONFIG)
             HANDLE_COMPONENTS REASON_FAILURE_MESSAGE "PkgConfig search failed")
         else()
           find_package_handle_standard_args(${_pkg} HANDLE_COMPONENTS REASON_FAILURE_MESSAGE "PkgConfig search failed")
+        endif()
+
+        # ======================================================================
+
+        if(${_pkg}_DEBUG)
+          list(APPEND CMAKE_MESSAGE_INDENT "[ ${CMAKE_CURRENT_LIST_FILE}:${CMAKE_CURRENT_LIST_LINE} ] ")
+          cmake_print_properties(
+            TARGETS ${${_pkg}_IMPORTED_TARGETS}
+            PROPERTIES INTERFACE_COMPILE_OPTIONS INTERFACE_INCLUDE_DIRECTORIES INTERFACE_LINK_OPTIONS
+                       INTERFACE_LINK_LIBRARIES IMPORTED_LOCATION IMPORTED_IMPLIB)
+          list(POP_BACK CMAKE_MESSAGE_INDENT)
+          list(POP_BACK CMAKE_MESSAGE_INDENT)
         endif()
 
         # ======================================================================
@@ -1569,6 +1580,24 @@ list(REMOVE_DUPLICATES ${_pkg}_IMPORTED_TARGETS)
 
 if(COMMAND ${_pkg}_post_process)
   cmake_language(CALL ${_pkg}_post_process ${_pkg})
+endif()
+
+# ==============================================================================
+
+if(${_pkg}_DEBUG)
+  list(APPEND CMAKE_MESSAGE_INDENT "[ ${CMAKE_CURRENT_LIST_FILE}:${CMAKE_CURRENT_LIST_LINE} ] ")
+  cmake_print_properties(
+    TARGETS ${${_pkg}_IMPORTED_TARGETS}
+    PROPERTIES INTERFACE_COMPILE_DEFINITIONS
+               INTERFACE_INCLUDE_DIRECTORIES
+               INTERFACE_LINK_LIBRARIES
+               IMPORTED_LOCATION
+               IMPORTED_LOCATION_DEBUG
+               IMPORTED_LOCATION_RELEASE
+               IMPORTED_IMPLIB
+               IMPORTED_IMPLIB_DEBUG
+               IMPORTED_IMPLIB_RELEASE)
+  list(POP_BACK CMAKE_MESSAGE_INDENT)
 endif()
 
 # ==============================================================================
