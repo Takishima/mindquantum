@@ -326,6 +326,13 @@ if NOT !n_jobs! == -1 (
   set make_args=!make_args! -j !n_jobs!
 )
 
+rem NB: CMake < 3.24 typically set CC, CXX during the first run, which basically overwrites the values in CC, CXX. In
+rem     order to work around that, we explicitely set the compilers using the related CMake variables.
+
+if NOT "!CC!" == "" set cmake_args=!cmake_args! -DCMAKE_C_COMPILER:FILEPATH=!CC!
+if NOT "!CXX!" == "" set cmake_args=!cmake_args! -DCMAKE_CXX_COMPILER:FILEPATH=!CXX!
+if NOT "!CUDACXX!" == "" set cmake_args=!cmake_args! -DCMAKE_CUDA_COMPILER:FILEPATH=!CUDACXX!
+
 set target_args=
 if !do_install! == 1 set target_args=!target_args! --target install
 

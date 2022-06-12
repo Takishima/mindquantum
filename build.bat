@@ -301,7 +301,19 @@ if NOT !n_jobs! == -1 set args=!args! -C--global-option=build -C--global-option=
 
 if "!build_type!" == "Debug" set args=!args! -C--global-option=build -C--global-option=--debug
 
+if !force_local_pkgs! == 1 (
+  set args=!args! -C--global-option=--var -C--global-option=MQ_FORCE_LOCAL_PKGS -C--global-option=all
+) else (
+  if NOT "!local_pkgs!" == "" (
+    set args=!args! -C--global-option=--var -C--global-option=MQ_FORCE_LOCAL_PKGS -C--global-option=!local_pkgs!
+  )
+)
+
 if !has_build_dir! == 1 set args=!args! -C--global-option=build_ext -C--global-option=--build-dir -C--global-option=!build_dir!
+
+if NOT "!CC!" == "" set args=!args! -C--global-option=--var -C--global-option=CMAKE_C_COMPILER -C--global-option=!CC!
+if NOT "!CXX!" == "" set args=!args! -C--global-option=--var -C--global-option=CMAKE_CXX_COMPILER -C--global-option=!CXX!
+if NOT "!CUDACXX!" == "" set args=!args! -C--global-option=--var -C--global-option=CMAKE_CUDA_COMPILER -C--global-option=!CUDACXX!
 
 rem ============================================================================
 rem Build the wheels

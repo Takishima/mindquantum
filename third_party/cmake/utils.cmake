@@ -1171,6 +1171,17 @@ function(mindquantum_add_pkg pkg_name)
       file(COPY ${${pkg_name}_INSTALL_LIBS} DESTINATION ${${pkg_name}_BASE_DIR}/lib)
 
     elseif(NOT "${PKG_CMAKE_OPTION}" STREQUAL "")
+      set(${pkg_name}_CMAKE_COMPILERS)
+      if(CMAKE_C_COMPILER)
+        list(APPEND ${pkg_name}_CMAKE_COMPILERS -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER})
+      endif()
+      if(CMAKE_CXX_COMPILER)
+        list(APPEND ${pkg_name}_CMAKE_COMPILERS -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER})
+      endif()
+      if(CMAKE_CUDA_COMPILER)
+        list(APPEND ${pkg_name}_CMAKE_COMPILERS -DCMAKE_CUDA_COMPILER=${CMAKE_CUDA_COMPILER})
+      endif()
+
       if("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
         set(_cmake_build_dir "${${pkg_name}_SOURCE_DIR}/_build")
       else()
@@ -1206,9 +1217,9 @@ function(mindquantum_add_pkg pkg_name)
       message(STATUS "Calling CMake configure for ${pkg_name}")
       __exec_cmd(
         COMMAND
-          ${CMAKE_COMMAND} ${PKG_CMAKE_OPTION} ${${pkg_name}_CMAKE_CFLAGS} ${${pkg_name}_CMAKE_CXXFLAGS}
-          ${${pkg_name}_CL_RT_FLAG} ${${pkg_name}_CMAKE_LDFLAGS} -DCMAKE_INSTALL_PREFIX=${${pkg_name}_BASE_DIR}
-          ${${pkg_name}_SOURCE_DIR}/${PKG_CMAKE_PATH}
+          ${CMAKE_COMMAND} ${PKG_CMAKE_OPTION} ${${pkg_name}_CMAKE_COMPILERS} ${${pkg_name}_CMAKE_CFLAGS}
+          ${${pkg_name}_CMAKE_CXXFLAGS} ${${pkg_name}_CL_RT_FLAG} ${${pkg_name}_CMAKE_LDFLAGS}
+          -DCMAKE_INSTALL_PREFIX=${${pkg_name}_BASE_DIR} ${${pkg_name}_SOURCE_DIR}/${PKG_CMAKE_PATH}
         WORKING_DIRECTORY ${_cmake_build_dir})
 
       message(STATUS "Building CMake targets for ${pkg_name}")
@@ -1223,11 +1234,13 @@ function(mindquantum_add_pkg pkg_name)
     else()
       set(PREFIX ${${pkg_name}_BASE_DIR})
       set(MAKE ${_make_exec})
-      if(DEFINED ENV{CC})
-        set(${pkg_name}_MAKE_CC "CC=$ENV{CC}")
+
+      set(${pkg_name}_COMPILERS)
+      if(CMAKE_C_COMPILER)
+        list(APPEND ${pkg_name}_COMPILERS "CC=${CMAKE_C_COMPILER}")
       endif()
-      if(DEFINED ENV{CXX})
-        set(${pkg_name}_MAKE_CXX "CXX=$ENV{CXX}")
+      if(CMAKE_CXX_COMPILER)
+        list(APPEND ${pkg_name}_COMPILERS "CXX=${CMAKE_CXX_COMPILER}")
       endif()
       if(${pkg_name}_CFLAGS)
         set(${pkg_name}_MAKE_CFLAGS "CFLAGS=${${pkg_name}_CFLAGS}")
@@ -1247,7 +1260,7 @@ function(mindquantum_add_pkg pkg_name)
       if(PKG_CONFIGURE_COMMAND)
         message(STATUS "Calling configure script for ${pkg_name}")
         __exec_cmd(
-          COMMAND ${PKG_CONFIGURE_COMMAND} ${${pkg_name}_MAKE_CC} ${${pkg_name}_MAKE_CXX} ${${pkg_name}_MAKE_CFLAGS}
+          COMMAND ${PKG_CONFIGURE_COMMAND} ${${pkg_name}_COMPILERS} ${${pkg_name}_MAKE_CFLAGS}
                   ${${pkg_name}_MAKE_CXXFLAGS} ${${pkg_name}_MAKE_LDFLAGS} --prefix=${${pkg_name}_BASE_DIR}
           WORKING_DIRECTORY ${${pkg_name}_SOURCE_DIR})
       endif()

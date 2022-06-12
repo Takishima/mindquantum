@@ -159,6 +159,13 @@ if [ "${_build_dir_was_set:-0}" -eq 1 ]; then
     args+=(build_ext --build-dir "$build_dir")
 fi
 
+local_pkgs_str=$(join_by , "${local_pkgs[@]}")
+if [[ "$force_local_pkgs" -eq 1 ]]; then
+    args+=(--var MQ_FORCE_LOCAL_PKGS all)
+elif [ -n "$local_pkgs_str" ]; then
+    args+=(--var MQ_FORCE_LOCAL_PKGS "$local_pkgs_str")
+fi
+
 # --------------------------------------
 
 if [[ "$enable_gpu" -eq 1 && -n "$cuda_arch" ]]; then
@@ -177,6 +184,18 @@ if [ "$enable_ccache" -eq 1 ]; then
         args+=(--var CMAKE_C_COMPILER_LAUNCHER "$ccache_exec")
         args+=(--var CMAKE_CXX_COMPILER_LAUNCHER "$ccache_exec")
     fi
+fi
+
+# NB: CMake < 3.24 typically set CC, CXX during the first run, which basically overwrites the values in CC, CXX. In
+#     order to work around that, we explicitely set the compilers using the related CMake variables.
+if [ -n "$CC" ]; then
+    args+=(--var CMAKE_C_COMPILER "$CC")
+fi
+if [ -n "$CXX" ]; then
+    args+=(--var CMAKE_CXX_COMPILER "$CXX")
+fi
+if [ -n "$CUDACXX" ]; then
+    args+=(--var CMAKE_CUDA_COMPILER "$CUDACXX")
 fi
 
 debug_print "Will be passing these arguments to setup.py:"

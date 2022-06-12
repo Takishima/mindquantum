@@ -243,6 +243,18 @@ if($n_jobs -ne -1) {
     $make_args += "-j `"$n_jobs`""
 }
 
+# NB: CMake < 3.24 typically set CC, CXX during the first run, which basically overwrites the values in CC, CXX. In
+#     order to work around that, we explicitely set the compilers using the related CMake variables.
+if([bool]$Env:CC) {
+    $cmake_args += "-DCMAKE_C_COMPILER:FILEPATH=$Env:CC"
+}
+if([bool]$Env:CXX) {
+    $cmake_args += "-DCMAKE_CXX_COMPILER:FILEPATH=$Env:CXX"
+}
+if([bool]$Env:CUDACXX) {
+    $cmake_args += "-DCMAKE_CUDA_COMPILER:FILEPATH=$Env:CUDACXX"
+}
+
 if(-Not $cmake_make_silent) {
     $make_args += "-v"
 }

@@ -196,6 +196,18 @@ if [ "$n_jobs" -ne -1 ]; then
     make_args+=(-j "$n_jobs")
 fi
 
+# NB: CMake < 3.24 typically set CC, CXX during the first run, which basically overwrites the values in CC, CXX. In
+#     order to work around that, we explicitely set the compilers using the related CMake variables.
+if [ -n "$CC" ]; then
+    cmake_args+=(-DCMAKE_C_COMPILER:FILEPATH="$CC")
+fi
+if [ -n "$CXX" ]; then
+    cmake_args+=(-DCMAKE_CXX_COMPILER:FILEPATH="$CXX")
+fi
+if [ -n "$CUDACXX" ]; then
+    cmake_args+=(-DCMAKE_CUDA_COMPILER:FILEPATH="$CUDACXX")
+fi
+
 # ------------------------------------------------------------------------------
 # Build
 
