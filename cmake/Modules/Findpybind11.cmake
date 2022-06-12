@@ -50,10 +50,10 @@ macro(_pybind11_message)
   endif()
 endmacro()
 
-if(NOT _pybind11_already_found)
-  _pybind11_message(CHECK_START "Looking for pybind11")
-  list(APPEND CMAKE_MESSAGE_INDENT "  ")
+_pybind11_message(CHECK_START "Looking for pybind11")
+list(APPEND CMAKE_MESSAGE_INDENT "  ")
 
+if(NOT _pybind11_already_found)
   # ==============================================================================
   # First detect whether we are in a virtualenv or not
 

@@ -1,7 +1,7 @@
 diff -Npur symengine-orig/CMakeLists.txt symengine-src/CMakeLists.txt
---- symengine-orig/CMakeLists.txt	2022-06-12 21:48:19.964559063 +0200
-+++ symengine-src/CMakeLists.txt	2022-06-12 21:49:24.880004350 +0200
-@@ -336,9 +336,10 @@ if (HAVE_SYMENGINE_GMP)
+--- symengine-orig/CMakeLists.txt	2022-06-13 00:07:09.572688035 +0200
++++ symengine-src/CMakeLists.txt	2022-06-13 00:10:32.076747233 +0200
+@@ -336,9 +336,14 @@ if (HAVE_SYMENGINE_GMP)
      if(WITH_GMPXX)
        list(APPEND _comps gmpxx)
      endif()
@@ -9,7 +9,11 @@ diff -Npur symengine-orig/CMakeLists.txt symengine-src/CMakeLists.txt
 +    find_package(gmp COMPONENTS ${_comps} CONFIG REQUIRED)
  
 -    set(SYMENGINE_PKG_FINDS "${SYMENGINE_PKG_FINDS}\nfind_package(gmp COMPONENTS ${_comps} REQUIRED)")
-+    set(SYMENGINE_PKG_FINDS "${SYMENGINE_PKG_FINDS}\nset(gmp_DIR \"${gmp_DIR}\")")
++    set(SYMENGINE_PKG_FINDS "${SYMENGINE_PKG_FINDS}\nget_filename_component(_gmp_dirname \"${gmp_DIR}\" DIRECTORY)")
++    set(SYMENGINE_PKG_FINDS "${SYMENGINE_PKG_FINDS}\nget_filename_component(_gmp_dirname \"\${_gmp_dirname}\" DIRECTORY)")
++    set(SYMENGINE_PKG_FINDS "${SYMENGINE_PKG_FINDS}\nget_filename_component(_gmp_dirname \"\${_gmp_dirname}\" DIRECTORY)")
++    set(SYMENGINE_PKG_FINDS "${SYMENGINE_PKG_FINDS}\nget_filename_component(_gmp_dirname \"\${_gmp_dirname}\" NAME)")
++    set(SYMENGINE_PKG_FINDS "${SYMENGINE_PKG_FINDS}\nset(gmp_DIR \"\${SYMENGINE_CMAKE_DIR}/../../../../\${_gmp_dirname}/gmp/share/gmp/\")")
 +    set(SYMENGINE_PKG_FINDS "${SYMENGINE_PKG_FINDS}\nfind_package(gmp COMPONENTS ${_comps} CONFIG REQUIRED)")
  
      set(GMP_INCLUDE_DIRS ${gmp_INCLUDE_DIRS})

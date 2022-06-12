@@ -118,4 +118,6 @@ add_custom_target(
 
 # ==============================================================================
 
+# NB: the SPHINX_BUILD directory will get populated by sphinx-build if (ever) called
+file(MAKE_DIRECTORY ${SPHINX_BUILD})
 install(DIRECTORY ${SPHINX_BUILD} DESTINATION ${MQ_INSTALL_DOCDIR})

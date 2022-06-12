@@ -189,6 +189,9 @@ jobs:
           python-version: ${{ matrix.python }}
           architecture: 'x64'
 
+      - name: Prepare env
+        run: brew install libomp ccache
+
       - name: Setup CCache
         uses: hendrikmuhs/ccache-action@v1.2.2
         with:
