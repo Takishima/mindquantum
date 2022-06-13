@@ -503,11 +503,9 @@ if(NOT ${_pkg}_NO_CMAKE)
 
   # Do the same find_package call but look specifically for the CMake version. Note that args are passed in the
   # ${_pkg}_FIND_xxxxx variables, so there is no need to delegate them to this find_package call.
-  if(NOT ${_pkg}_FOUND)
-    _debug_print("${CMAKE_CURRENT_LIST_FILE}" "${CMAKE_CURRENT_LIST_LINE}"
-                 "find_package(${_pkg} QUIET CONFIG ${_${_pkg}_FIND_PACKAGE_ARGS})")
-    find_package(${_pkg} QUIET CONFIG ${_${_pkg}_FIND_PACKAGE_ARGS})
-  endif()
+  _debug_print("${CMAKE_CURRENT_LIST_FILE}" "${CMAKE_CURRENT_LIST_LINE}"
+               "find_package(${_pkg} QUIET CONFIG ${_${_pkg}_FIND_PACKAGE_ARGS})")
+  find_package(${_pkg} QUIET CONFIG ${_${_pkg}_FIND_PACKAGE_ARGS})
 
   if(_${_pkg}_FIND_COMPONENTS_ORIG)
     set(${_pkg}_FIND_COMPONENTS ${_${_pkg}_FIND_COMPONENTS_ORIG})
@@ -580,12 +578,6 @@ if(NOT ${_pkg}_NO_PKGCONFIG)
       endif()
 
       foreach(_comp ${${_pkg}_FIND_COMPONENTS})
-        if(TARGET ${${_pkg}_NAMESPACE}::${_comp})
-          _debug_print("${CMAKE_CURRENT_LIST_FILE}" "${CMAKE_CURRENT_LIST_LINE}"
-                       "CMake target ${_tgt_name} already exists, skipping...")
-          continue()
-        endif()
-
         _debug_print("${CMAKE_CURRENT_LIST_FILE}" "${CMAKE_CURRENT_LIST_LINE}" "Looking for component: ${_comp}")
         set(_prefix ${_pkg}_${_comp})
 
