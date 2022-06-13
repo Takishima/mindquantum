@@ -211,7 +211,7 @@ def number_operator(n_modes=None, mode=None, coefficient=1.0):
         n_modes (int): The number of modes in the system. Default: None.
         mode (int, optional): The mode on which to return the number
             operator. If None, return total number operator on all sites. Default: None.
-        coefficient (float): The coefficient of the term. Default: 1.
+        coefficient (float): The coefficient of the term. Default: 1.0.
 
     Returns:
         FermionOperator, a fermionic number operator for the reverse_jordan_wigner transform.

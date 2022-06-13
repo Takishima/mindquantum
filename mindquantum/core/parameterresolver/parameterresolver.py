@@ -855,7 +855,7 @@ resolver discards the imaginary part."
         Update this parameter resolver with other parameter resolver.
 
         Args:
-            others (ParameterResolver): other parameter resolver.
+            other (ParameterResolver): other parameter resolver.
 
         Raises:
             ValueError: If some parameters require grad and not require grad in other parameter resolver and vice versa
