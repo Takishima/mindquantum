@@ -14,9 +14,6 @@
 
 ---
 
-ci:
-  skip: [check-manifest, pylint]
-
 repos:
   - repo: meta
     hooks:

@@ -14,9 +14,6 @@
 
 ---
 
-ci:
-  skip: [check-manifest, pylint]
-
 repos:
   - repo: meta
     hooks:
@@ -46,6 +43,7 @@ repos:
     hooks:
       - id: remove-tabs
         exclude: ^(.*patch[0-9]*)$
+
 
   - repo: https://github.com/PyCQA/doc8/
     rev: 0.11.2

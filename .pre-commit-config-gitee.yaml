@@ -15,7 +15,7 @@
 ---
 
 ci:
-  skip: [check-manifest, pylint, cppcheck, cpplint]
+  skip: [check-manifest, pylint]
 
 repos:
   - repo: meta
