@@ -36,7 +36,7 @@ def remove_tree(directory):
     def remove_read_only(func, path, exc_info):
         excvalue = exc_info[1]
         if func in (os.rmdir, os.remove) and excvalue.errno == errno.EACCES:
-            os.chmod(path, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+            os.chmod(path, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)  # noqa: SCS119
             func(path)
         else:
             raise exc_info[0].with_traceback(exc_info[1], exc_info[2])

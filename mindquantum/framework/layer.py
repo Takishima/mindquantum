@@ -24,8 +24,9 @@ from .operations import MQAnsatzOnlyOps, MQN2AnsatzOnlyOps, MQN2Ops, MQOps
 
 class MQLayer(nn.Cell):
     """
-    Quantum neural network include encoder and ansatz circuit. The encoder circuit
-    encode classical data into quantum state, while the ansatz circuit act as trainable circuit.
+    Quantum neural network include encoder and ansatz circuit.
+
+    The encoder circuit encode classical data into quantum state, while the ansatz circuit act as trainable circuit.
 
     Args:
         expectation_with_grad (GradOpsWrapper): a grad ops that receive encoder data and
