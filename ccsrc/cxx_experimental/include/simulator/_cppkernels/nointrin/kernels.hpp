@@ -21,6 +21,7 @@
 #include <vector>
 
 #include "../intrin/alignedallocator.hpp"
+#include "core/details/omp_compat.hpp"
 
 template <class T>
 inline T add(T a, T b) {

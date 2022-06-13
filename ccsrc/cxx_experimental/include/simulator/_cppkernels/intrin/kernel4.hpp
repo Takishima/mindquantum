@@ -189,11 +189,11 @@ void kernel(V& psi, unsigned id3, unsigned id2, unsigned id1, unsigned id0, M co
 
     if (ctrlmask == 0) {
 #pragma omp for collapse(LOOP_COLLAPSE4) schedule(static)
-        for (std::size_t i0 = 0; i0 < n; i0 += 2 * dsorted[0]) {
-            for (std::size_t i1 = 0; i1 < dsorted[0]; i1 += 2 * dsorted[1]) {
-                for (std::size_t i2 = 0; i2 < dsorted[1]; i2 += 2 * dsorted[2]) {
-                    for (std::size_t i3 = 0; i3 < dsorted[2]; i3 += 2 * dsorted[3]) {
-                        for (std::size_t i4 = 0; i4 < dsorted[3]; ++i4) {
+        for (omp::idx_t i0 = 0; i0 < n; i0 += 2 * dsorted[0]) {
+            for (omp::idx_t i1 = 0; i1 < dsorted[0]; i1 += 2 * dsorted[1]) {
+                for (omp::idx_t i2 = 0; i2 < dsorted[1]; i2 += 2 * dsorted[2]) {
+                    for (omp::idx_t i3 = 0; i3 < dsorted[2]; i3 += 2 * dsorted[3]) {
+                        for (omp::idx_t i4 = 0; i4 < dsorted[3]; ++i4) {
                             kernel_core(psi, i0 + i1 + i2 + i3 + i4, d0, d1, d2, d3, mm, mmt);
                         }
                     }
@@ -202,11 +202,11 @@ void kernel(V& psi, unsigned id3, unsigned id2, unsigned id1, unsigned id0, M co
         }
     } else {
 #pragma omp for collapse(LOOP_COLLAPSE4) schedule(static)
-        for (std::size_t i0 = 0; i0 < n; i0 += 2 * dsorted[0]) {
-            for (std::size_t i1 = 0; i1 < dsorted[0]; i1 += 2 * dsorted[1]) {
-                for (std::size_t i2 = 0; i2 < dsorted[1]; i2 += 2 * dsorted[2]) {
-                    for (std::size_t i3 = 0; i3 < dsorted[2]; i3 += 2 * dsorted[3]) {
-                        for (std::size_t i4 = 0; i4 < dsorted[3]; ++i4) {
+        for (omp::idx_t i0 = 0; i0 < n; i0 += 2 * dsorted[0]) {
+            for (omp::idx_t i1 = 0; i1 < dsorted[0]; i1 += 2 * dsorted[1]) {
+                for (omp::idx_t i2 = 0; i2 < dsorted[1]; i2 += 2 * dsorted[2]) {
+                    for (omp::idx_t i3 = 0; i3 < dsorted[2]; i3 += 2 * dsorted[3]) {
+                        for (omp::idx_t i4 = 0; i4 < dsorted[3]; ++i4) {
                             if (((i0 + i1 + i2 + i3 + i4) & ctrlmask) == ctrlmask)
                                 kernel_core(psi, i0 + i1 + i2 + i3 + i4, d0, d1, d2, d3, mm, mmt);
                         }

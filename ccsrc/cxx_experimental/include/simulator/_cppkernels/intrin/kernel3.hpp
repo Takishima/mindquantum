@@ -86,10 +86,10 @@ void kernel(V& psi, unsigned id2, unsigned id1, unsigned id0, M const& m, std::s
 
     if (ctrlmask == 0) {
 #pragma omp for collapse(LOOP_COLLAPSE3) schedule(static)
-        for (std::size_t i0 = 0; i0 < n; i0 += 2 * dsorted[0]) {
-            for (std::size_t i1 = 0; i1 < dsorted[0]; i1 += 2 * dsorted[1]) {
-                for (std::size_t i2 = 0; i2 < dsorted[1]; i2 += 2 * dsorted[2]) {
-                    for (std::size_t i3 = 0; i3 < dsorted[2]; ++i3) {
+        for (omp::idx_t i0 = 0; i0 < n; i0 += 2 * dsorted[0]) {
+            for (omp::idx_t i1 = 0; i1 < dsorted[0]; i1 += 2 * dsorted[1]) {
+                for (omp::idx_t i2 = 0; i2 < dsorted[1]; i2 += 2 * dsorted[2]) {
+                    for (omp::idx_t i3 = 0; i3 < dsorted[2]; ++i3) {
                         kernel_core(psi, i0 + i1 + i2 + i3, d0, d1, d2, mm, mmt);
                     }
                 }
@@ -97,10 +97,10 @@ void kernel(V& psi, unsigned id2, unsigned id1, unsigned id0, M const& m, std::s
         }
     } else {
 #pragma omp for collapse(LOOP_COLLAPSE3) schedule(static)
-        for (std::size_t i0 = 0; i0 < n; i0 += 2 * dsorted[0]) {
-            for (std::size_t i1 = 0; i1 < dsorted[0]; i1 += 2 * dsorted[1]) {
-                for (std::size_t i2 = 0; i2 < dsorted[1]; i2 += 2 * dsorted[2]) {
-                    for (std::size_t i3 = 0; i3 < dsorted[2]; ++i3) {
+        for (omp::idx_t i0 = 0; i0 < n; i0 += 2 * dsorted[0]) {
+            for (omp::idx_t i1 = 0; i1 < dsorted[0]; i1 += 2 * dsorted[1]) {
+                for (omp::idx_t i2 = 0; i2 < dsorted[1]; i2 += 2 * dsorted[2]) {
+                    for (omp::idx_t i3 = 0; i3 < dsorted[2]; ++i3) {
                         if (((i0 + i1 + i2 + i3) & ctrlmask) == ctrlmask)
                             kernel_core(psi, i0 + i1 + i2 + i3, d0, d1, d2, mm, mmt);
                     }

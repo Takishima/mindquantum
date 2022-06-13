@@ -22,6 +22,7 @@
 
 #include "alignedallocator.hpp"
 #include "cintrin.hpp"
+#include "core/details/omp_compat.hpp"
 
 #define LOOP_COLLAPSE1 2
 #define LOOP_COLLAPSE2 3

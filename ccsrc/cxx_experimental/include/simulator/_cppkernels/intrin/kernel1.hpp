@@ -42,15 +42,15 @@ void kernel(V& psi, unsigned id0, M const& m, std::size_t ctrlmask) {
 
     if (ctrlmask == 0) {
 #pragma omp for collapse(LOOP_COLLAPSE1) schedule(static)
-        for (std::size_t i0 = 0; i0 < n; i0 += 2 * dsorted[0]) {
-            for (std::size_t i1 = 0; i1 < dsorted[0]; ++i1) {
+        for (omp::idx_t i0 = 0; i0 < n; i0 += 2 * dsorted[0]) {
+            for (omp::idx_t i1 = 0; i1 < dsorted[0]; ++i1) {
                 kernel_core(psi, i0 + i1, d0, mm, mmt);
             }
         }
     } else {
 #pragma omp for collapse(LOOP_COLLAPSE1) schedule(static)
-        for (std::size_t i0 = 0; i0 < n; i0 += 2 * dsorted[0]) {
-            for (std::size_t i1 = 0; i1 < dsorted[0]; ++i1) {
+        for (omp::idx_t i0 = 0; i0 < n; i0 += 2 * dsorted[0]) {
+            for (omp::idx_t i1 = 0; i1 < dsorted[0]; ++i1) {
                 if (((i0 + i1) & ctrlmask) == ctrlmask)
                     kernel_core(psi, i0 + i1, d0, mm, mmt);
             }
