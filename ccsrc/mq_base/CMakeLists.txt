@@ -42,7 +42,7 @@ endif()
 target_sources(mq_base PRIVATE $<BUILD_INTERFACE:${MQ_BASE_HEADERS}>)
 target_include_directories(mq_base PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
                                           $<INSTALL_INTERFACE:${MQ_INSTALL_INCLUDEDIR}>)
-target_link_libraries(mq_base PUBLIC mindquantum_setup)
+target_link_libraries(mq_base PUBLIC mindquantum_setup ${MQ_OPENMP_TARGET})
 append_to_property(mq_install_targets GLOBAL mq_base)
 
 # ==============================================================================

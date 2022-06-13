@@ -274,6 +274,30 @@ int main() {
 
 # --------------------------------------
 
+if(compiler_has_concepts AND NOT compiler_has_concepts_library)
+  check_cxx_code_compiles(
+    compiler_has_concept_destructible
+    MQ_HAS_CONCEPT_DESTRUCTIBLE
+    cxx_std_20
+    [[
+#include <concepts>
+
+template <std::destructible T>
+void foo(T* t) { delete t; }
+class A {};
+int main() {
+  auto* a = new A;
+  foo(a);
+}
+]])
+elseif(compiler_has_concepts) # C++20 concepts + concepts library
+  set(MQ_HAS_CONCEPT_DESTRUCTIBLE TRUE)
+else()
+  set(MQ_HAS_CONCEPT_DESTRUCTIBLE FALSE)
+endif()
+
+# --------------------------------------
+
 check_cxx_code_compiles(
   compiler_has_std_launder
   MQ_HAS_STD_LAUNDER

@@ -18,7 +18,8 @@
 
 add_library(mindquantum_cxx STATIC)
 set_target_properties(mindquantum_cxx PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
-target_link_libraries(mindquantum_cxx PUBLIC cxx20_compat cmake_config mindquantum_setup intrin_flag_CXX)
+target_link_libraries(mindquantum_cxx PUBLIC cxx20_compat cmake_config mindquantum_setup intrin_flag_CXX
+                                             ${MQ_OPENMP_TARGET})
 append_to_property(mq_install_targets GLOBAL mindquantum_cxx)
 
 target_compile_features(mindquantum_cxx PUBLIC $<IF:$<COMPILE_FEATURES:cxx_std_20>,cxx_std_20,cxx_std_17>)

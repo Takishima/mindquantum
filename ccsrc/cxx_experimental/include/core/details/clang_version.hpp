@@ -40,8 +40,11 @@
 #            define MQ_CLANG_MAJOR 11
 #        elif mq_clang_version == 1300
 #            define MQ_CLANG_MAJOR 12
+#        elif mq_clang_version == 1316
+#            define MQ_CLANG_MAJOR 13
 #        else
-#            define MQ_CLANG_MAJOR 12
+#            define MQ_CLANG_MAJOR 13
+
 #        endif
 #        if mq_clang_version < 702
 #            define MQ_CLANG_MINOR 7

@@ -21,7 +21,7 @@ pybind11_add_module(mqbackend MODULE OUTPUT_HINT "${MQ_PYTHON_PACKAGE_NAME}" ${C
 target_compile_definitions(mqbackend PUBLIC $<$<BOOL:${ENABLE_PROJECTQ}>:ENABLE_PROJECTQ>)
 target_include_directories(mqbackend PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>)
 
-target_link_libraries(mqbackend PUBLIC ${PARALLEL_LIBS} "$<$<BOOL:${ENABLE_PROJECTQ}>:mq_projectq>" mq_base)
+target_link_libraries(mqbackend PUBLIC ${MQ_OPENMP_TARGET} "$<$<BOOL:${ENABLE_PROJECTQ}>:mq_projectq>" mq_base)
 
 python_install_set_rpath(mqbackend "")
 

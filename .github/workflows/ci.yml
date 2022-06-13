@@ -169,11 +169,24 @@ jobs:
   # ============================================================================
 
   macos:
-    runs-on: macos-latest
-    name: "MacOS • x64"
+    runs-on: macos-11
+    name: "MacOS 11 • ${{ matrix.xcode }} • x64"
     env:
+      DEVELOPER_DIR: "/Applications/${{ matrix.xcode }}.app/Contents/Developer"
       CC: /usr/bin/clang
       CXX: /usr/bin/clang++
+    strategy:
+      fail-fast: false
+      matrix:
+        xcode:
+          - "Xcode_11.7"    # Not available on macos-12
+          - "Xcode_12.4"    # Not available on macos-12
+          - "Xcode_12.5.1"  # Not available on macos-12
+          - "Xcode_13.0"    # Not available on macos-12
+          - "Xcode_13.1"
+          - "Xcode_13.2.1"
+          # - "Xcode_13.3.1"  # macos-12 only
+          # - "Xcode_13.4.1"  # macos-12 only
     steps:
       - uses: actions/checkout@v2
 
@@ -195,7 +208,7 @@ jobs:
       - name: Setup CCache
         uses: hendrikmuhs/ccache-action@v1.2.2
         with:
-          key: macos-ccache
+          key: macos-${{ matrix.xcode }}-ccache
           max-size: 75M
 
       - name: Cache Python virtualenv
@@ -210,7 +223,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: build/.mqlibs
-          key: macos-third-party-libs-${{ hashFiles('third_party/**') }}-${{ secrets.cache_ver }}
+          key: macos-${{ matrix.xcode }}-third-party-libs-${{ hashFiles('third_party/**') }}-${{ secrets.cache_ver }}
 
       - name: Configure
         run: >-

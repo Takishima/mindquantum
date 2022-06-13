@@ -78,7 +78,7 @@ class Simulator {
             vec_.resize(1UL << N_, 0.);
 #    else
             // Same as above, but we use OpenMP
-            auto newvec = StateVector(1UL << N_, 0.
+            auto newvec = StateVector(1UL << N_, 0.);
 #        pragma omp parallel for schedule(static)
             for (std::size_t i = 0; i < vec_.size(); ++i) {
                 newvec[i] = vec_[i];
@@ -292,7 +292,7 @@ class Simulator {
 #if !USE_STATIC_STATEVECTOR
         StateVector newvec(vec_.size(), 0.);
         std::vector<int> res(quregs.size());
-#    pragma omp parallel for schedule(static) firstprivate(res) num_threads(num_threads)
+#    pragma omp parallel for schedule(static) firstprivate(res)
 #else
         StateVector newvec;  // avoid costly memory reallocations
         if (tmpBuff1_.capacity() >= vec_.size()) {

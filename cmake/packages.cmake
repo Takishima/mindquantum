@@ -18,6 +18,8 @@
 
 # lint_cmake: -whitespace/indent
 
+include(debug_print)
+
 # OpenMP
 
 set(PARALLEL_LIBS)
@@ -28,12 +30,14 @@ if(USE_OPENMP)
       # Homebrew installs libomp in ${LIBOMP_PREFIX}/lib and the headers in ${LIBOMP_PREFIX}/include
       execute_process(COMMAND ${BREW_CMD} --prefix libomp OUTPUT_VARIABLE LIBOMP_PREFIX)
       string(STRIP ${LIBOMP_PREFIX} LIBOMP_PREFIX)
+      debug_print(STATUS "LIBOMP_PREFIX = ${LIBOMP_PREFIX}")
 
       find_library(
         LIBOMP_LIB omp gomp libomp
         HINTS ${LIBOMP_PREFIX}
         PATH_SUFFIXES lib
         NO_DEFAULT_PATH)
+      debug_print(STATUS "LIBOMP_LIB = ${LIBOMP_LIB}")
       if(LIBOMP_LIB)
         get_filename_component(LIBOMP_DIR ${LIBOMP_LIB} DIRECTORY)
         list(APPEND CMAKE_LIBRARY_PATH ${LIBOMP_DIR})
@@ -44,9 +48,9 @@ if(USE_OPENMP)
         HINTS ${LIBOMP_PREFIX}
         PATH_SUFFIXES include
         NO_DEFAULT_PATH)
+      debug_print(STATUS "LIBOMP_INC = ${LIBOMP_INC}")
       if(LIBOMP_INC)
-        get_filename_component(LIBOMP_DIR ${LIBOMP_INC} DIRECTORY)
-        list(APPEND CMAKE_INCLUDE_PATH ${LIBOMP_DIR})
+        list(APPEND CMAKE_INCLUDE_PATH ${LIBOMP_INC})
       else()
         message(WARNING "Unable to locate omp.h, the code might not compile properly.\n"
                         "You might want to try installing the `libomp` Homebrew formula: brew install libomp")
@@ -58,6 +62,7 @@ if(USE_OPENMP)
         PATHS /opt/local/lib
         PATH_SUFFIXES libomp
         NO_DEFAULT_PATH)
+      debug_print(STATUS "LIBOMP_LIB = ${LIBOMP_LIB}")
       if(LIBOMP_LIB)
         get_filename_component(LIBOMP_DIR ${LIBOMP_LIB} DIRECTORY)
         list(APPEND CMAKE_LIBRARY_PATH ${LIBOMP_DIR})
@@ -68,14 +73,16 @@ if(USE_OPENMP)
         PATHS /opt/local/include
         PATH_SUFFIXES libomp
         NO_DEFAULT_PATH)
+      debug_print(STATUS "LIBOMP_INC = ${LIBOMP_INC}")
       if(LIBOMP_INC)
-        get_filename_component(LIBOMP_DIR ${LIBOMP_INC} DIRECTORY)
-        list(APPEND CMAKE_INCLUDE_PATH ${LIBOMP_DIR})
+        list(APPEND CMAKE_INCLUDE_PATH ${LIBOMP_INC})
       else()
         message(WARNING "Unable to locate omp.h, the code might not compile properly.\n"
                         "You might want to try installing the `libomp` MacPorts port: sudo port install libomp")
       endif()
     endif()
+    debug_print(STATUS "CMAKE_INCLUDE_PATH = ${CMAKE_INCLUDE_PATH}")
+    debug_print(STATUS "CMAKE_LIBRARY_PATH = ${CMAKE_LIBRARY_PATH}")
   endif()
 
   # ----------------------------------------------------------------------------
@@ -85,13 +92,16 @@ if(USE_OPENMP)
   endif()
   find_package(OpenMP)
   if(OpenMP_FOUND)
-    list(APPEND PARALLEL_LIBS OpenMP::OpenMP_CXX)
+    set(MQ_OPENMP_TARGET OpenMP::OpenMP_CXX)
+    list(APPEND PARALLEL_LIBS ${OpenMP_target})
   else()
+    set(MQ_OPENMP_TARGET)
     # cmake-lint: disable=C0103
     set(USE_OPENMP
         FALSE
         CACHE INTERNAL "Disabled OpenMP support")
   endif()
+
   if(APPLE)
     list(POP_FRONT CMAKE_MODULE_PATH)
   endif()
