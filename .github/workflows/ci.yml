@@ -182,7 +182,7 @@ jobs:
           - "Xcode_11.7"    # Not available on macos-12
           - "Xcode_12.4"    # Not available on macos-12
           - "Xcode_12.5.1"  # Not available on macos-12
-          - "Xcode_13.0"    # Not available on macos-12
+          # - "Xcode_13.0"    # Not available on macos-12
           - "Xcode_13.1"
           - "Xcode_13.2.1"
           # - "Xcode_13.3.1"  # macos-12 only
