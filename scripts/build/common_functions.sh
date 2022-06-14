@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# shellcheck disable=SC2154
+# shellcheck disable=SC2154,SC2034
 
 BASEPATH=$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}" )" &> /dev/null && pwd )
 
@@ -251,7 +251,6 @@ function set_variable_from_ini {
     if [ -n "$target_section" ]; then
         __set_variable_from_ini "$target_section" $check_set $check_null $do_dry_run
     else
-        # shellcheck disable=SC2154
         for section in "${configuration_sections[@]}"; do
             __set_variable_from_ini "$section" $check_set $check_null $do_dry_run
         done

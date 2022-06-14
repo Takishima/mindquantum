@@ -28,6 +28,7 @@
 #include <tuple>
 #include <type_traits>
 #include <utility>
+#include <vector>
 
 #include <tweedledum/IR/Circuit.h>
 #include <tweedledum/Passes/Utility/shallow_duplicate.h>

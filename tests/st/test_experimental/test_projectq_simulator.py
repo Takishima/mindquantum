@@ -121,7 +121,10 @@ def run_projectq(gate, n_qubits, seed):
 )
 @has_projectq
 def test_single_qubit_gates(mq_gate, pq_gate):
-    """Description: Test single qubit gates."""
+    """
+    Description: Test single qubit gates.
+    Expectation: Success
+    """
     seed = 98138
     n_qubits = 1
 
@@ -146,7 +149,10 @@ def test_single_qubit_gates(mq_gate, pq_gate):
 )
 @has_projectq
 def test_two_qubit_gates(mq_gate, pq_gate):
-    """Description: Test two qubit gates."""
+    """
+    Description: Test two qubit gates.
+    Expectation: Success
+    """
     seed = 98138
     n_qubits = 2
 
@@ -185,7 +191,10 @@ def test_two_qubit_gates(mq_gate, pq_gate):
 )
 @has_projectq
 def test_single_qubit_param_gates(angle, mq_gate, pq_gate):
-    """Description: Test single qubit single parameter gates."""
+    """
+    Description: Test single qubit single parameter gates.
+    Expectation: Success
+    """
     seed = 98138
     n_qubits = 1
 
@@ -224,7 +233,10 @@ def test_single_qubit_param_gates(angle, mq_gate, pq_gate):
 )
 @has_projectq
 def test_two_qubit_param_gates(angle, mq_gate, pq_gate):
-    """Description: Test two qubits single parameter gates."""
+    """
+    Description: Test two qubits single parameter gates.
+    Expectation: Success
+    """
     seed = 98138
     n_qubits = 2
 

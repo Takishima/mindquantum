@@ -84,6 +84,7 @@ if [[ "${created_venv:-0}" -eq 1 || "${do_update_venv:-0}" -eq 1 ]]; then
         pkgs+=(breathe sphinx sphinx_rtd_theme importlib-metadata myst-parser)
     fi
 
+    # shellcheck disable=SC2154
     if [ -n "${python_extra_pkgs[*]}" ]; then
         pkgs+=("${python_extra_pkgs[@]}")
     fi

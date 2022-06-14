@@ -20,6 +20,9 @@
 #include "core/circuit_block.hpp"
 #include "core/circuit_manager.hpp"
 
+#include <utility>
+#include <vector>
+
 namespace mindquantum::details {
 namespace impl {
 template <bool reverse>
@@ -136,7 +139,7 @@ class ExternalBlockView {
             inst.foreach_cbit(
                 [&wires = cbits, &block](const cbit_t& cbit) { wires.emplace_back(block.translate_id_td(cbit)); });
 
-            // TODO: Can we get rid of the temporary variable here?
+            // TODO(dnguyen): Can we get rid of the temporary variable here?
             fn(instruction_t(inst, qubits, cbits));
             qubits.clear();
             cbits.clear();
