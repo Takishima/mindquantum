@@ -49,7 +49,7 @@ void mindquantum::cengines::ResourceCounter::add_gate_counts(const td::Circuit& 
         } else if (kind == ops::Rzz::kind()) {
             add_angle_gate(ops::Rzz, 1);
         }
-        // TODO: missing QubitOperator, TimeEvolution
+        // TODO(dnguyen): missing QubitOperator, TimeEvolution
         else {
             ++gate_counts_[std::make_tuple(kind, param_t{}, n_controls)];
         }

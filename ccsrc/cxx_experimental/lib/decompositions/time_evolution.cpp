@@ -103,7 +103,7 @@ void decompose_time_evolution_individual_terms(CircuitType& result, const instru
 
     const auto& term = std::begin(hamiltonian.get_terms())->first;
     const auto& coefficient = std::abs(std::begin(hamiltonian.get_terms())->second);
-    // TODO: Make imaginary time possible!
+    // TODO(dnguyen): Make imaginary time possible!
     auto qubits = inst.qubits();
     decltype(qubits) targets(std::end(qubits) - inst.num_targets(), std::end(qubits));
     assert(std::size(targets) > 0 && "TimeEvolution must have targets");

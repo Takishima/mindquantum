@@ -10,6 +10,7 @@
 
 "mindquantum/ccsrc/cxx_experimental"                         "readability/braces"
 "mindquantum/ccsrc/cxx_experimental"                         "runtime/references"
+"mindquantum/ccsrc/cxx_experimental"                         "whitespace/newlines"
 
 "mindquantum/ccsrc"                                          "build/include_subdir"
 "mindquantum/ccsrc/backends/projectq"                        "build/include_subdir"
@@ -19,3 +20,5 @@
 "mindquantum/ccsrc/pr"                                       "build/include_subdir"
 "mindquantum/ccsrc/projector"                                "build/include_subdir"
 "mindquantum/ccsrc/sparse"                                   "build/include_subdir"
+
+"mindquantum/ccsrc/cxx_experimental/include/ops/parametric"  "runtime/explicit"
