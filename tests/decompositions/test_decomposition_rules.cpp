@@ -1036,7 +1036,7 @@ TEST_CASE("Decompositions/rules/Toffoli2CNOTAndT", "[decompositions][rules]") {
         REQUIRE(atom->is_applicable(inst));
         atom->apply(decomposed, inst);
         CHECK(std::size(decomposed) == 15);
-        //  TODO(dnguyen): Fix failing test!
+        // TODO(dnguyen): Fix failing test!
         // CHECK(check_unitary(original, decomposed));
     }
 }

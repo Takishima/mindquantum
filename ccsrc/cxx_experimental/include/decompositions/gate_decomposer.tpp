@@ -25,6 +25,8 @@
 #include "gate_decomposer.hpp"
 // clang-format on
 
+#include <utility>
+
 namespace mindquantum::decompositions {
 
     // =========================================================================

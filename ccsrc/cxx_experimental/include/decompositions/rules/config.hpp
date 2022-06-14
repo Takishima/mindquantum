@@ -19,13 +19,14 @@
 #    include <numbers>
 #endif  // __has_include(<numbers>) && C++20+
 #include <string_view>
+#include <tuple>
 
 #include "decompositions/config.hpp"
 
 #include "decompositions/atom_meta.hpp"
 
 namespace mindquantum::decompositions::rules {
-using namespace std::literals::string_view_literals;
+using namespace std::literals::string_view_literals;  // NOLINT(build/namespaces_literals)
 
 #if __has_include(<numbers>) && __cplusplus > 201703L
 static constexpr auto PI_VAL = std::numbers::pi;

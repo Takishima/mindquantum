@@ -97,7 +97,7 @@ void mindquantum::python::init_circuit(pybind11::module& module) {
         .DEF_APPLY_OPERATOR_OVERLOAD(ops::X)
         .DEF_APPLY_OPERATOR_OVERLOAD(ops::Y)
         .DEF_APPLY_OPERATOR_OVERLOAD(ops::Z)
-        //  TODO(dnguyen): Add TimeEvolution, etc.
+        // TODO(dnguyen): Add TimeEvolution, etc.
         .DEF_APPLY_OPERATOR_OVERLOAD(instruction_t)
         .def("apply_operator", static_cast<inst_ref_t (circuit_t::*)(const instruction_t&)>(&circuit_t::apply_operator))
         .def("append", &circuit_t::append, py::arg("other"), py::arg("qubits"), py::arg("cbits") = cbits_t{})

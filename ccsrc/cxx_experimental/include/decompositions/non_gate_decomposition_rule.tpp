@@ -23,6 +23,10 @@
 //     is only intended to be included directly by non_gate_decomposition_rule.hpp
 #include "decompositions/non_gate_decomposition_rule.hpp"
 
+#include <tuple>
+#include <utility>
+
+
 namespace mindquantum::decompositions {
 
     // =========================================================================

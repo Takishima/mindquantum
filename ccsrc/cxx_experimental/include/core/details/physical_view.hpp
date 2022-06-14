@@ -27,7 +27,7 @@ class PhysicalView {
     using manager_t = CircuitManager;
     using block_t = CircuitBlock;
 
-    PhysicalView(const manager_t& manager) : manager_{manager} {
+    explicit PhysicalView(const manager_t& manager) : manager_{manager} {
     }
 
     template <typename Fn>

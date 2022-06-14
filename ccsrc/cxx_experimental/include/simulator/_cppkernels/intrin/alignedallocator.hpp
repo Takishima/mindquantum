@@ -22,6 +22,7 @@
 #include <cstddef>
 #include <memory>
 #include <new>
+#include <utility>
 
 #if __cplusplus < 201103L
 #    define noexcept
@@ -77,11 +78,11 @@ class aligned_allocator {
 #if __cplusplus >= 201103L
     template <typename C, class... Args>
     void construct(C* c, Args&&... args) {
-        new ((void*) c) C(std::forward<Args>(args)...);
+         new (reinterpret_cast<void*>(c)) C(std::forward<Args>(args)...);
     }
 #else
     void construct(pointer p, const_reference t) {
-        new ((void*) p) T(t);
+         new (reinterpret_cast<void*>(p)) T(t);
     }
 #endif
 

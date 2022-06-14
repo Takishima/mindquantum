@@ -14,6 +14,7 @@
 
 #ifndef PARAMETRIC_SUBSTITUTIONS_HPP
 #define PARAMETRIC_SUBSTITUTIONS_HPP
+#include <vector>
 
 #include "ops/parametric/config.hpp"
 

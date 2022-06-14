@@ -20,6 +20,7 @@
 #include <iomanip>
 #include <iostream>
 #include <set>
+#include <utility>
 #include <vector>
 
 #include "intrin/alignedallocator.hpp"
@@ -28,7 +29,6 @@
 
 #ifdef MEASURE_TIMINGS
 #    include <chrono>
-#    include <iostream>
 #endif  // MEASURE_TIMINGS
 
 namespace projectq {

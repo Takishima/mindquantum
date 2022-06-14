@@ -22,6 +22,7 @@
 #include <map>
 #include <random>
 #include <tuple>
+#include <utility>
 #include <vector>
 
 #ifdef USE_OPENMP
@@ -60,7 +61,8 @@ class Simulator {
     using TermsDict = std::vector<std::pair<Term, calc_type>>;
     using ComplexTermsDict = std::vector<std::pair<Term, complex_type>>;
 
-    Simulator(unsigned seed = 1) : N_(0), vec_(1, 0.), fusion_qubits_min_(4), fusion_qubits_max_(5), rnd_eng_(seed) {
+    explicit Simulator(unsigned seed = 1)
+        : N_(0), vec_(1, 0.), fusion_qubits_min_(4), fusion_qubits_max_(5), rnd_eng_(seed) {
         vec_[0] = 1.;  // all-zero initial state
         std::uniform_real_distribution<double> dist(0., 1.);
         rng_ = std::bind(dist, std::ref(rnd_eng_));
@@ -139,7 +141,7 @@ class Simulator {
         auto pos = map_[id];
         std::size_t delta = (1UL << pos);
 
-        short up = 0, down = 0;
+        int16_t up = 0, down = 0;
 #pragma omp parallel for schedule(static) reduction(| : up, down)
         for (omp::idx_t i = 0; i < vec_.size(); i += 2 * delta) {
             for (std::size_t j = 0; j < delta; ++j) {
@@ -512,7 +514,7 @@ class Simulator {
             }
         }
         unsigned s = std::abs(time) * op_nrm + 1.;
-        complex_type correction = std::exp(-time * I * tr / (double) s);
+        complex_type correction = std::exp(-time * I * tr / static_cast<double>(s));
         auto output_state = vec_;
         auto ctrlmask = get_control_mask(ctrl);
         for (unsigned i = 0; i < s; ++i) {

@@ -21,6 +21,8 @@
 #    include "core/concepts.hpp"
 #endif  // MQ_HAS_CONCEPTS
 
+#include <algorithm>
+#include <functional>
 #include <map>
 #include <memory>
 #include <optional>
@@ -28,6 +30,7 @@
 #include <tuple>
 #include <type_traits>
 #include <utility>
+#include <vector>
 
 #include <tweedledum/IR/Circuit.h>
 #include <tweedledum/Target/Device.h>
@@ -72,7 +75,7 @@ class QubitID {
     /*!
      * \param id External qubit ID
      */
-    constexpr QubitID(qubit_id_t id) : id_(id) {
+    constexpr QubitID(qubit_id_t id) : id_(id) {  // NOLINT(runtime/explicit)
     }
 
     //! Simple getter

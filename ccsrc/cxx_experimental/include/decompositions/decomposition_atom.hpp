@@ -15,9 +15,12 @@
 #ifndef DECOMPOSITION_ATOM_HPP
 #define DECOMPOSITION_ATOM_HPP
 
+#include <algorithm>
 #include <array>
+#include <memory>
 #include <new>
 #include <type_traits>
+#include <utility>
 
 #include "core/config.hpp"
 #include "decompositions/config.hpp"
@@ -36,7 +39,7 @@ class DecompositionAtom {
 
     template <typename atom_t,
               typename = std::enable_if_t<!std::is_same_v<std::remove_cvref_t<atom_t>, DecompositionAtom>>>
-    DecompositionAtom(atom_t&& atom) noexcept {
+    DecompositionAtom(atom_t&& atom) noexcept {  // NOLINT(runtime/explicit)
         static_assert(std::is_trivially_copyable_v<std::remove_cvref_t<atom_t>>);
         constexpr bool is_small = sizeof(Model<std::remove_cvref_t<atom_t>, true>) <= small_size;
         new (&model_) Model<std::remove_cvref_t<atom_t>, is_small>(std::forward<atom_t>(atom));
@@ -183,7 +186,7 @@ void apply_gate(atom_t& atom, circuit_t& circuit, const instruction_t& inst) {
     }
 
     MQ_WITH_CONTROL(circuit, controlled, free_controls) {
-        //  TODO(dnguyen): Fix cbits argument if required in the future!
+        // TODO(dnguyen): Fix cbits argument if required in the future!
         atom.apply(controlled, static_cast<const operator_t&>(inst), qubits, {});
     }
 }

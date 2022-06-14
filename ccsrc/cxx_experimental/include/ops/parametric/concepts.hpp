@@ -36,9 +36,9 @@ concept symengine_expr = std::is_convertible_v<expr_t, SymEngine::RCP<const SymE
 template <typename param_t>
 concept parameter = requires(param_t p) {
     // clang-format off
-            requires std::same_as<decltype(param_t::name), const std::string_view>;
-            requires (std::same_as<typename param_t::param_type, ops::parametric::details::real_tag_t>
-                      || std::same_as<typename param_t::param_type, ops::parametric::details::complex_tag_t>);
+     requires std::same_as<decltype(param_t::name), const std::string_view>;
+     requires (std::same_as<typename param_t::param_type, ops::parametric::details::real_tag_t>
+               || std::same_as<typename param_t::param_type, ops::parametric::details::complex_tag_t>);
     // clang-format on
 };
 

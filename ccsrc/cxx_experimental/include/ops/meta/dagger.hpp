@@ -19,6 +19,7 @@
 #include <string>
 #include <string_view>
 #include <type_traits>
+#include <utility>
 
 #include <tweedledum/IR/Operator.h>
 #include <tweedledum/IR/OperatorTraits.h>

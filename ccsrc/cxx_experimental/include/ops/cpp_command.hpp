@@ -37,7 +37,7 @@ class Command {
         return control_qubits_;
     }
     const gate_t& get_gate() const {
-        assert(bool(operation_));
+        assert(static_cast<bool>(operation_));
         return *operation_;
     }
 
@@ -45,7 +45,7 @@ class Command {
     qureg_t qubits_;
     qureg_t control_qubits_;
 
-    // TODO: Can we do better than this?
+    // TODO(dnguyen): Can we do better than this?
     std::unique_ptr<td::Operator> operation_;
 };
 

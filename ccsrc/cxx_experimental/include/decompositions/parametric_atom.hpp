@@ -15,6 +15,8 @@
 #ifndef PARAMETRIC_ATOM_HPP
 #define PARAMETRIC_ATOM_HPP
 
+#include <tuple>
+
 #include "core/config.hpp"
 #include "decompositions/config.hpp"
 #include "ops/parametric/config.hpp"
@@ -25,7 +27,7 @@
 
 namespace mindquantum::decompositions {
 namespace details {
-using namespace ops::parametric::details;
+using namespace ops::parametric::details;  // NOLINT(build/namespaces)
 }  // namespace details
 
 //! A decomposition atom representing a gate with some free-parameter(s)

@@ -15,6 +15,8 @@
 #ifndef DECOMPOSITION_RULE_RZ2RXANDRY_HPP
 #define DECOMPOSITION_RULE_RZ2RXANDRY_HPP
 
+#include <tuple>
+
 #include <symengine/constants.h>
 #include <symengine/integer.h>
 #include <symengine/mul.h>

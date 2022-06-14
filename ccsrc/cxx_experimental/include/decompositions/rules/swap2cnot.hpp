@@ -15,6 +15,8 @@
 #ifndef DECOMPOSITION_RULE_SWAP2CNOT_HPP
 #define DECOMPOSITION_RULE_SWAP2CNOT_HPP
 
+#include <tuple>
+
 #include "decompositions/rules/config.hpp"
 
 #include "decompositions/gate_decomposition_rule.hpp"

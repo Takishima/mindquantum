@@ -105,7 +105,6 @@ static std::map<std::string, std::string, std::less<>> kind_map = {
 };
 }  // namespace details
 
-// TODO: code duplication is bad...
 std::string to_string(std::string_view kind) {
     if (auto it = details::kind_map.find(kind); it != std::end(details::kind_map)) {
         return it->second;
@@ -114,29 +113,28 @@ std::string to_string(std::string_view kind) {
     }
 }
 
-// TODO: code duplication is bad...
 std::string to_string(const td::Instruction& inst) {
     const auto& kind = inst.kind();
     if (auto it = details::kind_map.find(kind); it != std::end(details::kind_map)) {
         if (it->first == td::Op::P::kind()) {
-            return fmt::format("R({})", inst.cast<td::Op::P>().angle());
+            return fmt::format("{}({})", it->second, inst.cast<td::Op::P>().angle());
         } else if (it->first == td::Op::Rx::kind()) {
-            return fmt::format("Rx({})", inst.cast<td::Op::Rx>().angle());
+            return fmt::format("{}({})", it->second, inst.cast<td::Op::Rx>().angle());
         } else if (it->first == td::Op::Ry::kind()) {
-            return fmt::format("Ry({})", inst.cast<td::Op::Ry>().angle());
+            return fmt::format("{}({})", it->second, inst.cast<td::Op::Ry>().angle());
         } else if (it->first == td::Op::Rz::kind()) {
             // NB: see definition of td::Op::Rz for 2 factor
-            return fmt::format("Rz({})", 2 * inst.cast<td::Op::Rz>().angle());
+            return fmt::format("{}({})", it->second, 2 * inst.cast<td::Op::Rz>().angle());
         } else if (it->first == td::Op::Rxx::kind()) {
             // NB: see definition of td::Op::Rxx for 2 factor
-            return fmt::format("Rxx({})", 2 * inst.cast<td::Op::Rxx>().angle());
+            return fmt::format("{}({})", it->second, 2 * inst.cast<td::Op::Rxx>().angle());
         } else if (it->first == td::Op::Ryy::kind()) {
             // NB: see definition of td::Op::Ryy for 2 factor
-            return fmt::format("Ryy({})", 2 * inst.cast<td::Op::Ryy>().angle());
+            return fmt::format("{}({})", it->second, 2 * inst.cast<td::Op::Ryy>().angle());
         } else if (it->first == td::Op::Rzz::kind()) {
-            return fmt::format("Rzz({})", inst.cast<td::Op::Rzz>().angle());
+            return fmt::format("{}({})", it->second, inst.cast<td::Op::Rzz>().angle());
         } else if (it->first == ops::Ph::kind()) {
-            return fmt::format("Ph({})", inst.cast<ops::Ph>().angle());
+            return fmt::format("{}({})", it->second, inst.cast<ops::Ph>().angle());
         } else {
             return it->second;
         }

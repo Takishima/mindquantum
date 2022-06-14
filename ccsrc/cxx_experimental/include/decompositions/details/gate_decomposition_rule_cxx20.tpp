@@ -58,7 +58,7 @@ namespace mindquantum::decompositions {
                        /* It is ok for a decomposition rule constrained on N control qubits to decompose an instruction
                         * with M >= N qubits; the "extra" control qubits are simply counted as "free" control qubits.
                         */
-                       || derived_t::num_controls() <= inst.num_controls());  // TODO(dnguyen): Should we use == instead?
+                       || derived_t::num_controls() <= inst.num_controls());  // TODO(dnguyen): Use == instead?
         }
     }
 }  // namespace mindquantum::decompositions

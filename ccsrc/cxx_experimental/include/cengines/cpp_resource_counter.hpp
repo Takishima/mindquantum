@@ -18,6 +18,8 @@
 #include <map>
 #include <optional>
 #include <string_view>
+#include <pair>
+#include <tuple>
 
 #include <tweedledum/IR/Circuit.h>
 
@@ -38,7 +40,7 @@ struct ResourceCounter {
     //! Add gates in Network to gate (class) counts
     void add_gate_counts(const tweedledum::Circuit& network);
 
-    // TODO: calculate max_width properly!
+    // TODO(dnguyen): calculate max_width properly!
     std::size_t max_width_;
     std::map<class_desc_t, std::size_t> gate_class_counts_;
     std::map<gate_desc_t, std::size_t> gate_counts_;

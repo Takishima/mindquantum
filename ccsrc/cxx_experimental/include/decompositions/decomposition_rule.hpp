@@ -16,6 +16,7 @@
 #define DECOMPOSITION_RULE_HPP
 
 #include <type_traits>
+#include <utility>
 
 #include "decompositions/config.hpp"
 #include "ops/parametric/config.hpp"

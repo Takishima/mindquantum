@@ -124,7 +124,7 @@ PauliTerm<T> GenerateRandomPauliTerm(Index n_qubits) {
     std::default_random_engine e(std::clock());
     std::uniform_real_distribution<T> ut(-1.0, 1.0);
     auto coeff = ut(e);
-    std::uniform_int_distribution<short> uit(0, 3);
+    std::uniform_int_distribution<int16_t> uit(0, 3);
     VT<PauliWord> pws;
     for (Index i = 0; i < n_qubits; i++) {
         auto p = uit(e);

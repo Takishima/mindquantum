@@ -17,6 +17,8 @@
 
 #include <cmath>
 
+#include <utility>
+
 #include <symengine/constants.h>
 #include <symengine/logic.h>
 #include <symengine/mul.h>

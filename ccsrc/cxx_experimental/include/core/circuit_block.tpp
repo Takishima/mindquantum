@@ -19,6 +19,9 @@
 #     error This file must only be included by circuit_block.hpp!
 #endif  // !CIRCUIT_MANAGER_HPP
 
+#include <vector>
+#include <algorithm>
+
 // clang-format off
 // NB: This is mainly for syntax checkers and completion helpers as this file is only intended to be included directly
 //     by circuit_manager.hpp

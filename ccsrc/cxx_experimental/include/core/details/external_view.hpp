@@ -15,13 +15,13 @@
 #ifndef EXTERNAL_VIEW_HPP
 #define EXTERNAL_VIEW_HPP
 
+#include <utility>
+#include <vector>
+
 #include "core/config.hpp"
 
 #include "core/circuit_block.hpp"
 #include "core/circuit_manager.hpp"
-
-#include <utility>
-#include <vector>
 
 namespace mindquantum::details {
 namespace impl {

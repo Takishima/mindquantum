@@ -17,6 +17,7 @@
 
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include <catch2/catch.hpp>
 
@@ -27,7 +28,7 @@
 template <typename Range>
 class InstructionPtrRange : public Catch::MatcherBase<Range> {
  public:
-    InstructionPtrRange(const Range& range) : range_{range} {
+    explicit InstructionPtrRange(const Range& range) : range_{range} {
     }
 
     bool match(const Range& other) const override {
@@ -42,7 +43,7 @@ class InstructionPtrRange : public Catch::MatcherBase<Range> {
                           });
     }
 
-    virtual std::string describe() const override {
+    std::string describe() const override {
         std::ostringstream ss;
         ss << "Instructions equal. Reference value: ";
         for (const auto& inst : range_) {

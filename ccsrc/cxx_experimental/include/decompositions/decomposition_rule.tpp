@@ -16,6 +16,7 @@
 #define DECOMPOSITION_RULE_TPP
 
 #include "decompositions/config.hpp"
+#include <tuple>
 
 #include "decompositions/decomposition_atom.hpp"
 #ifndef DECOMPOSITION_RULE_HPP

@@ -399,7 +399,7 @@ class Rx2Rz
                     return;
                 } else if constexpr (std::is_same_v<param_t, param_list_t>) {
                     if (std::size(param) == 1) {
-                        //  TODO(dnguyen): This (.eval_smart()) should be taken care of by the apply() method...
+                        // TODO(dnguyen): This (.eval_smart()) should be taken care of by the apply() method...
                         atom<ops::parametric::Rz>()->apply(circuit, ops::parametric::Rz{param[0]}.eval_smart(), qubits);
                         return;
                     }
@@ -526,7 +526,7 @@ class Ph2R
                     return;
                 } else if constexpr (std::is_same_v<param_t, param_list_t>) {
                     if (std::size(param) == 1) {
-                        //  TODO(dnguyen): This (.eval_smart()) should be taken care of by the apply() method...
+                        // TODO(dnguyen): This (.eval_smart()) should be taken care of by the apply() method...
                         atom<ops::parametric::P>()->apply(circuit, ops::parametric::P{param[0]}.eval_smart(),
                                                           {qubits[0]});
                         return;

@@ -15,6 +15,8 @@
 #ifndef PYTHON_CONFIG_HPP
 #define PYTHON_CONFIG_HPP
 
+#include <vector>
+
 #include <tweedledum/IR/Cbit.h>
 #include <tweedledum/IR/Circuit.h>
 #include <tweedledum/IR/Instruction.h>

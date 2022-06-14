@@ -16,6 +16,7 @@
 #define DECOMPOSITION_RULE_ENTANGLE_HPP
 
 #include <algorithm>
+#include <tuple>
 
 #include "decompositions/rules/config.hpp"
 
