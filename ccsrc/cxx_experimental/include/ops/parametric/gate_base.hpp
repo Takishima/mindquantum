@@ -43,6 +43,8 @@
 #include <algorithm>
 #include <cassert>
 #include <complex>
+#include <string>
+#include <string_view>
 #include <tuple>
 #include <type_traits>
 #include <utility>
@@ -407,7 +409,7 @@ class ParametricBase {
             return eval_smart_impl_(std::index_sequence_for<params_t...>{}, std::move(params));
         }
 
-        //  TODO(dnguyen): Add support for default implementation of `to_param_type`
+        // TODO(dnguyen): Add support for default implementation of `to_param_type`
         return derived_t::to_param_type(*static_cast<const derived_t*>(this), std::move(params));
     }
 
@@ -431,7 +433,7 @@ class ParametricBase {
             return eval_smart_impl_(std::index_sequence_for<params_t...>{}, std::move(params));
         }
 
-        //  TODO(dnguyen): Add support for default implementation of `to_param_type`
+        // TODO(dnguyen): Add support for default implementation of `to_param_type`
         return derived_t::to_param_type(*static_cast<const derived_t*>(this), std::move(params));
     }
 
@@ -455,7 +457,7 @@ class ParametricBase {
     template <std::size_t... indices>
     constexpr auto eval_full_impl_(std::index_sequence<indices...> /*unused*/) const {
         // NB: expand required to normalize the expressions (e.g. required for testing for equality)
-        //  TODO(dnguyen): Add support for default implementation of `to_non_param_type`
+        // TODO(dnguyen): Add support for default implementation of `to_non_param_type`
         return derived_t::to_non_param_type(*static_cast<const derived_t*>(this),
                                             params_t::param_type::eval(expand(params_[indices]))...);
     }
@@ -464,7 +466,7 @@ class ParametricBase {
     template <std::size_t... indices>
     constexpr auto eval_full_impl_(std::index_sequence<indices...> /*unused*/, const subs_map_t& subs_map) const {
         // NB: expand required to normalize the expressions (e.g. required for testing for equality)
-        //  TODO(dnguyen): Add support for default implementation of `to_non_param_type`
+        // TODO(dnguyen): Add support for default implementation of `to_non_param_type`
         return derived_t::to_non_param_type(*static_cast<const derived_t*>(this),
                                             params_t::param_type::eval(expand(params_[indices]->subs(subs_map)))...);
     }
@@ -473,7 +475,7 @@ class ParametricBase {
     template <std::size_t... indices>
     constexpr auto eval_smart_impl_(std::index_sequence<indices...> /*unused*/,
                                     std::array<basic_t, num_params>&& params) const {
-        //  TODO(dnguyen): Add support for default implementation of `to_non_param_type`
+        // TODO(dnguyen): Add support for default implementation of `to_non_param_type`
         return derived_t::to_non_param_type(*static_cast<const derived_t*>(this),
                                             params_t::param_type::eval(params[indices])...);
     }
