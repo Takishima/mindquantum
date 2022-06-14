@@ -46,7 +46,7 @@ class RCPseudoGate {
  public:
     RCPseudoGate() : param_{}, kind_{} {
     }
-    RCPseudoGate(std::string_view kind) : param_{}, kind_(kind) {
+    explicit RCPseudoGate(std::string_view kind) : param_{}, kind_(kind) {
     }
     RCPseudoGate(std::string_view kind, param_t param) : param_(param), kind_(kind) {
     }

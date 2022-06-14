@@ -12,6 +12,17 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+#ifndef CPP_PRINTER_TPP
+#define CPP_PRINTER_TPP
+
+#ifndef CPP_PRINTER_HPP
+#     error This file must only be included by cengines/cpp_printer.hpp!
+#endif // CPP_PRINTER_HPP
+
+// NB: This is mainly for syntax checkers and completion helpers as this file
+//     is only intended to be included directly by cpp_printer.hpp
+#include "cengines/cpp_printer.hpp"
+
 #include "write_projectq.hpp"
 
 #include <iostream>
@@ -64,3 +75,4 @@ void mindquantum::cengines::CppPrinter::print_output(const circuit_t& circuit, s
                output_stream << "Unrecognized language format: " << lang_to_str(language_) << std::endl;
      }
 }
+#endif /* CPP_PRINTER_TPP */

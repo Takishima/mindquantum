@@ -14,6 +14,7 @@
 
 #ifndef DECOMPOSITION_RULE_R2RZANDPH_HPP
 #define DECOMPOSITION_RULE_R2RZANDPH_HPP
+#include <tuple>
 
 #include "decompositions/rules/config.hpp"
 

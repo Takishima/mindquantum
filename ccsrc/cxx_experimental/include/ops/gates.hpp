@@ -30,7 +30,7 @@
 #include "gates/time_evolution.hpp"
 
 namespace mindquantum::ops {
-using namespace tweedledum::Op;
+using namespace tweedledum::Op;  // NOLINT(build/namespaces)
 }  // namespace mindquantum::ops
 
 namespace tweedledum {

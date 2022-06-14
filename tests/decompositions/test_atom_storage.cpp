@@ -156,7 +156,7 @@ class X2Z : public decompositions::GateDecompositionRule<X2Z, std::tuple<ops::X>
 
     void apply_impl(mindquantum::circuit_t& circuit, const mindquantum::operator_t& /* op */,
                     const mindquantum::qubits_t& qubits, const mindquantum::cbits_t& /* unused */) {
-        //  TODO(dnguyen): I find this syntax redundant, we should find a way to fix this!
+        // TODO(dnguyen): I find this syntax redundant, we should find a way to fix this!
         atom<ops::H>()->apply(circuit, ops::H{}, {qubits[0]});
         atom<ops::Z>()->apply(circuit, ops::Z{}, {qubits[0]});
         atom<ops::H>()->apply(circuit, ops::H{}, {qubits[0]});

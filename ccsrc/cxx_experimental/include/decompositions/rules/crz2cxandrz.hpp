@@ -15,6 +15,8 @@
 #ifndef DECOMPOSITION_RULE_CRZ2CXANDRZ_HPP
 #define DECOMPOSITION_RULE_CRZ2CXANDRZ_HPP
 
+#include <algorithm>
+
 #include <symengine/mul.h>
 #include <symengine/real_double.h>
 
@@ -72,7 +74,6 @@ class CRZ2CXAndRz : public decompositions::NonGateDecompositionRule<CRZ2CXAndRz,
                     atom<ops::parametric::Rz>()->apply(circuit, ops::Rz{-0.5 * param}, targets);
                 } else if constexpr (std::is_same_v<param_t, param_list_t>) {
                     if (std::size(param) == 1) {
-                        ;
                         atom<ops::parametric::Rz>()->apply(
                             circuit,
                             ops::parametric::Rz{SymEngine::mul(param[0], SymEngine::number(-0.5))}.eval_smart(),

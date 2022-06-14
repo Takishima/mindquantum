@@ -76,7 +76,7 @@ bool mindquantum::details::load_cengine(pybind11::handle src, cengines::engine_t
         using caster_t = make_caster<python::cpp::TagRemover>;
         return convert_engine<caster_t>(src, engine, type_name);
     }
-    // TODO: Check that name is correct (maybe add _mindquantum_cxx_cengines)
+    // TODO(dnguyen): Check that name is correct (maybe add _mindquantum_cxx_cengines)
     else if (type_name == "InstructionFilter"
              || type_name == "projectq.cengines._replacer._replacer.InstructionFilter") {
         using caster_t = make_caster<python::cpp::InstructionFilter>;

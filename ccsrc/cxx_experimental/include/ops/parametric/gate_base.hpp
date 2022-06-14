@@ -28,8 +28,6 @@
 
 #if MQ_HAS_CONCEPTS
 #    include "core/gate_concepts.hpp"
-#else
-#    include <type_traits>
 #endif  // MQ_HAS_CONCEPTS
 
 #include <symengine/basic.h>

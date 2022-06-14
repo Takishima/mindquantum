@@ -16,6 +16,8 @@
 #define PARAMETRIC_SUBSTITUTIONS_TPP
 
 #include "ops/parametric/config.hpp"
+#include <vector>
+#include <utility>
 
 #include "ops/parametric/to_symengine.hpp"
 

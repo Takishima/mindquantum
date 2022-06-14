@@ -15,6 +15,7 @@
 #ifndef DECOMPOSITION_RULE_CNU2TOFFOLIANDCU_HPP
 #define DECOMPOSITION_RULE_CNU2TOFFOLIANDCU_HPP
 
+#include <algorithm>
 #include <iterator>
 
 #include "decompositions/rules/config.hpp"

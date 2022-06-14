@@ -22,6 +22,7 @@
 #    include "engine_concepts.hpp"
 #endif  // MQ_HAS_CONCEPTS
 
+#include <algorithm>
 #include <map>
 #include <memory>
 #include <string>

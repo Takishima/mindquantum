@@ -63,7 +63,7 @@ class CppGraphMapper {
      *
      * \param params Parameters for the mapping algorithm
      */
-    CppGraphMapper(const mapping_param_t& params);
+    explicit CppGraphMapper(const mapping_param_t& params);
 
     //! Constructor with graph defined by number of qubits and edges
     /*!

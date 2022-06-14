@@ -137,11 +137,16 @@ repos:
         additional_dependencies: ['setuptools-scm[toml]', 'pybind11>=2.6']
 
   - repo: https://github.com/Takishima/cmake-pre-commit-hooks/
-    rev: 'v1.5.2'
+    rev: 'v1.5.3'
     hooks:
       - id: clang-format
         args: [-i]
         additional_dependencies: ['clang-format']
+      - id: lizard
+        args: [-l, cpp, -l, python, -l, java, -C, '19', -L, '100',
+               -x, '*/tests/*', -x, '*/test/*', -x, '*/third_party/*',
+               -W, '.jenkins/check/config/whitelizard.txt', -w, mindquantum]
+        additional_dependencies: ['lizard']
   #     - id: clang-tidy
   #       stages: [manual]
   #       args: [-Bbuild, -B.pre-commit-build]

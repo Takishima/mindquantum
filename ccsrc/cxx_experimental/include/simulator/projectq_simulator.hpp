@@ -16,6 +16,7 @@
 #define PROJECTQ_SIMULATOR_HPP
 
 #include <algorithm>
+#include <vector>
 
 #include "simulator/config.hpp"
 
@@ -30,7 +31,7 @@ class Simulator : public BaseSimulator<Simulator> {
     /*!
      * \param seed Seed for random generator.
      */
-    Simulator(uint32_t seed = 0);
+    explicit Simulator(uint32_t seed = 0);
 
     //! Check whether a qubit is already allocated by the simulator
     /*!

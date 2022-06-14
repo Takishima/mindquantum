@@ -77,6 +77,6 @@ class CppPrinter {
 };
 }  // namespace mindquantum::cengines
 
-#include "cpp_printer.tpp"
+#include "cengines/cpp_printer.tpp"
 
 #endif /* CPP_PRINTER_HPP */

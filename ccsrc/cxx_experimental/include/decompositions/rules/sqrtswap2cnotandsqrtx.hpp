@@ -15,6 +15,8 @@
 #ifndef DECOMPOSITION_RULE_SQRTSWAP2CNOTANDSQRTX_HPP
 #define DECOMPOSITION_RULE_SQRTSWAP2CNOTANDSQRTX_HPP
 
+#include <tuple>
+
 #include "decompositions/rules/config.hpp"
 
 #include "decompositions/gate_decomposition_rule.hpp"

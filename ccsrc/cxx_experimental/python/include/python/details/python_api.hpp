@@ -20,7 +20,7 @@
 namespace mindquantum::details {
 class PythonScopeGuard {
  public:
-    PythonScopeGuard(PyObject* obj) : obj_(obj) {
+    explicit PythonScopeGuard(PyObject* obj) : obj_(obj) {
     }
     ~PythonScopeGuard() {
         if (obj_ != NULL) {

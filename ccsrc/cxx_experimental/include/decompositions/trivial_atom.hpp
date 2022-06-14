@@ -16,6 +16,7 @@
 #define TRIVIAL_ATOM_HPP
 
 #include <cstdint>
+#include <tuple>
 
 #include "core/config.hpp"
 #include "decompositions/config.hpp"

@@ -29,9 +29,9 @@ class CommandPrinter
  public:
     CommandPrinter() : cengines::CppPrinter(language_t::projectq) {
     }
-    CommandPrinter(language_t language) : cengines::CppPrinter(language) {
+    explicit CommandPrinter(language_t language) : cengines::CppPrinter(language) {
     }
-    CommandPrinter(std::string_view language) : cengines::CppPrinter(language) {
+    explicit CommandPrinter(std::string_view language) : cengines::CppPrinter(language) {
     }
 };
 }  // namespace mindquantum::python

@@ -33,7 +33,7 @@ class DaggeredCircuit {
     using cbit_t = tweedledum::Cbit;
     using circuit_t = tweedledum::Circuit;
 
-    DaggeredCircuit(circuit_t& original)
+    explicit DaggeredCircuit(circuit_t& original)
         : processed_(false), original_(original), circuit_(tweedledum::shallow_duplicate(original)) {
     }
 
@@ -76,7 +76,7 @@ class DaggeredCircuit {
                 if (op) {
                     original.apply_operator(*op, inst.qubits(), inst.cbits());
                 } else {
-                    // TODO: Think of error handling!
+                    // TODO(dnguyen): Think of error handling!
                 }
             });
         }

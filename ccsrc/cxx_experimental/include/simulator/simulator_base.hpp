@@ -37,7 +37,7 @@ class BaseSimulator {
     /*!
      * \param seed Random seed to initialiue the random number generator.
      */
-    BaseSimulator(uint32_t seed = 0);
+    explicit BaseSimulator(uint32_t seed = 0);
 
     // -------------------------------------------------------------------------
     // Methods that need to be implemented in the child class

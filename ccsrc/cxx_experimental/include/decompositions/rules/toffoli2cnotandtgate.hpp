@@ -15,6 +15,8 @@
 #ifndef DECOMPOSITION_RULE_TOFFOLI2CNOTANDTGATE_HPP
 #define DECOMPOSITION_RULE_TOFFOLI2CNOTANDTGATE_HPP
 
+#include <tuple>
+
 #include "tweedledum/Operators/Standard/T.h"
 
 #include "decompositions/rules/config.hpp"

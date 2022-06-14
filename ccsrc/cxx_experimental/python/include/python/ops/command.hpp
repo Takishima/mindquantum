@@ -15,6 +15,8 @@
 #ifndef PYTHON_COMMAND_HPP
 #define PYTHON_COMMAND_HPP
 
+#include <memory>
+#include <utility>
 #include <tweedledum/IR/Operator.h>
 
 #include "core/config.hpp"

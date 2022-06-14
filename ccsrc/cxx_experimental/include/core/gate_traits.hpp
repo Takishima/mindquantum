@@ -21,6 +21,7 @@
 #include <cstddef>
 #include <type_traits>
 #include <utility>
+#include <vector>
 
 #include <tweedledum/IR/Operator.h>
 
