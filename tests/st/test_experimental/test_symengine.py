@@ -22,7 +22,10 @@ from mindquantum.experimental import symengine
 
 @pytest.mark.symengine
 def test_symbols_function_simple():
-    """Description: Test symbols() generating iterables."""
+    """
+    Description: Test symbols() generating iterables.
+    Expectation: Success
+    """
     # pylint: disable=invalid-name
 
     x, y, z = symengine.symbols('x,y,z')
@@ -53,7 +56,10 @@ def test_symbols_function_simple():
     ids=lambda x: x if isinstance(x, type) else (f'"{x}"' if isinstance(x, str) else str(x)),
 )
 def test_symbols_function(symbol_str, kwargs, symbols_type, length):
-    """Description: Test symbols() generating iterables."""
+    """
+    Description: Test symbols() generating iterables.
+    Expectation: Success
+    """
     symbols = symengine.symbols(symbol_str, **kwargs)
     assert isinstance(symbols, symbols_type)
 

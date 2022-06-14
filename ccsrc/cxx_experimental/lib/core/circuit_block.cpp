@@ -99,7 +99,7 @@ CircuitBlock::CircuitBlock(const CircuitBlock& parent, const std::vector<ext_id_
 
 namespace mindquantum {
 bool CircuitBlock::has_mapping() const {
-    return bool(mapping_);
+    return static_cast<bool>(mapping_);
 }
 
 bool CircuitBlock::has_qubit(ext_id_t qubit_id) const {
@@ -119,7 +119,7 @@ bool CircuitBlock::has_cbit(ext_id_t qubit_id) const {
     }
 
     if (const auto it = ext_to_td_.find(qubit_id); it != end(ext_to_td_)) {
-        return bool(std::get<1>(it->second));
+        return static_cast<bool>(std::get<1>(it->second));
     } else {
         return false;
     }

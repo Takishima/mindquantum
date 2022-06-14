@@ -24,7 +24,10 @@ from mindquantum.experimental.ops import X
 
 @pytest.mark.cxx_exp_projectq
 def test_gate_cancellation():
-    """Description: Test gate cancellation."""
+    """
+    Description: Test gate cancellation
+    Expectation: Success
+    """
     gate_cancellation = optimizer.GateCancellation()
     ref = Circuit()
     q0 = ref.create_qubit()
