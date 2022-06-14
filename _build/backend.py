@@ -23,7 +23,7 @@ import platform
 import sys
 
 import setuptools.build_meta
-from utils import get_cmake_command
+from utils import fdopen, get_cmake_command
 
 build_sdist = setuptools.build_meta.build_sdist
 prepare_metadata_for_build_wheel = setuptools.build_meta.prepare_metadata_for_build_wheel
@@ -50,12 +50,12 @@ def generate_digest_file(fname):
     """Generate a SHA256 digest file for the wheels."""
     name = os.path.basename(fname)
     sha256_hash = hashlib.sha256()
-    with open(fname, 'rb') as wheel_file:
+    with fdopen(fname, 'rb') as wheel_file:
         # Read and update hash string value in blocks of 1M
         for byte_block in iter(lambda: wheel_file.read(1 << 20), b""):
             sha256_hash.update(byte_block)
 
-    with open(f'{fname}.sha256', 'w') as digest_file:
+    with fdopen(f'{fname}.sha256', 'w') as digest_file:
         digest_file.write(f'{sha256_hash.hexdigest()} {name}\n')
 
 
