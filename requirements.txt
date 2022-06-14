@@ -5,4 +5,3 @@ openfermion>=1.0.0
 sympy>=1.4
 matplotlib<=3.4.3
 rich>=10.9.0
-

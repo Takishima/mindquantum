@@ -16,11 +16,12 @@
 """Test operator sparsing."""
 
 import numpy as np
-from openfermion.chem import MolecularData
-from mindquantum.core.operators.utils import get_fermion_operator
-from mindquantum.algorithm.nisq.chem.transform import Transform
-from mindquantum.third_party.interaction_operator import InteractionOperator
 from openfermion import get_sparse_operator
+from openfermion.chem import MolecularData
+
+from mindquantum.algorithm.nisq.chem.transform import Transform
+from mindquantum.core.operators.utils import get_fermion_operator
+from mindquantum.third_party.interaction_operator import InteractionOperator
 
 
 def test_sparsing_operator():
@@ -39,7 +40,7 @@ def test_sparsing_operator():
 
     ham = Transform(ham_hiq).jordan_wigner()
 
-    h=ham.to_openfermion()
+    h = ham.to_openfermion()
     m1 = get_sparse_operator(h).toarray()
     m2 = ham.matrix().toarray()
     m3 = ham_hiq.matrix().toarray()
