@@ -28,8 +28,8 @@
 #include "tweedledum/Target/Placement.h"
 
 #include "core/circuit_block.hpp"
+#include "core/utils.hpp"
 #include "ops/gates/measure.hpp"
-#include "utils.hpp"
 
 namespace td = tweedledum;
 

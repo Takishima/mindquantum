@@ -97,7 +97,7 @@ class AngleParametricBase : public ParametricBase<derived_t, non_param_t, real::
     MQ_NODISCARD non_param_type eval_full() const {
         using param_t = typename std::tuple_element_t<0, typename parent_t::params_type>::param_type;
 
-        return {
+        return non_param_type {
             std::fmod(param_t::eval(this->params_[0]),
 #if __has_include(<numbers>) && __cplusplus > 201703L
                       std::numbers::pi * mod_pi
@@ -123,7 +123,7 @@ class AngleParametricBase : public ParametricBase<derived_t, non_param_t, real::
     MQ_NODISCARD non_param_type eval_full(const subs_map_t& subs_map) const {
         using param_t = typename std::tuple_element_t<0, typename parent_t::params_type>::param_type;
 
-        return {
+        return non_param_type {
             std::fmod(param_t::eval(this->params_[0]->subs(subs_map)),
 #if __has_include(<numbers>) && __cplusplus > 201703L
                       std::numbers::pi * mod_pi

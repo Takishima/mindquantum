@@ -21,7 +21,7 @@
 #include <symengine/symengine_exception.h>
 
 #include "ops/parametric/angle_base.hpp"
-#include "utils.hpp"
+#include "ops/utils.hpp"
 
 #if __has_include(<numbers>) && __cplusplus > 201703L
 #    define PI_VAL std::numbers::pi
@@ -44,7 +44,7 @@ class NumOne {
 
     static constexpr auto num_targets = 1UL;
 
-    NumOne(double alpha) : alpha_(alpha) {
+    explicit NumOne(double alpha) : alpha_(alpha) {
     }
 
     const auto& angle() const {
@@ -70,8 +70,10 @@ class ParamOne : public AngleParametricBase<ParamOne, NumOne, 4> {
 TEST_CASE("AngleParametricGate", "[parametric][ops]") {
     using namespace SymEngine;
 
-    Expression x{symbol("x")}, y{symbol("y")};
-    double x_num(42), y_num(-314.15);
+    Expression x{symbol("x")};
+    Expression y{symbol("y")};
+    double x_num(42);
+    double y_num(-314.15);
 
     SymEngine::map_basic_basic subs;
     subs[x] = SymEngine::number(x_num);

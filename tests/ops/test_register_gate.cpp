@@ -25,7 +25,7 @@
 
 #include "ops/parametric/angle_base.hpp"
 #include "ops/parametric/register_gate_type.hpp"
-#include "utils.hpp"
+#include "ops/utils.hpp"
 
 // =============================================================================
 
@@ -42,7 +42,7 @@ class OneDoubleGate {
 
     static constexpr auto num_targets = 1UL;
 
-    OneDoubleGate(double alpha) : alpha_(alpha) {
+    explicit OneDoubleGate(double alpha) : alpha_(alpha) {
     }
 
     const auto& param() const {
@@ -59,7 +59,7 @@ class AngleGate {
         return "test.angle.one"sv;
     }
 
-    AngleGate(double alpha) : alpha_(alpha) {
+    explicit AngleGate(double alpha) : alpha_(alpha) {
     }
 
     const auto& angle() const {

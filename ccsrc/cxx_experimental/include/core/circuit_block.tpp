@@ -20,6 +20,7 @@
 #endif  // !CIRCUIT_MANAGER_HPP
 
 #include <algorithm>
+#include <utility>
 #include <vector>
 
 // clang-format off

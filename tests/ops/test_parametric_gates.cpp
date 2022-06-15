@@ -22,7 +22,7 @@
 
 #include "core/operator_traits.hpp"
 #include "ops/parametric/gate_base.hpp"
-#include "utils.hpp"
+#include "ops/utils.hpp"
 
 // =============================================================================
 
@@ -37,7 +37,7 @@ class NumOne {
 
     static constexpr auto num_targets = 1UL;
 
-    NumOne(double alpha) : alpha_(alpha) {
+    explicit NumOne(double alpha) : alpha_(alpha) {
     }
 
     const auto& alpha() const {

@@ -29,6 +29,18 @@
 #    endif  // __has_cpp_attribute(nodiscard)
 #endif      // __has_cpp_attribute
 
+#ifndef _MSC_VER
+#    define MQ_ALIGN(x) __attribute__((aligned(x)))
+#else
+#    define MQ_ALIGN(x)
+#endif  // !_MSC_VER
+
+#if MQ_HAS_CONCEPTS
+#    define MQ_REQUIRES(x) requires(x)
+#else
+#    define MQ_REQUIRES(x)
+#endif  // MQ_HAS_CONCEPTS
+
 #ifndef MQ_NODISCARD
 #    define MQ_NODISCARD
 #endif  // MQ_NODISCARD

@@ -22,7 +22,7 @@
 #include <tweedledum/Passes/Mapping/Placer/TrivialPlacer.h>
 
 #include "core/circuit_manager.hpp"
-#include "utils.hpp"
+#include "core/utils.hpp"
 
 namespace td = tweedledum;
 

@@ -190,9 +190,7 @@ void write_projectq(const td::Instruction& inst, std::ostream& os) {
     }
 }
 
-void write_projectq(const td::Circuit& circuit, std::string_view filename)
-
-{
+void write_projectq(const td::Circuit& circuit, std::string_view filename) {
     std::ofstream os(std::string(filename), std::ofstream::out);
     write_projectq(circuit, os);
 }

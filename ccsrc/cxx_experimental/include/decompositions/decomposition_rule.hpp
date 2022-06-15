@@ -70,11 +70,7 @@ class DecompositionRule {
      * \tparam idx Index of atom in atom list
      */
     template <std::size_t idx>
-    constexpr auto* atom() noexcept
-#if MQ_HAS_CONCEPTS
-        requires(idx < sizeof...(atoms_t))
-#endif  // MQ_HAS_CONCEPTS
-            ;
+    constexpr auto* atom() noexcept MQ_REQUIRES(idx < sizeof...(atoms_t));
 
     //! Getter function for the individual atoms
     /*!
@@ -85,11 +81,8 @@ class DecompositionRule {
      */
     template <typename atom_t>
     constexpr auto* atom() noexcept
-#if MQ_HAS_CONCEPTS
-        requires(concepts::tuple_contains<typename traits::atom_traits<atom_t>::type,
-                                          typename traits::atom_traits<atoms_t>::type...>)
-#endif  // MQ_HAS_CONCEPTS
-            ;
+        MQ_REQUIRES((concepts::tuple_contains<typename traits::atom_traits<atom_t>::type,
+                                              typename traits::atom_traits<atoms_t>::type...>) );
 
     //! Apply a decomposition
     /*!
