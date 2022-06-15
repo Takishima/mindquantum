@@ -15,9 +15,9 @@
 #ifndef PARAM_UTILS_HPP
 #define PARAM_UTILS_HPP
 
-#include <vector>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include <catch2/catch.hpp>
 #include <symengine/expression.h>

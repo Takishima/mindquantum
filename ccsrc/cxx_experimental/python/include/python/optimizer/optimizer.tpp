@@ -29,7 +29,7 @@ template <concepts::CircuitLike circuit_like_t>
 #else
 template <typename circuit_like_t>
 #endif  // MQ_HAS_CONCEPTS
-bool GateCancellation::run_circuit(circuit_like_t& circuit) const noexcept{
+bool GateCancellation::run_circuit(circuit_like_t& circuit) const noexcept {
     if constexpr (std::is_same_v<std::remove_cvref_t<circuit_like_t>, std::remove_cvref_t<circuit_t>>) {
         circuit = tweedledum::gate_cancellation(circuit);
         circuit = tweedledum::phase_folding(circuit);

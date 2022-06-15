@@ -25,34 +25,32 @@
 #include "register_gate_type.hpp"
 // clang-format on
 
-#include "core/gate_traits.hpp"
-
 #include <cassert>
+
+#include "core/gate_traits.hpp"
 
 // =============================================================================
 
-namespace mindquantum::ops::parametric
-{
-     using double_func_t = double (*)(const operator_t&);
-     using vec_double_func_t = std::vector<double> (*)(const operator_t&);
-     using params_func_t = param_list_t (*)(const operator_t&);
+namespace mindquantum::ops::parametric {
+using double_func_t = double (*)(const operator_t&);
+using vec_double_func_t = std::vector<double> (*)(const operator_t&);
+using params_func_t = param_list_t (*)(const operator_t&);
 
-     namespace details
-     {
-          void register_gate(std::string_view kind, double_func_t angle_func);
-          void register_gate(std::string_view kind, vec_double_func_t angle_func);
-          void register_gate(std::string_view kind, params_func_t params_func);
-     }  // namespace details
+namespace details {
+void register_gate(std::string_view kind, double_func_t angle_func);
+void register_gate(std::string_view kind, vec_double_func_t angle_func);
+void register_gate(std::string_view kind, params_func_t params_func);
+}  // namespace details
 
-     template <typename op_t>
-     void register_gate_type()
+template <typename op_t>
+void register_gate_type()
 #if MQ_HAS_CONCEPTS
-          requires ((concepts::ParametricGate<op_t>) || (concepts::AngleGate<op_t>)
-                        || (concepts::SingleDoubleGate<op_t>) || (concepts::MultiDoubleGate<op_t>))
-#endif // MQ_HAS_CONCEPTS
-     {
-          details::register_gate(op_t::kind(), traits::gate_traits<op_t>::param);
-     }
+    requires((concepts::ParametricGate<op_t>) || (concepts::AngleGate<op_t>) || (concepts::SingleDoubleGate<op_t>)
+             || (concepts::MultiDoubleGate<op_t>) )
+#endif  // MQ_HAS_CONCEPTS
+{
+    details::register_gate(op_t::kind(), traits::gate_traits<op_t>::param);
+}
 }  // namespace mindquantum::ops::parametric
 
 // =============================================================================
