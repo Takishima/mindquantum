@@ -41,7 +41,7 @@ rem ----------------------------------------------------------------------------
 
 
 set venv_args=!python_venv_path!
-if %VENV_USE_SYSTEM_PACKAGES% == 1 set venv_args=!venv_args! --system-site-packages
+if "%VENV_USE_SYSTEM_PACKAGES%" == "1" set venv_args=!venv_args! --system-site-packages
 
 set created_venv=0
 if NOT EXIST !python_venv_path! (
