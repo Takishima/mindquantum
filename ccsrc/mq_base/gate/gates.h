@@ -16,6 +16,7 @@
 
 #ifndef MINDQUANTUM_GATE_GATES_H_
 #define MINDQUANTUM_GATE_GATES_H_
+
 #include <cmath>
 
 #include <string>
@@ -26,21 +27,21 @@
 
 namespace mindquantum {
 template <typename T>
-BasicGate<T> XGate = {false, gX, SELFHERMITIAN, Dim2Matrix<T>{{{{0, 0}, {1, 0}}, {{1, 0}, {0, 0}}}}};
+BasicGate<T> XGate = {false, gX, SELFHERMITIAN, Dim2Matrix<T>{VVT<CT<T>>{{{0, 0}, {1, 0}}, {{1, 0}, {0, 0}}}}};
 
 template <typename T>
-BasicGate<T> YGate = {false, gY, SELFHERMITIAN, Dim2Matrix<T>{{{{0, 0}, {0, -1}}, {{0, 1}, {0, 0}}}}};
+BasicGate<T> YGate = {false, gY, SELFHERMITIAN, Dim2Matrix<T>{VVT<CT<T>>{{{0, 0}, {0, -1}}, {{0, 1}, {0, 0}}}}};
 
 template <typename T>
-BasicGate<T> ZGate = {false, gZ, SELFHERMITIAN, Dim2Matrix<T>{{{{1, 0}, {0, 0}}, {{0, 0}, {-1, 0}}}}};
+BasicGate<T> ZGate = {false, gZ, SELFHERMITIAN, Dim2Matrix<T>{VVT<CT<T>>{{{1, 0}, {0, 0}}, {{0, 0}, {-1, 0}}}}};
 
 template <typename T>
-BasicGate<T> IGate = {false, gI, SELFHERMITIAN, Dim2Matrix<T>{{{{1, 0}, {0, 0}}, {{0, 0}, {1, 0}}}}};
+BasicGate<T> IGate = {false, gI, SELFHERMITIAN, Dim2Matrix<T>{VVT<CT<T>>{{{1, 0}, {0, 0}}, {{0, 0}, {1, 0}}}}};
 
 template <typename T>
 BasicGate<T> HGate = {false, gH, SELFHERMITIAN,
-                      Dim2Matrix<T>{{{{static_cast<T>(M_SQRT1_2), 0}, {static_cast<T>(M_SQRT1_2), 0}},
-                                     {{static_cast<T>(M_SQRT1_2), 0}, {-static_cast<T>(M_SQRT1_2), 0}}}}};
+                      Dim2Matrix<T>{VVT<CT<T>>{{{static_cast<T>(M_SQRT1_2), 0}, {static_cast<T>(M_SQRT1_2), 0}},
+                                               {{static_cast<T>(M_SQRT1_2), 0}, {-static_cast<T>(M_SQRT1_2), 0}}}}};
 
 template <typename T>
 BasicGate<T> TGate = {
@@ -52,31 +53,31 @@ BasicGate<T> SGate = {false, gS, DOHERMITIAN, Dim2Matrix<T>{{{{1, 0}, {0, 0}}, {
 
 template <typename T>
 BasicGate<T> CNOTGate = {false, gCNOT, DOHERMITIAN,
-                         Dim2Matrix<T>{{{{1, 0}, {0, 0}, {0, 0}, {0, 0}},
-                                        {{0, 0}, {1, 0}, {0, 0}, {0, 0}},
-                                        {{0, 0}, {0, 0}, {0, 0}, {1, 0}},
-                                        {{0, 0}, {0, 0}, {1, 0}, {0, 0}}}}};
+                         Dim2Matrix<T>{VVT<CT<T>>{{{1, 0}, {0, 0}, {0, 0}, {0, 0}},
+                                                  {{0, 0}, {1, 0}, {0, 0}, {0, 0}},
+                                                  {{0, 0}, {0, 0}, {0, 0}, {1, 0}},
+                                                  {{0, 0}, {0, 0}, {1, 0}, {0, 0}}}}};
 
 template <typename T>
 BasicGate<T> CZGate = {false, gCZ, SELFHERMITIAN,
-                       Dim2Matrix<T>{{{{1, 0}, {0, 0}, {0, 0}, {0, 0}},
-                                      {{0, 0}, {1, 0}, {0, 0}, {0, 0}},
-                                      {{0, 0}, {0, 0}, {1, 0}, {0, 0}},
-                                      {{0, 0}, {0, 0}, {0, 0}, {-1, 0}}}}};
+                       Dim2Matrix<T>{VVT<CT<T>>{{{1, 0}, {0, 0}, {0, 0}, {0, 0}},
+                                                {{0, 0}, {1, 0}, {0, 0}, {0, 0}},
+                                                {{0, 0}, {0, 0}, {1, 0}, {0, 0}},
+                                                {{0, 0}, {0, 0}, {0, 0}, {-1, 0}}}}};
 
 template <typename T>
 BasicGate<T> SWAPGate = {false, gSWAP, SELFHERMITIAN,
-                         Dim2Matrix<T>{{{{1, 0}, {0, 0}, {0, 0}, {0, 0}},
-                                        {{0, 0}, {0, 0}, {1, 0}, {0, 0}},
-                                        {{0, 0}, {1, 0}, {0, 0}, {0, 0}},
-                                        {{0, 0}, {0, 0}, {0, 0}, {1, 0}}}}};
+                         Dim2Matrix<T>{VVT<CT<T>>{{{1, 0}, {0, 0}, {0, 0}, {0, 0}},
+                                                  {{0, 0}, {0, 0}, {1, 0}, {0, 0}},
+                                                  {{0, 0}, {1, 0}, {0, 0}, {0, 0}},
+                                                  {{0, 0}, {0, 0}, {0, 0}, {1, 0}}}}};
 
 template <typename T>
 BasicGate<T> ISWAPGate = {false, gISWAP, DOHERMITIAN,
-                          Dim2Matrix<T>{{{{1, 0}, {0, 0}, {0, 0}, {0, 0}},
-                                         {{0, 0}, {0, 0}, {0, 1}, {0, 0}},
-                                         {{0, 0}, {0, 1}, {0, 0}, {0, 0}},
-                                         {{0, 0}, {0, 0}, {0, 0}, {1, 0}}}}};
+                          Dim2Matrix<T>{VVT<CT<T>>{{{1, 0}, {0, 0}, {0, 0}, {0, 0}},
+                                                   {{0, 0}, {0, 0}, {0, 1}, {0, 0}},
+                                                   {{0, 0}, {0, 1}, {0, 0}, {0, 0}},
+                                                   {{0, 0}, {0, 0}, {0, 0}, {1, 0}}}}};
 
 template <typename T>
 BasicGate<T> RXGate = {
@@ -85,8 +86,8 @@ BasicGate<T> RXGate = {
         return Dim2Matrix<T>{{{{COS1_2(theta), 0}, {0, -SIN1_2(theta)}}, {{0, -SIN1_2(theta)}, {COS1_2(theta), 0}}}};
     },
     [](T theta) {
-        return Dim2Matrix<T>{
-            {{{-SIN1_2(theta) / 2, 0}, {0, -COS1_2(theta) / 2}}, {{0, -COS1_2(theta) / 2}, {-SIN1_2(theta) / 2, 0}}}};
+        return Dim2Matrix<T>{VVT<CT<T>>{{{-SIN1_2(theta) / 2, 0}, {0, -COS1_2(theta) / 2}},
+                                        {{0, -COS1_2(theta) / 2}, {-SIN1_2(theta) / 2, 0}}}};
     }};
 
 template <typename T>
@@ -96,8 +97,8 @@ BasicGate<T> RYGate = {
         return Dim2Matrix<T>{{{{COS1_2(theta), 0}, {-SIN1_2(theta), 0}}, {{SIN1_2(theta), 0}, {COS1_2(theta), 0}}}};
     },
     [](T theta) {
-        return Dim2Matrix<T>{
-            {{{-SIN1_2(theta) / 2, 0}, {-COS1_2(theta) / 2, 0}}, {{COS1_2(theta) / 2, 0}, {-SIN1_2(theta) / 2, 0}}}};
+        return Dim2Matrix<T>{VVT<CT<T>>{{{-SIN1_2(theta) / 2, 0}, {-COS1_2(theta) / 2, 0}},
+                                        {{COS1_2(theta) / 2, 0}, {-SIN1_2(theta) / 2, 0}}}};
     }};
 
 template <typename T>
@@ -107,8 +108,8 @@ BasicGate<T> RZGate = {
         return Dim2Matrix<T>{{{{COS1_2(theta), -SIN1_2(theta)}, {0, 0}}, {{0, 0}, {COS1_2(theta), SIN1_2(theta)}}}};
     },
     [](T theta) {
-        return Dim2Matrix<T>{
-            {{{-SIN1_2(theta) / 2, -COS1_2(theta) / 2}, {0, 0}}, {{0, 0}, {-SIN1_2(theta) / 2, COS1_2(theta) / 2}}}};
+        return Dim2Matrix<T>{VVT<CT<T>>{{{-SIN1_2(theta) / 2, -COS1_2(theta) / 2}, {0, 0}},
+                                        {{0, 0}, {-SIN1_2(theta) / 2, COS1_2(theta) / 2}}}};
     }};
 
 template <typename T>
@@ -123,13 +124,14 @@ BasicGate<T> GPGate = {true, gGP, PARAMSOPPOSITE,
                        }};
 
 template <typename T>
-BasicGate<T> PSGate = {true, gPS, PARAMSOPPOSITE,
-                       [](T theta) {
-                           return Dim2Matrix<T>{{{{1, 0}, {0, 0}}, {{0, 0}, {COS1_2(2 * theta), SIN1_2(2 * theta)}}}};
-                       },
-                       [](T theta) {
-                           return Dim2Matrix<T>{{{{0, 0}, {0, 0}}, {{0, 0}, {-SIN1_2(2 * theta), COS1_2(2 * theta)}}}};
-                       }};
+BasicGate<T> PSGate = {
+    true, gPS, PARAMSOPPOSITE,
+    [](T theta) {
+        return Dim2Matrix<T>{VVT<CT<T>>{{{1, 0}, {0, 0}}, {{0, 0}, {COS1_2(2 * theta), SIN1_2(2 * theta)}}}};
+    },
+    [](T theta) {
+        return Dim2Matrix<T>{VVT<CT<T>>{{{0, 0}, {0, 0}}, {{0, 0}, {-SIN1_2(2 * theta), COS1_2(2 * theta)}}}};
+    }};
 
 template <typename T>
 BasicGate<T> XXGate = {true, gXX, PARAMSOPPOSITE,
@@ -147,19 +149,20 @@ BasicGate<T> XXGate = {true, gXX, PARAMSOPPOSITE,
                        }};
 
 template <typename T>
-BasicGate<T> YYGate = {true, gYY, PARAMSOPPOSITE,
-                       [](T theta) {
-                           return Dim2Matrix<T>{{{{COS1_2(2 * theta), 0}, {0, 0}, {0, 0}, {0, SIN1_2(2 * theta)}},
-                                                 {{0, 0}, {COS1_2(2 * theta), 0}, {0, -SIN1_2(2 * theta)}, {0, 0}},
-                                                 {{0, 0}, {0, -SIN1_2(2 * theta)}, {COS1_2(2 * theta), 0}, {0, 0}},
-                                                 {{0, SIN1_2(2 * theta)}, {0, 0}, {0, 0}, {COS1_2(2 * theta), 0}}}};
-                       },
-                       [](T theta) {
-                           return Dim2Matrix<T>{{{{-SIN1_2(2 * theta), 0}, {0, 0}, {0, 0}, {0, COS1_2(2 * theta)}},
-                                                 {{0, 0}, {-SIN1_2(2 * theta), 0}, {0, -COS1_2(2 * theta)}, {0, 0}},
-                                                 {{0, 0}, {0, -COS1_2(2 * theta)}, {-SIN1_2(2 * theta), 0}, {0, 0}},
-                                                 {{0, COS1_2(2 * theta)}, {0, 0}, {0, 0}, {-SIN1_2(2 * theta), 0}}}};
-                       }};
+BasicGate<T> YYGate = {
+    true, gYY, PARAMSOPPOSITE,
+    [](T theta) {
+        return Dim2Matrix<T>{VVT<CT<T>>{{{COS1_2(2 * theta), 0}, {0, 0}, {0, 0}, {0, SIN1_2(2 * theta)}},
+                                        {{0, 0}, {COS1_2(2 * theta), 0}, {0, -SIN1_2(2 * theta)}, {0, 0}},
+                                        {{0, 0}, {0, -SIN1_2(2 * theta)}, {COS1_2(2 * theta), 0}, {0, 0}},
+                                        {{0, SIN1_2(2 * theta)}, {0, 0}, {0, 0}, {COS1_2(2 * theta), 0}}}};
+    },
+    [](T theta) {
+        return Dim2Matrix<T>{VVT<CT<T>>{{{-SIN1_2(2 * theta), 0}, {0, 0}, {0, 0}, {0, COS1_2(2 * theta)}},
+                                        {{0, 0}, {-SIN1_2(2 * theta), 0}, {0, -COS1_2(2 * theta)}, {0, 0}},
+                                        {{0, 0}, {0, -COS1_2(2 * theta)}, {-SIN1_2(2 * theta), 0}, {0, 0}},
+                                        {{0, COS1_2(2 * theta)}, {0, 0}, {0, 0}, {-SIN1_2(2 * theta), 0}}}};
+    }};
 
 template <typename T>
 BasicGate<T> ZZGate = {true, gZZ, PARAMSOPPOSITE,

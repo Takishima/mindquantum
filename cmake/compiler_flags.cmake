@@ -247,8 +247,9 @@ if(MSVC)
     string(REPLACE "/Zi" "/Z7" CMAKE_C_FLAGS_MINSIZEREL "${CMAKE_C_FLAGS_MINSIZEREL}")
     string(REPLACE "/Zi" "/Z7" CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL}")
   endif()
-
   mq_add_compile_definitions(_USE_MATH_DEFINES _CRT_SECURE_NO_WARNINGS WIN32_LEAN_AND_MEAN _ITERATOR_DEBUG_LEVEL=0)
+elseif(MINGW)
+  mq_add_compile_definitions(_USE_MATH_DEFINES)
 endif()
 
 # ==============================================================================
