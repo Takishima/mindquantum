@@ -260,6 +260,12 @@ rem ----------------------------------------------------------------------------
 call %SCRIPTDIR%\python_virtualenv_activate.bat
 if %ERRORLEVEL% NEQ 0 exit /B %ERRORLEVEL%
 
+rem ------------------------------------------------------------------------------
+rem Locate cmake or cmake3
+
+call %SCRIPTDIR%\locate_cmake.bat
+if %ERRORLEVEL% NEQ 0 exit /B %ERRORLEVEL%
+
 rem ----------------------------------------------------------------------------
 
 call %SCRIPTDIR%\python_virtualenv_update.bat
