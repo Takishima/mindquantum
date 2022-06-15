@@ -155,12 +155,14 @@ repos:
         args: [--quiet]
         files: (.*\.hpp|.*\.h|.*\.tpp|.*\.cpp)$
         additional_dependencies: ['cpplint']
-      # - id: lizard
-      #   args: [-l, cpp, -l, python, -l, java, -C, '19', -L, '100',
-      #          -x, '*/tests/*', -x, '*/test/*', -x, '*/third_party/*',
-      #          -W, '.jenkins/check/config/whitelizard.txt', -w, mindquantum]
-      #   additional_dependencies: ['lizard']
-   #     - id: clang-tidy
+      - id: lizard
+        require_serial: false
+        files: .*(\.hpp|\.h|\.tpp|\.cpp|\.py)$
+        args: [-l, cpp, -l, python, -l, java, -C, '19', -L, '100',
+               -x, '*/tests/*', -x, '*/test/*', -x, '*/third_party/*',
+               -W.whitelizard.txt, -w]
+        additional_dependencies: ['lizard']
+  #     - id: clang-tidy
   #       stages: [manual]
   #       args: [-Bbuild, -B.pre-commit-build]
   #       exclude: >-
@@ -179,12 +181,3 @@ repos:
                --std=c++20,
                --language=c++,
                --suppressions-list=.cppcheck.suppressions]
-  #     - id: cpplint
-  #       args: [--root=src,
-  #              '--extensions=cxx,cu,hh,cpp,hxx,cuh,h++,cc,c,hpp,c++,h,tpp,txx,cl',
-  #              '--filter=-build/header_guard,-build/c++11',
-  #              --quiet,
-  #              --repository=mindquantum,
-  #              --linelength=120,
-  #              --recursive]
-  #       additional_dependencies: ['cpplint']
