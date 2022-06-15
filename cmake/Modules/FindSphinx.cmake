@@ -40,6 +40,8 @@
 #
 # ==============================================================================
 
+# lint_cmake: -convention/filename,-package/stdargs
+
 # cmake-lint: disable=C0103
 
 set(Sphinx_SEARCH_PATHS

@@ -16,6 +16,8 @@
 #
 # ==============================================================================
 
+# lint_cmake: -whitespace/indent
+
 # cmake-lint: disable=C0103,E1122
 
 set(TWEEDLEDUM_PYBINDS OFF)

@@ -16,6 +16,8 @@
 #
 # ==============================================================================
 
+# lint_cmake: -whitespace/indent
+
 # cmake-lint: disable=C0103
 
 if(ENABLE_GITEE)

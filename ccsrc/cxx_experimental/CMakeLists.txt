@@ -16,6 +16,8 @@
 #
 # ==============================================================================
 
+# lint_cmake: -whitespace/indent
+
 add_library(mindquantum_cxx STATIC)
 set_target_properties(mindquantum_cxx PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 target_link_libraries(mindquantum_cxx PUBLIC cxx20_compat cmake_config mindquantum_setup intrin_flag_CXX

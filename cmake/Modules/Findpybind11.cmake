@@ -30,6 +30,8 @@
 #
 # ==============================================================================
 
+# lint_cmake: -convention/filename,-package/stdargs
+
 # ~~~
 # Make sure that pybind11 finds the correct python version
 #  - pybind11 < 2.6.0 uses find_package(PythonInterp ...)

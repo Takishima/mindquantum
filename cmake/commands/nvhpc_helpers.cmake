@@ -16,6 +16,8 @@
 #
 # ==============================================================================
 
+# lint_cmake: -whitespace/indent
+
 include_guard()
 
 # Convenience function to extract all compute capabilities from command line like strings

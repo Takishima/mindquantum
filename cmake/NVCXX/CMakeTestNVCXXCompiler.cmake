@@ -1,6 +1,8 @@
 # Distributed under the OSI-approved BSD 3-Clause License.  See accompanying
 # file Copyright.txt or https://cmake.org/licensing for details.
 
+# lint_cmake: -whitespace/indent
+
 if(CMAKE_NVCXX_COMPILER_FORCED)
   # The compiler configuration was forced by the user. Assume the user has configured all compiler information.
   set(CMAKE_NVCXX_COMPILER_WORKS TRUE)

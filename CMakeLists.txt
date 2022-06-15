@@ -16,6 +16,8 @@
 #
 # ==============================================================================
 
+# lint_cmake: -whitespace/indent
+
 cmake_minimum_required(VERSION 3.20) # mainly because of NVHPC support
 
 cmake_policy(VERSION 3.0...3.23)

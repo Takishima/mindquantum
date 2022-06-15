@@ -16,6 +16,8 @@
 #
 # ==============================================================================
 
+# lint_cmake: -package/consistency,-convention/filename
+
 #[=======================================================================[.rst:
 Findnlohmann_json
 ---------
@@ -32,8 +34,8 @@ Use this module by invoking :command:`find_package` with the form:
     [COMPONENTS <libs>...] # nlohmann_json libraries by their canonical name
     )
 
-This module finds headers and requested component libraries OR a CMake package configuration file provided by a "nlohmann_json
-CMake" build.  For the latter case skip to the :ref:`nlohmann_json CMake` section below.
+This module finds headers and requested component libraries OR a CMake package configuration file provided by a
+"nlohmann_json CMake" build.  For the latter case skip to the :ref:`nlohmann_json CMake` section below.
 
 Result Variables
 ^^^^^^^^^^^^^^^^
@@ -105,17 +107,18 @@ This module reads hints about search locations from variables:
 ``nlohmann_json_NO_SYSTEM_PATHS``
   Set to ``ON`` to disable searching in locations not specified by these hint variables. Default is ``OFF``.
 
-Users may set these hints or results as ``CACHE`` entries.  Projects should not read these entries directly but
-instead use the above result variables.  Note that some hint names start in upper-case ``nlohmann_json``.  One may specify these
+Users may set these hints or results as ``CACHE`` entries.  Projects should not read these entries directly but instead
+use the above result variables.  Note that some hint names start in upper-case ``nlohmann_json``.  One may specify these
 as environment variables if they are not specified as CMake variables or cache entries.
 
-This module first searches for the nlohmann_json header files using the above hint variables (excluding ``nlohmann_json_LIBRARYDIR``) and
-saves the result in ``nlohmann_json_INCLUDE_DIR``.  Then it searches for requested component libraries using the above hints
-(excluding ``nlohmann_json_INCLUDEDIR``), "lib" directories near ``nlohmann_json_INCLUDE_DIR``, and the library name configuration
-settings below.  It saves the library directories in ``nlohmann_json_LIBRARY_DIR_DEBUG`` and ``nlohmann_json_LIBRARY_DIR_RELEASE`` and
-individual library locations in ``nlohmann_json_<COMPONENT>_LIBRARY_DEBUG`` and ``nlohmann_json_<COMPONENT>_LIBRARY_RELEASE``.  When one
-changes settings used by previous searches in the same build tree (excluding environment variables) this module
-discards previous search results affected by the changes and searches again.
+This module first searches for the nlohmann_json header files using the above hint variables (excluding
+``nlohmann_json_LIBRARYDIR``) and saves the result in ``nlohmann_json_INCLUDE_DIR``.  Then it searches for requested
+component libraries using the above hints (excluding ``nlohmann_json_INCLUDEDIR``), "lib" directories near
+``nlohmann_json_INCLUDE_DIR``, and the library name configuration settings below.  It saves the library directories in
+``nlohmann_json_LIBRARY_DIR_DEBUG`` and ``nlohmann_json_LIBRARY_DIR_RELEASE`` and individual library locations in
+``nlohmann_json_<COMPONENT>_LIBRARY_DEBUG`` and ``nlohmann_json_<COMPONENT>_LIBRARY_RELEASE``.  When one changes
+settings used by previous searches in the same build tree (excluding environment variables) this module discards
+previous search results affected by the changes and searches again.
 
 Imported Targets
 ^^^^^^^^^^^^^^^^
@@ -126,14 +129,14 @@ This module defines the following :prop_tgt:`IMPORTED` targets:
   Target for specific component dependency (shared or static library); ``<component>`` name is lower-case.
 
 It is important to note that the imported targets behave differently than variables created by this module: multiple
-calls to :command:`find_package(nlohmann_json)` in the same directory or sub-directories with different options (e.g. static or
-shared) will not override the values of the targets created by the first call.
+calls to :command:`find_package(nlohmann_json)` in the same directory or sub-directories with different options
+(e.g. static or shared) will not override the values of the targets created by the first call.
 
 Other Variables
 ^^^^^^^^^^^^^^^
 
-nlohmann_json libraries come in many variants encoded in their file name.  Users or projects may tell this module which variant
-to find by setting variables:
+nlohmann_json libraries come in many variants encoded in their file name.  Users or projects may tell this module which
+variant to find by setting variables:
 
 ``nlohmann_json_FIND_RELEASE_ONLY``
   Set to ``ON`` or ``OFF`` to specify whether to restrict the search to release libraries only.  Default is ``OFF``.
@@ -193,10 +196,11 @@ Find nlohmann_json headers and some *static* (release only) libraries:
 nlohmann_json CMake
 ^^^^^^^^^^^^^^^^^^^
 
-If nlohmann_json was built using CMake, it provides a package configuration file for use with find_package's config mode.
-This module looks for the package configuration file called ``nlohmann_jsonConfig.cmake`` and stores the result in ``CACHE``
-entry ``nlohmann_json_DIR``.  If found, the package configuration file is loaded and this module returns with no further action.
-See documentation of the nlohmann_json CMake package configuration for details on what it provides.
+If nlohmann_json was built using CMake, it provides a package configuration file for use with find_package's config
+mode.  This module looks for the package configuration file called ``nlohmann_jsonConfig.cmake`` and stores the result
+in ``CACHE`` entry ``nlohmann_json_DIR``.  If found, the package configuration file is loaded and this module returns
+with no further action.  See documentation of the nlohmann_json CMake package configuration for details on what it
+provides.
 
 Set ``nlohmann_json_NO_CMAKE`` to ``ON``, to disable the search for the package using the CONFIG method.
 
@@ -205,8 +209,8 @@ Set ``nlohmann_json_NO_CMAKE`` to ``ON``, to disable the search for the package 
 nlohmann_json CMake
 ^^^^^^^^^^^^^^^^^^^
 
-If nlohmann_json was installed with its pkg-config files, this module may attempt to look for nlohmann_json by relying on pkg-config.
-If the components are found using this method, this module returns with no further action.
+If nlohmann_json was installed with its pkg-config files, this module may attempt to look for nlohmann_json by relying
+on pkg-config.  If the components are found using this method, this module returns with no further action.
 
 Set ``nlohmann_json_NO_PKGCONFIG`` to ``ON``, to disable the search for the package using the pkg-config method.
 

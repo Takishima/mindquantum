@@ -21,6 +21,8 @@
 # file Copyright.txt or https://cmake.org/licensing for details.
 # ==============================================================================
 
+# lint_cmake: -whitespace/indent,-package/stdargs,-convention/filename,-linelength
+
 # cmake-lint: disable=C0103,E1126,E1120
 
 # ~~~

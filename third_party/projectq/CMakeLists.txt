@@ -16,6 +16,8 @@
 #
 # ==============================================================================
 
+# lint_cmake: -whitespace/indent
+
 file(GLOB _patch_files "${CMAKE_CURRENT_LIST_DIR}/patch/*.patch*")
 list(SORT _patch_files CASE INSENSITIVE)
 

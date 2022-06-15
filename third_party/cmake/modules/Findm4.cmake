@@ -16,6 +16,8 @@
 #
 # ==============================================================================
 
+# lint_cmake: -whitespace/indent, -convention/filename,-package/stdargs
+
 find_program(M4_EXEC m4 PATHS /usr/local/bin /usr/bin /bin /sbin)
 
 if(NOT M4_EXEC AND m4_FIND_REQUIRED)

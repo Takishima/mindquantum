@@ -18,6 +18,8 @@
 # NB: Some of the functions in this file have been adapted from version found in the MindSpore package.
 # ==============================================================================
 
+# lint_cmake: -whitespace/indent,-whitespace/extra
+
 include(FetchContent)
 set(FETCHCONTENT_QUIET OFF)
 
@@ -524,9 +526,9 @@ function(__generate_pseudo_cmake_package_config root_dir pkg_name pkg_namespace 
       "set(PACKAGE_VERSION \"${PKG_VER}\")"
       [[
 
-if (PACKAGE_FIND_VERSION_RANGE)
+if(PACKAGE_FIND_VERSION_RANGE)
   # Package version must be in the requested version range
-  if (("${PACKAGE_FIND_VERSION_RANGE_MIN}" STREQUAL "INCLUDE" AND PACKAGE_VERSION VERSION_LESS PACKAGE_FIND_VERSION_MIN)
+  if(("${PACKAGE_FIND_VERSION_RANGE_MIN}" STREQUAL "INCLUDE" AND PACKAGE_VERSION VERSION_LESS PACKAGE_FIND_VERSION_MIN)
       OR (("${PACKAGE_FIND_VERSION_RANGE_MAX}" STREQUAL "INCLUDE"
              AND PACKAGE_VERSION VERSION_GREATER PACKAGE_FIND_VERSION_MAX)
            OR ("${PACKAGE_FIND_VERSION_RANGE_MAX}" STREQUAL "EXCLUDE"
