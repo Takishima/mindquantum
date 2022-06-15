@@ -67,7 +67,7 @@ namespace mindquantum
                device_ = &device;
           }
           else {
-               // TODO: Better error handling
+               // TODO(dnguyen): Better error handling
                assert(&device == device_);
           }
 

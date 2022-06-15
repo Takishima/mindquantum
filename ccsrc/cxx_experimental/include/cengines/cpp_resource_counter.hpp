@@ -18,8 +18,8 @@
 #include <map>
 #include <optional>
 #include <string_view>
-#include <pair>
 #include <tuple>
+#include <utility>
 
 #include <tweedledum/IR/Circuit.h>
 
