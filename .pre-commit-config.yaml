@@ -141,6 +141,7 @@ repos:
     hooks:
       - id: clang-format
         args: [-i]
+        files: (.*\.hpp|.*\.h|.*\.tpp|.*\.cpp)
         additional_dependencies: ['clang-format']
       - id: lizard
         args: [-l, cpp, -l, python, -l, java, -C, '19', -L, '100',
