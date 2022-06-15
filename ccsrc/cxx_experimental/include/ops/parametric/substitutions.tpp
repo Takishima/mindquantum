@@ -15,9 +15,10 @@
 #ifndef PARAMETRIC_SUBSTITUTIONS_TPP
 #define PARAMETRIC_SUBSTITUTIONS_TPP
 
-#include "ops/parametric/config.hpp"
-#include <vector>
 #include <utility>
+#include <vector>
+
+#include "ops/parametric/config.hpp"
 
 #include "ops/parametric/to_symengine.hpp"
 
@@ -31,53 +32,52 @@
 
 namespace mindquantum::ops::parametric {
 
-    template <typename op_t, typename... args_t>
-    auto generate_subs(args_t&&... args)
+template <typename op_t, typename... args_t>
+auto generate_subs(args_t&&... args)
 
-    {
-        return details::create_subs_from_params<operator_t>(std::index_sequence_for<args_t...>{},
-                                                            std::forward<args_t>(args)...);
+{
+    return details::create_subs_from_params<operator_t>(std::index_sequence_for<args_t...>{},
+                                                        std::forward<args_t>(args)...);
+}
+
+template <typename op_t>
+auto generate_subs(const double_list_t& params) {
+    return details::generate_subs<op_t>(params);
+}
+
+template <typename op_t>
+auto generate_subs(const param_list_t& params) {
+    return details::generate_subs<op_t>(params);
+}
+
+// -------------------------------------------------------------------------
+
+namespace details {
+template <typename op_t, typename T>
+auto generate_subs(const std::vector<T>& params) {
+    subs_map_t subs;
+    auto idx = 0UL;
+    for (const auto& param : params) {
+        subs.emplace(op_t::create_op().param(idx), to_symengine(param));
+        ++idx;
     }
+    return subs;
+}
 
-    template <typename op_t>
-    auto generate_subs(const double_list_t& params) {
-        return details::generate_subs<op_t>(params);
-    }
-
-    template <typename op_t>
-    auto generate_subs(const param_list_t& params) {
-        return details::generate_subs<op_t>(params);
-    }
-
-    // -------------------------------------------------------------------------
-
-    namespace details {
-        template <typename op_t, typename T>
-        auto generate_subs(const std::vector<T>& params) {
-            subs_map_t subs;
-            auto idx = 0UL;
-            for (const auto& param: params) {
-                subs.emplace(op_t::create_op().param(idx), to_symengine(param));
-                ++idx;
-            }
-            return subs;
-        }
-
-        // =========================================================================
+// =========================================================================
 
 #if MQ_HAS_CONCEPTS
-        template <typename op_t, std::size_t... indices, concepts::expr_or_number... exprs_t>
+template <typename op_t, std::size_t... indices, concepts::expr_or_number... exprs_t>
 #else
-        template <typename op_t, std::size_t... indices, typename... exprs_t>
+template <typename op_t, std::size_t... indices, typename... exprs_t>
 #endif  // MQ_HAS_CONCEPTS
-        auto create_subs_from_params(std::index_sequence<indices...> /* indices */, exprs_t&&... exprs) {
-            static_assert(sizeof...(indices) == op_t::num_params);
-            static_assert(sizeof...(indices) == sizeof...(exprs));
-            return subs_map_t{
-                std::make_pair(op_t::create_op().param(indices), to_symengine(std::forward<exprs_t>(exprs)))...};
-        }
+auto create_subs_from_params(std::index_sequence<indices...> /* indices */, exprs_t&&... exprs) {
+    static_assert(sizeof...(indices) == op_t::num_params);
+    static_assert(sizeof...(indices) == sizeof...(exprs));
+    return subs_map_t{std::make_pair(op_t::create_op().param(indices), to_symengine(std::forward<exprs_t>(exprs)))...};
+}
 
-    }  // namespace details
+}  // namespace details
 
 }  // namespace mindquantum::ops::parametric
 

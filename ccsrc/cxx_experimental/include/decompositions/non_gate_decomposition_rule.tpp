@@ -21,39 +21,36 @@
 
 // NB: This is mainly for syntax checkers and completion helpers as this file
 //     is only intended to be included directly by non_gate_decomposition_rule.hpp
-#include "decompositions/non_gate_decomposition_rule.hpp"
-
 #include <tuple>
 #include <utility>
 
+#include "decompositions/non_gate_decomposition_rule.hpp"
 
 namespace mindquantum::decompositions {
 
-    // =========================================================================
-    // ::NonGateDecompositionRule
+// =========================================================================
+// ::NonGateDecompositionRule
 
-    template <typename derived_t, typename... atoms_t>
-    template <typename atom_t, typename... args_t>
-    constexpr auto* NonGateDecompositionRule<derived_t, atoms_t...>::atom(
-        args_t&&... args) noexcept {
-        using real_atom_t = typename traits::atom_traits<atom_t>::type;
-        using atoms_tuple_t = std::tuple<typename traits::atom_traits<atoms_t>::type...>;
+template <typename derived_t, typename... atoms_t>
+template <typename atom_t, typename... args_t>
+constexpr auto* NonGateDecompositionRule<derived_t, atoms_t...>::atom(args_t&&... args) noexcept {
+    using real_atom_t = typename traits::atom_traits<atom_t>::type;
+    using atoms_tuple_t = std::tuple<typename traits::atom_traits<atoms_t>::type...>;
 
-        if constexpr (traits::tuple_contains<real_atom_t, atoms_tuple_t>) {
-            return parent_t::template atom<real_atom_t>();
-        } else {
-            return storage_.add_or_return_atom<real_atom_t>(std::forward<args_t>(args)...);
-        }
+    if constexpr (traits::tuple_contains<real_atom_t, atoms_tuple_t>) {
+        return parent_t::template atom<real_atom_t>();
+    } else {
+        return storage_.add_or_return_atom<real_atom_t>(std::forward<args_t>(args)...);
     }
+}
 
-    // =========================================================================
-    // ::apply()
+// =========================================================================
+// ::apply()
 
-    template <typename derived_t, typename... atoms_t>
-    void NonGateDecompositionRule<derived_t, atoms_t...>::apply(circuit_t& circuit,
-                                                                const instruction_t& inst) noexcept {
-        static_cast<derived_t*>(this)->apply_impl(circuit, inst);
-    }
+template <typename derived_t, typename... atoms_t>
+void NonGateDecompositionRule<derived_t, atoms_t...>::apply(circuit_t& circuit, const instruction_t& inst) noexcept {
+    static_cast<derived_t*>(this)->apply_impl(circuit, inst);
+}
 
 }  // namespace mindquantum::decompositions
 

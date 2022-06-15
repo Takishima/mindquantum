@@ -104,9 +104,9 @@ auto AtomStorage::add_or_replace_atom(args_t&&... args) -> atom_t* {
 #else
         const auto
 #endif  // _MSC_VER
-                atom_match = [kind_match = kind_match, num_controls = num_controls](const map_t::value_type& item) {
-                    return kind_match(item) && item.first.second == num_controls;
-                };
+            atom_match = [kind_match = kind_match, num_controls = num_controls](const map_t::value_type& item) {
+                return kind_match(item) && item.first.second == num_controls;
+            };
         // First have a look if we know of this kind of atom
         it_match = std::find_if(it_begin, atoms_end, atom_match);
 
@@ -134,13 +134,13 @@ auto AtomStorage::add_or_non_replace_atom_(args_t&&... args) -> atom_t* {
     const auto atoms_end = end(atoms_);
 
 #ifdef _MSC_VER
-        const std::function<bool(const map_t::value_type&)>
+    const std::function<bool(const map_t::value_type&)>
 #else
-        const auto
+    const auto
 #endif  // _MSC_VER
-            atom_match = [&kind, num_controls = num_controls](const map_t::value_type& item) {
-                return item.first.first == kind && ctrl_comp_t{}(item.first.second, num_controls);
-            };
+        atom_match = [&kind, num_controls = num_controls](const map_t::value_type& item) {
+            return item.first.first == kind && ctrl_comp_t{}(item.first.second, num_controls);
+        };
 
     const auto it_match = std::find_if(begin(atoms_), atoms_end, atom_match);
 

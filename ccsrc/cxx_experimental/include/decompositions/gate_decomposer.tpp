@@ -29,36 +29,35 @@
 
 namespace mindquantum::decompositions {
 
-    // =========================================================================
-    // ::has_atom
+// =========================================================================
+// ::has_atom
 
-    template <typename o_atom_t>
-    bool GateDecomposer::has_atom() const noexcept {
-        if constexpr (concepts::GateDecomposition<o_atom_t>) {
-            return atom_storage_.has_atom<o_atom_t>();
-        } else {
-            constexpr auto name = o_atom_t::name();
-            return std::find_if(begin(general_rule_storage_), end(general_rule_storage_),
-                                [&name](const auto& item) { return item.name() == name; })
-                   != end(general_rule_storage_);
-        }
+template <typename o_atom_t>
+bool GateDecomposer::has_atom() const noexcept {
+    if constexpr (concepts::GateDecomposition<o_atom_t>) {
+        return atom_storage_.has_atom<o_atom_t>();
+    } else {
+        constexpr auto name = o_atom_t::name();
+        return std::find_if(begin(general_rule_storage_), end(general_rule_storage_),
+                            [&name](const auto& item) { return item.name() == name; })
+               != end(general_rule_storage_);
     }
+}
 
-    // =========================================================================
+// =========================================================================
 
-    template <typename o_atom_t, std::size_t kind_idx, typename... args_t>
-    auto GateDecomposer::add_or_replace_atom(args_t&&... args) -> atom_t* {
-        if constexpr (concepts::GateDecomposition<o_atom_t>) {
-            return atom_storage_.add_or_replace_atom<o_atom_t, kind_idx>(std::forward<args_t>(args)...);
-        } else {
-            auto [it, _] = general_rule_storage_.emplace(
-                o_atom_t::create(atom_storage_, std::forward<args_t>(args)...));
-            /* NB: const_cast() is needed for compilers/STL implementations where std::set elements are always
-             *     immutable when accessed through iterators.
-             */
-            return &const_cast<DecompositionAtom&>(*it);
-        }
+template <typename o_atom_t, std::size_t kind_idx, typename... args_t>
+auto GateDecomposer::add_or_replace_atom(args_t&&... args) -> atom_t* {
+    if constexpr (concepts::GateDecomposition<o_atom_t>) {
+        return atom_storage_.add_or_replace_atom<o_atom_t, kind_idx>(std::forward<args_t>(args)...);
+    } else {
+        auto [it, _] = general_rule_storage_.emplace(o_atom_t::create(atom_storage_, std::forward<args_t>(args)...));
+        /* NB: const_cast() is needed for compilers/STL implementations where std::set elements are always
+         *     immutable when accessed through iterators.
+         */
+        return &const_cast<DecompositionAtom&>(*it);
     }
+}
 
 }  // namespace mindquantum::decompositions
 

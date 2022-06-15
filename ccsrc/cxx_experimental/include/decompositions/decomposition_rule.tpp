@@ -15,8 +15,9 @@
 #ifndef DECOMPOSITION_RULE_TPP
 #define DECOMPOSITION_RULE_TPP
 
-#include "decompositions/config.hpp"
 #include <tuple>
+
+#include "decompositions/config.hpp"
 
 #include "decompositions/decomposition_atom.hpp"
 #ifndef DECOMPOSITION_RULE_HPP
@@ -30,87 +31,87 @@
 
 namespace mindquantum::decompositions {
 
-    // =========================================================================
-    // ::DecompositionRule()
+// =========================================================================
+// ::DecompositionRule()
 
-    template <typename derived_t, typename... atoms_t>
-    DecompositionRule<derived_t, atoms_t...>::DecompositionRule(AtomStorage& storage)
-        : atoms_{create_<atoms_t...>(storage)} {
-    }
+template <typename derived_t, typename... atoms_t>
+DecompositionRule<derived_t, atoms_t...>::DecompositionRule(AtomStorage& storage)
+    : atoms_{create_<atoms_t...>(storage)} {
+}
 
-    // =========================================================================
-    // ::atom()
+// =========================================================================
+// ::atom()
 
-    template <typename derived_t, typename... atoms_t>
-    template <std::size_t idx>
-    constexpr auto* DecompositionRule<derived_t, atoms_t...>::atom() noexcept
+template <typename derived_t, typename... atoms_t>
+template <std::size_t idx>
+constexpr auto* DecompositionRule<derived_t, atoms_t...>::atom() noexcept
 #if MQ_HAS_CONCEPTS
-        requires(idx < sizeof...(atoms_t))
+    requires(idx < sizeof...(atoms_t))
 #endif  // MQ_HAS_CONCEPTS
-    {
+{
 #if !MQ_HAS_CONCEPTS
-        static_assert(idx < sizeof...(atoms_t));
+    static_assert(idx < sizeof...(atoms_t));
 #endif  // !MQ_HAS_CONCEPTS
-        return atoms_[idx];
-    }
+    return atoms_[idx];
+}
 
-    template <typename derived_t, typename... atoms_t>
-    template <typename atom_t>
-    constexpr auto* DecompositionRule<derived_t, atoms_t...>::atom() noexcept
+template <typename derived_t, typename... atoms_t>
+template <typename atom_t>
+constexpr auto* DecompositionRule<derived_t, atoms_t...>::atom() noexcept
 #if MQ_HAS_CONCEPTS
-        requires(concepts::tuple_contains<typename traits::atom_traits<atom_t>::type,
-                                          typename traits::atom_traits<atoms_t>::type...>)
+    requires(concepts::tuple_contains<typename traits::atom_traits<atom_t>::type,
+                                      typename traits::atom_traits<atoms_t>::type...>)
 #endif  // MQ_HAS_CONCEPTS
-    {
-        using real_atom_t = typename traits::atom_traits<atom_t>::type;
-        using atoms_tuple_t = std::tuple<typename traits::atom_traits<atoms_t>::type...>;
+{
+    using real_atom_t = typename traits::atom_traits<atom_t>::type;
+    using atoms_tuple_t = std::tuple<typename traits::atom_traits<atoms_t>::type...>;
 #if !MQ_HAS_CONCEPTS
-        static_assert(traits::tuple_contains<real_atom_t, atoms_tuple_t>);
+    static_assert(traits::tuple_contains<real_atom_t, atoms_tuple_t>);
 #endif  // !MQ_HAS_CONCEPTS
-        return atom<details::index_in_tuple<real_atom_t, atoms_tuple_t>>();
-    }
+    return atom<details::index_in_tuple<real_atom_t, atoms_tuple_t>>();
+}
 
-    // =========================================================================
-    // ::apply()
+// =========================================================================
+// ::apply()
 
-    template <typename derived_t, typename... atoms_t>
-    void DecompositionRule<derived_t, atoms_t...>::apply(circuit_t& circuit, const operator_t& op,
-                                                         const qubits_t& qubits, const cbits_t& cbits) noexcept {
-        static_cast<derived_t*>(this)->apply_impl(circuit, op, qubits, cbits);
-    }
+template <typename derived_t, typename... atoms_t>
+void DecompositionRule<derived_t, atoms_t...>::apply(circuit_t& circuit, const operator_t& op, const qubits_t& qubits,
+                                                     const cbits_t& cbits) noexcept {
+    static_cast<derived_t*>(this)->apply_impl(circuit, op, qubits, cbits);
+}
 
-    // =========================================================================
-    // ::invalid_op_()
+// =========================================================================
+// ::invalid_op_()
 
-    template <typename derived_t, typename... atoms_t>
-    void DecompositionRule<derived_t, atoms_t...>::invalid_op_(circuit_t& circuit, const qubits_t& qubits) {
-        circuit.apply_operator(ops::Invalid{}, qubits);
-    }
+template <typename derived_t, typename... atoms_t>
+void DecompositionRule<derived_t, atoms_t...>::invalid_op_(circuit_t& circuit, const qubits_t& qubits) {
+    circuit.apply_operator(ops::Invalid{}, qubits);
+}
 
-    template <typename derived_t, typename... atoms_t>
-    void DecompositionRule<derived_t, atoms_t...>::invalid_op_(circuit_t& circuit, const qubits_t& qubits,
-                                                               const gate_param_t& /* param */) {
-        invalid_op_(circuit, qubits);
-    }
+template <typename derived_t, typename... atoms_t>
+void DecompositionRule<derived_t, atoms_t...>::invalid_op_(circuit_t& circuit, const qubits_t& qubits,
+                                                           const gate_param_t& /* param */) {
+    invalid_op_(circuit, qubits);
+}
 
-    // =========================================================================
-    // ::create_()
+// =========================================================================
+// ::create_()
 
-    template <typename derived_t, typename... atoms_t>
-    template <typename... args_t>
-    auto DecompositionRule<derived_t, atoms_t...>::create_(AtomStorage& storage) {
-        return std::array<DecompositionAtom*, sizeof...(args_t)>{create_el_<args_t>(storage)...};
-    }
+template <typename derived_t, typename... atoms_t>
+template <typename... args_t>
+auto DecompositionRule<derived_t, atoms_t...>::create_(AtomStorage& storage) {
+    return std::array<DecompositionAtom*, sizeof...(args_t)>{create_el_<args_t>(storage)...};
+}
 
-    // =========================================================================
-    // ::create_el()
+// =========================================================================
+// ::create_el()
 
-    template <typename derived_t, typename... atoms_t>
-    template <typename T>
-    auto DecompositionRule<derived_t, atoms_t...>::create_el_(AtomStorage& storage) {
-        using atom_t = typename traits::atom_traits<T>::type;
-        return storage.add_or_compatible_atom<atom_t>();
-    }
+template <typename derived_t, typename... atoms_t>
+template <typename T>
+auto DecompositionRule<derived_t, atoms_t...>::create_el_(AtomStorage& storage) {
+    using atom_t = typename traits::atom_traits<T>::type;
+    return storage.add_or_compatible_atom<atom_t>();
+}
 
 }  // namespace mindquantum::decompositions
 

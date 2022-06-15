@@ -17,6 +17,7 @@
 
 #include <memory>
 #include <utility>
+
 #include <tweedledum/IR/Operator.h>
 
 #include "core/config.hpp"
