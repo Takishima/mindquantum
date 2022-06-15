@@ -16,32 +16,40 @@
 #
 # ==============================================================================
 
-find_package(Catch2 CONFIG REQUIRED)
-list(APPEND CMAKE_MODULE_PATH ${Catch2_DIR})
+if(ENABLE_CXX_EXPERIMENTAL)
+  find_package(Catch2 CONFIG REQUIRED)
+  list(APPEND CMAKE_MODULE_PATH ${Catch2_DIR})
 
-include(CTest)
-include(Catch)
-# include(ParseAndAddCatchTests)
-
-# ==============================================================================
-
-add_subdirectory(core)
-add_subdirectory(decompositions)
-add_subdirectory(mapping)
-add_subdirectory(ops)
-add_subdirectory(optimisation)
+  include(CTest)
+  include(Catch)
+  # include(ParseAndAddCatchTests)
+endif()
 
 # ==============================================================================
 
-# add_test(NAME pytest COMMAND ${Python_EXECUTABLE} -m pytest -p no:warnings -v ${CMAKE_CURRENT_LIST_DIR})
+if(ENABLE_CXX_EXPERIMENTAL)
+  add_subdirectory(core)
+  add_subdirectory(decompositions)
+  add_subdirectory(mapping)
+  add_subdirectory(ops)
+  add_subdirectory(optimisation)
+endif()
 
 # ==============================================================================
 
-install(FILES ${CMAKE_CURRENT_LIST_DIR}/utils.hpp DESTINATION ${MQ_INSTALL_INCLUDEDIR}/tests)
-install(
-  DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/core ${CMAKE_CURRENT_LIST_DIR}/ops
-  DESTINATION ${MQ_INSTALL_INCLUDEDIR}/tests
-  FILES_MATCHING
-  PATTERN "*.hpp")
+if(ENABLE_CXX_EXPERIMENTAL)
+  add_test(NAME pytest COMMAND ${Python_EXECUTABLE} -m pytest -v ${CMAKE_CURRENT_LIST_DIR})
+endif()
+
+# ==============================================================================
+
+if(ENABLE_CXX_EXPERIMENTAL)
+  install(FILES ${CMAKE_CURRENT_LIST_DIR}/utils.hpp DESTINATION ${MQ_INSTALL_INCLUDEDIR}/tests)
+  install(
+    DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/core ${CMAKE_CURRENT_LIST_DIR}/ops
+    DESTINATION ${MQ_INSTALL_INCLUDEDIR}/tests
+    FILES_MATCHING
+    PATTERN "*.hpp")
+endif()
 
 # ==============================================================================
