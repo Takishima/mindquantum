@@ -10,4 +10,4 @@
 "mindquantum/ccsrc/cxx_experimental/lib/decompositions/atom_storage.cpp"    "stlIfFind"
 "mindquantum/ccsrc/cxx_experimental/lib/decompositions/gate_decomposer.cpp" "stlIfFind"
 
-"mindquantum/tests/mapping/test_partial_placer.cpp" "unreadVariable"
+"mindquantum/tests/mapping/test_partial_placer.cpp"                          "unreadVariable"

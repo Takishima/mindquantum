@@ -155,6 +155,11 @@ repos:
         args: [--quiet]
         files: (.*\.hpp|.*\.h|.*\.tpp|.*\.cpp)$
         additional_dependencies: ['cpplint']
+      - id: lizard
+        args: [-l, cpp, -l, python, -l, java, -C, '19', -L, '100',
+               -x, '*/tests/*', -x, '*/test/*', -x, '*/third_party/*',
+               -W.whitelizard.txt, -w]
+        additional_dependencies: ['lizard']
   #     - id: clang-tidy
   #       stages: [manual]
   #       args: [-Bbuild, -B.pre-commit-build]
@@ -165,21 +170,12 @@ repos:
   #           .*\.cu
   #         )$
 
-  # - repo: https://gitee.com/btcong/pre-commit-hooks
-  #   rev: v1.3.5
-  #   hooks:
-  #     - id: cppcheck
-  #       args: [--force,
-  #              --inline-suppr,
-  #              --std=c++17,
-  #              --language=c++,
-  #              --suppressions-list=.cppcheck.suppressions]
-  #     - id: cpplint
-  #       args: [--root=src,
-  #              '--extensions=cxx,cu,hh,cpp,hxx,cuh,h++,cc,c,hpp,c++,h,tpp,txx,cl',
-  #              '--filter=-build/header_guard,-build/c++11',
-  #              --quiet,
-  #              --repository=mindquantum,
-  #              --linelength=120,
-  #              --recursive]
-  #       additional_dependencies: ['cpplint']
+  - repo: https://gitee.com/btcong/pre-commit-hooks
+    rev: v1.3.5
+    hooks:
+      - id: cppcheck
+        args: [--force,
+               --inline-suppr,
+               --std=c++17,
+               --language=c++,
+               --suppressions-list=.cppcheck.suppressions]
