@@ -261,7 +261,7 @@ class CMakeBuildExt(build_ext):
         # This can in principle handle the compilation of extensions outside the main CMake directory (ie. outside the
         # one containing this setup.py file)
         for src_dir, extensions in itertools.groupby(sorted(self.extensions, key=_src_dir_pred), key=_src_dir_pred):
-            self.cmake_configure_build(src_dir, extensions, cmake_args, env)
+            self.cmake_configure_build(str(src_dir), extensions, cmake_args, env)
 
     def cmake_configure_build(self, src_dir, extensions, cmake_args, env):
         """Run a CMake build command for a list of extensions."""
@@ -276,9 +276,11 @@ class CMakeBuildExt(build_ext):
         if not Path(build_temp).exists():
             Path(build_temp).mkdir(parents=True, exist_ok=True)
 
+        build_temp = str(build_temp)
+
         logging.info(' Configuring from %s '.center(80, '-'), src_dir)
-        logging.info('CMake command: %s', ' '.join(self.cmake_cmd + [str(src_dir)] + args))
-        logging.info('   cwd: %s', build_temp)
+        logging.info('CMake command: %s', ' '.join(self.cmake_cmd + [src_dir] + args))
+        logging.info('   cwd: %s', str(build_temp))
         try:
             subprocess.check_call(self.cmake_cmd + [src_dir] + args, cwd=build_temp, env=env)
         except ext_errors as err:
@@ -362,7 +364,7 @@ class CMakeBuildExt(build_ext):
     def _get_temp_dir(self, src_dir):
         if self.build_dir:
             return self.build_dir
-        return Path(self.build_temp, Path(src_dir).name)
+        return str(Path(self.build_temp, Path(src_dir).name))
 
 
 # ==============================================================================
