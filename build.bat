@@ -319,8 +319,7 @@ if !has_build_dir! == 1 (
   if !do_clean_build_dir! == 1 (
     echo Deleting build folder: !build_dir!
     if exist !build_dir! call :call_cmd rd /Q /S !build_dir!
-  )
-  else (
+  ) else (
     if !do_clean_cache! == 1 (
       echo Removing CMake cache at: !build_dir!\CMakeCache.txt
       if exist !build_dir!\CMakeCache.txt call :call_cmd del /Q "!build_dir!\CMakeCache.txt"
