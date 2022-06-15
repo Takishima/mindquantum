@@ -125,7 +125,15 @@ cd "$ROOTDIR"
 # NB: `created_venv` variable can be used to detect if a virtualenv was created or not
 . (Join-Path $ROOTDIR 'scripts\build\python_virtualenv_activate.ps1')
 
+
 # ------------------------------------------------------------------------------
+# Locate cmake or cmake3
+
+# NB: `cmake_from_venv` variable is set by this script (and is used by python_virtualenv_update.sh)
+. (Join-Path $ROOTDIR 'scripts\build\locate_cmake.ps1')
+
+# ------------------------------------------------------------------------------
+
 # Update Python virtualenv (if requested/necessary)
 
 . (Join-Path $ROOTDIR 'scripts\build\python_virtualenv_update.ps1')

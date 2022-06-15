@@ -104,6 +104,16 @@ cd "${ROOTDIR}"
 # NB: `cmake_from_venv` variable is set by this script (and is used by python_virtualenv_update.sh)
 . "$ROOTDIR/scripts/build/locate_cmake.sh"
 
+# -----------------------------------------------------------------------------------------
+# Locate patchelf
+
+if [[ "$delocate_wheel" -eq 1 && "$(uname -s)" == "Linux" ]]; then
+    if ! command -v patchelf > /dev/null 2>&1; then
+        echo "Installing patchelf inside the Python virtual environment"
+        call_cmd "$PYTHON" -m pip install patchelf
+    fi
+fi
+
 # ------------------------------------------------------------------------------
 # Update Python virtualenv (if requested/necessary)
 
