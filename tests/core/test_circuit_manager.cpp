@@ -17,8 +17,8 @@
 
 #include "core/circuit_block.hpp"
 #include "core/circuit_manager.hpp"
+#include "core/utils.hpp"
 #include "ops/gates/measure.hpp"
-#include "utils.hpp"
 
 namespace td = tweedledum;
 

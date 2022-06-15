@@ -196,11 +196,11 @@ class ParametricBase {
 #if MQ_HAS_CONCEPTS
     template <typename... Ts>
         requires(has_const_num_targets && (concepts::expr_or_number<Ts> || ...))
-    constexpr ParametricBase(Ts&&... args)
+    constexpr ParametricBase(Ts&&... args)  // NOLINT(runtime/explicit)
 #else
     template <typename... Ts, typename T = self_t,
               typename = std::enable_if_t<T::has_const_num_targets && !traits::is_param_base<Ts...>::value>>
-    constexpr ParametricBase(Ts&&... args)
+    constexpr ParametricBase(Ts&&... args)  // NOLINT(runtime/explicit)
 #endif  // MQ_HAS_CONCEPTS
         : num_targets_(traits::num_targets<non_param_type>), params_{to_symengine(std::forward<Ts>(args))...} {
         static_assert(sizeof...(Ts) == num_params, "You need to specify a value for all the parameters");
@@ -215,10 +215,10 @@ class ParametricBase {
 #if MQ_HAS_CONCEPTS
     template <typename... Ts>
         requires(!has_const_num_targets && (concepts::expr_or_number<Ts> || ...))
-    constexpr ParametricBase(uint32_t num_targets, Ts&&... args)
+    constexpr ParametricBase(uint32_t num_targets, Ts&&... args)  // NOLINT(runtime/explicit)
 #else
     template <typename... Ts, typename T = self_t, typename = std::enable_if_t<!T::has_const_num_targets>>
-    constexpr ParametricBase(uint32_t num_targets, Ts&&... args)
+    constexpr ParametricBase(uint32_t num_targets, Ts&&... args)  // NOLINT(runtime/explicit)
 #endif  // MQ_HAS_CONCEPTS
         : num_targets_(num_targets), params_{to_symengine(std::forward<Ts>(args))...} {
         static_assert(sizeof...(Ts) == num_params, "You need to specify a value for all the parameters");
@@ -229,10 +229,10 @@ class ParametricBase {
 
     //! Constructor from an array of parameters
 #if MQ_HAS_CONCEPTS
-    constexpr ParametricBase(param_array_t&& params) requires(has_const_num_targets)
+    constexpr ParametricBase(param_array_t&& params) requires(has_const_num_targets)  // NOLINT(runtime/explicit)
 #else
     template <typename T = self_t, typename = std::enable_if_t<T::has_const_num_targets>>
-    constexpr ParametricBase(param_array_t&& params)
+    constexpr ParametricBase(param_array_t&& params)  // NOLINT(runtime/explicit)
 #endif  //  MQ_HAS_CONCEPTS
         : num_targets_(traits::num_targets<non_param_type>), params_{expand_all(std::move(params))} {
     }

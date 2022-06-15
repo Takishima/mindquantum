@@ -33,12 +33,8 @@ namespace mindquantum::ops::parametric {
  * \note If the gate is neither a parametric gate or a gate with an angle() method, this method is no-op.
  */
 template <typename op_t>
-void register_gate_type()
-#if MQ_HAS_CONCEPTS
-    requires((concepts::ParametricGate<op_t>) || (concepts::AngleGate<op_t>) || (concepts::SingleDoubleGate<op_t>)
-             || (concepts::MultiDoubleGate<op_t>) )
-#endif  // MQ_HAS_CONCEPTS
-        ;
+void register_gate_type() MQ_REQUIRES((concepts::ParametricGate<op_t>) || (concepts::AngleGate<op_t>)
+                                      || (concepts::SingleDoubleGate<op_t>) || (concepts::MultiDoubleGate<op_t>) );
 
 //! Get the parameters of an operation
 /*!

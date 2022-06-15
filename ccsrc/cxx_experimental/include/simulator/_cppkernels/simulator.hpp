@@ -311,7 +311,7 @@ class Simulator {
 #    endif  // _OPENMP >= 201511
         {
             std::vector<int> res(quregs.size());
-            //#pragma omp for schedule(static)
+            // #pragma omp for schedule(static)
 #endif
         for (omp::idx_t i = 0; i < vec_.size(); ++i) {
             if ((ctrlmask & i) == ctrlmask) {

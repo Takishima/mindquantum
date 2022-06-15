@@ -26,6 +26,7 @@
 // clang-format on
 
 #include <cassert>
+#include <vector>
 
 #include "core/gate_traits.hpp"
 

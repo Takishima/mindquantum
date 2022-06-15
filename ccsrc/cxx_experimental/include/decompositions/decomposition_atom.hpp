@@ -129,26 +129,23 @@ class DecompositionAtom {
 
  private:
     struct Concept {
-        void (*dtor)(void*) noexcept;
+        void (*dtor)(void*) noexcept;  // NOLINT(readability/casting)
         void (*clone)(void const*, void*) noexcept;
         std::string_view (*name)() noexcept;
         bool (*is_kind)(std::string_view) noexcept;
         bool (*is_applicable)(void const*, const instruction_t&) noexcept;
         void (*apply)(void*, circuit_t&, const instruction_t&) noexcept;
         void (*apply_operator)(void*, circuit_t&, const operator_t&, const qubits_t&, const cbits_t&) noexcept;
-    }
-#ifndef _MSC_VER
-    __attribute__((aligned(128)))  // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-#endif                             // !_MSC_VER
-    ;
+    } MQ_ALIGN(64);
 
     template <class ConcreteOp, bool IsSmall>
     struct Model;
 
     static constexpr size_t small_size = sizeof(void*) * 4;
-    Concept const* concept_;
+
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
     alignas(64) std::array<std::byte, small_size> model_{};
+    Concept const* concept_;
 };
 
 namespace details {

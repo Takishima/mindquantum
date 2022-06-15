@@ -16,7 +16,7 @@
 #include <tweedledum/Operators/Standard.h>
 
 #include "core/circuit_manager.hpp"
-#include "utils.hpp"
+#include "core/utils.hpp"
 
 // =============================================================================
 

@@ -26,11 +26,7 @@ struct DecompositionRuleParam {
     num_target_t num_targets;    //!< Number of target qubits the decomposition is constrained on
     num_control_t num_controls;  //!< Number of control qubits the decomposition is constrained on
     num_param_t num_params;      //!< Number of parameters the decomposition rule possesses
-}
-#ifndef _MSC_VER
-__attribute__((aligned(16)))  // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-#endif                        // !_MSC_VER
-;
+} MQ_ALIGN(16);
 
 // ---------------------------------
 // Definition of special values for decomposition rule template parameter
@@ -96,6 +92,7 @@ static constexpr auto default_t = any_tgt::any_ctrl;
 #    define SINGLE_TGT_PARAM_DOUBLE_CTRL mindquantum::decompositions::tparam::single_tgt_param::double_ctrl
 #else
 #    define MQ_INTERNAL_DR_EXPAND_TPARAM_IMPL(value) value.num_targets, value.num_controls, value.num_params
+// NOLINTNEXTLINE(whitespace/line_length)
 #    define MQ_INTERNAL_DR_EXPAND_TPARAM(value)      MQ_INTERNAL_DR_EXPAND_TPARAM_IMPL(mindquantum::decompositions::value)
 
 #    define ANY_TGT_ANY_CTRL    MQ_INTERNAL_DR_EXPAND_TPARAM(tparam::any_tgt::any_ctrl)

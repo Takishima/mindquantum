@@ -33,9 +33,7 @@
 namespace mindquantum::ops::parametric {
 
 template <typename op_t, typename... args_t>
-auto generate_subs(args_t&&... args)
-
-{
+auto generate_subs(args_t&&... args) {
     return details::create_subs_from_params<operator_t>(std::index_sequence_for<args_t...>{},
                                                         std::forward<args_t>(args)...);
 }
