@@ -27,7 +27,8 @@
 // =============================================================================
 
 namespace {
-using namespace mindquantum::ops::parametric;
+using mindquantum::ops::parametric::ParametricBase;
+namespace real = mindquantum::ops::parametric::real;
 
 class NumOne {
  public:
@@ -40,7 +41,7 @@ class NumOne {
     explicit NumOne(double alpha) : alpha_(alpha) {
     }
 
-    const auto& alpha() const {
+    MQ_NODISCARD const auto& alpha() const {
         return alpha_;
     }
 
@@ -78,10 +79,10 @@ class NumTwo {
     NumTwo(double alpha, double beta) : alpha_(alpha), beta_(beta) {
     }
 
-    const auto& alpha() const {
+    MQ_NODISCARD const auto& alpha() const {
         return alpha_;
     }
-    const auto& beta() const {
+    MQ_NODISCARD const auto& beta() const {
         return beta_;
     }
 
@@ -124,6 +125,7 @@ static_assert(mindquantum::traits::num_targets<::ParamTwo> == 1UL);
 
 TEST_CASE("ParametricGate/Basic", "[parametric][ops]") {
     using namespace SymEngine;
+    namespace real = mindquantum::ops::parametric::real;
 
     Expression x{symbol("x")}, y{symbol("y")}, z{symbol("z")};
 

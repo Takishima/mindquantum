@@ -44,11 +44,7 @@ DecompositionRule<derived_t, atoms_t...>::DecompositionRule(AtomStorage& storage
 
 template <typename derived_t, typename... atoms_t>
 template <std::size_t idx>
-constexpr auto* DecompositionRule<derived_t, atoms_t...>::atom() noexcept
-#if MQ_HAS_CONCEPTS
-    requires(idx < sizeof...(atoms_t))
-#endif  // MQ_HAS_CONCEPTS
-{
+constexpr auto* DecompositionRule<derived_t, atoms_t...>::atom() noexcept MQ_REQUIRES((idx < sizeof...(atoms_t))) {
 #if !MQ_HAS_CONCEPTS
     static_assert(idx < sizeof...(atoms_t));
 #endif  // !MQ_HAS_CONCEPTS
@@ -58,11 +54,8 @@ constexpr auto* DecompositionRule<derived_t, atoms_t...>::atom() noexcept
 template <typename derived_t, typename... atoms_t>
 template <typename atom_t>
 constexpr auto* DecompositionRule<derived_t, atoms_t...>::atom() noexcept
-#if MQ_HAS_CONCEPTS
-    requires(concepts::tuple_contains<typename traits::atom_traits<atom_t>::type,
-                                      typename traits::atom_traits<atoms_t>::type...>)
-#endif  // MQ_HAS_CONCEPTS
-{
+    MQ_REQUIRES((concepts::tuple_contains<typename traits::atom_traits<atom_t>::type,
+                                          typename traits::atom_traits<atoms_t>::type...>) ) {
     using real_atom_t = typename traits::atom_traits<atom_t>::type;
     using atoms_tuple_t = std::tuple<typename traits::atom_traits<atoms_t>::type...>;
 #if !MQ_HAS_CONCEPTS

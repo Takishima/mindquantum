@@ -23,11 +23,19 @@
 #include "core/details/cxx20_compatibility.hpp"
 #include "core/types.hpp"
 
+// =============================================================================
+
 #ifdef __has_cpp_attribute
 #    if __has_cpp_attribute(nodiscard)
 #        define MQ_NODISCARD [[nodiscard]]
 #    endif  // __has_cpp_attribute(nodiscard)
 #endif      // __has_cpp_attribute
+
+#ifndef MQ_NODISCARD
+#    define MQ_NODISCARD
+#endif  // MQ_NODISCARD
+
+// -------------------------------------
 
 #ifndef _MSC_VER
 #    define MQ_ALIGN(x) __attribute__((aligned(x)))
@@ -35,15 +43,15 @@
 #    define MQ_ALIGN(x)
 #endif  // !_MSC_VER
 
+// -------------------------------------
+
 #if MQ_HAS_CONCEPTS
 #    define MQ_REQUIRES(x) requires(x)
 #else
 #    define MQ_REQUIRES(x)
 #endif  // MQ_HAS_CONCEPTS
 
-#ifndef MQ_NODISCARD
-#    define MQ_NODISCARD
-#endif  // MQ_NODISCARD
+// -------------------------------------
 
 #ifndef MQ_IS_CLANG_VERSION_LESS
 #    define MQ_IS_CLANG_VERSION_LESS(major, minor)                                                                     \
@@ -51,6 +59,8 @@
 #    define MQ_IS_CLANG_VERSION_LESS_EQUAL(major, minor)                                                               \
         (defined __clang__) && (MQ_CLANG_MAJOR <= major) && (MQ_CLANG_MINOR <= minor)
 #endif  // MQ_IS_CLANG_VERSION_LESS
+
+// -------------------------------------
 
 #if !defined(MQ_CONFIG_NO_COUNTER) && !defined(MQ_CONFIG_COUNTER)
 #    define MQ_CONFIG_COUNTER
@@ -63,5 +73,7 @@
 #else
 #    define MQ_UNIQUE_NAME(name) MQ_UNIQUE_NAME_LINE(name, __LINE__)
 #endif
+
+// =============================================================================
 
 #endif /* CORE_CONFIG_HPP */

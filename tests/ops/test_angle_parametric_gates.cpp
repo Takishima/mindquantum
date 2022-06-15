@@ -34,7 +34,7 @@
 using namespace std::literals::string_view_literals;
 
 namespace {
-using namespace mindquantum::ops::parametric;
+using mindquantum::ops::parametric::AngleParametricBase;
 
 class NumOne {
  public:
@@ -47,7 +47,7 @@ class NumOne {
     explicit NumOne(double alpha) : alpha_(alpha) {
     }
 
-    const auto& angle() const {
+    MQ_NODISCARD const auto& angle() const {
         return alpha_;
     }
 
@@ -69,6 +69,7 @@ class ParamOne : public AngleParametricBase<ParamOne, NumOne, 4> {
 
 TEST_CASE("AngleParametricGate", "[parametric][ops]") {
     using namespace SymEngine;
+    namespace real = mindquantum::ops::parametric::real;
 
     Expression x{symbol("x")};
     Expression y{symbol("y")};

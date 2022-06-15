@@ -2,11 +2,21 @@ unusedFunction
 missingInclude
 missingReturn
 
-unusedStructMember:mindquantum/src/core/type.h:79
-unusedStructMember:mindquantum/src/core/type.h:80
-unusedStructMember:mindquantum/src/core/type.h:81
-unusedStructMember:mindquantum/src/core/type.h:82
-unusedStructMember:mindquantum/src/core/type.h:83
-unusedStructMember:mindquantum/src/core/type.h:84
+unusedStructMember:ccsrc/mq_base/core/type.h:79
+unusedStructMember:ccsrc/mq_base/core/type.h:80
+unusedStructMember:ccsrc/mq_base/core/type.h:81
+unusedStructMember:ccsrc/mq_base/core/type.h:82
+unusedStructMember:ccsrc/mq_base/core/type.h:83
+unusedStructMember:ccsrc/mq_base/core/type.h:84
 
-objectIndex:mindquantum/src/core/utils.h:87
+objectIndex:ccsrc/mq_base/core/utils.h:87
+
+noExplicitConstructor:ccsrc/cxx_experimental/include/ops/parametric/gate_base.hpp
+useStlAlgorithm:ccsrc/cxx_experimental/lib/core/circuit_manager.cpp
+
+constVariable:ccsrc/cxx_experimental/include/simulator/_cppkernels/*
+cstyleCast:ccsrc/cxx_experimental/include/simulator/_cppkernels/*
+noExplicitConstructor:ccsrc/cxx_experimental/include/simulator/_cppkernels/*
+useInitializationList:ccsrc/cxx_experimental/include/simulator/_cppkernels/*
+
+constParameter:tests/*
