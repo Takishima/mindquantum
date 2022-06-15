@@ -97,4 +97,5 @@ repos:
     hooks:
       - id: clang-format
         args: [-i]
+        files: (.*\.hpp|.*\.h|.*\.tpp|.*\.cpp)
         additional_dependencies: ['clang-format']
