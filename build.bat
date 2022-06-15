@@ -33,9 +33,6 @@ set output_path=%ROOTDIR%\output
 set platform_name=
 set python_extra_pkgs=setuptools-scm[toml]
 
-rem Override some of the default values
-set enable_cxx=1
-
 call %SCRIPTDIR%\default_values.bat
 
 rem ============================================================================

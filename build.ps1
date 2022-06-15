@@ -54,9 +54,6 @@ $PROGRAM = Split-Path $MyInvocation.MyCommand.Path -Leaf
 # ==============================================================================
 # Default values
 
-# Override some of the default values
-$enable_cxx = $true
-
 . (Join-Path $ROOTDIR 'scripts\build\common_functions.ps1')
 
 # ------------------------------------------------------------------------------

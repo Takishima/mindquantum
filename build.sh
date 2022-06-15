@@ -22,10 +22,6 @@ PROGRAM=$(basename "${BASH_SOURCE[0]:-$0}")
 # ==============================================================================
 # Default values for this particular script
 
-# Override some of the default values
-# shellcheck disable=SC2034
-enable_cxx=1
-
 # Load common bash helper functions
 . "$ROOTDIR/scripts/build/common_functions.sh"
 
