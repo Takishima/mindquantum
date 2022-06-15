@@ -170,15 +170,15 @@ repos:
   #           .*\.cu
   #         )$
 
-  # - repo: https://github.com/pocc/pre-commit-hooks
-  #   rev: v1.3.5
-  #   hooks:
-  #     - id: cppcheck
-  #       args: [--force,
-  #              --inline-suppr,
-  #              --std=c++17,
-  #              --language=c++,
-  #              --suppressions-list=.cppcheck.suppressions]
+  - repo: https://github.com/pocc/pre-commit-hooks
+    rev: v1.3.5
+    hooks:
+      - id: cppcheck
+        args: [--force,
+               --inline-suppr,
+               --std=c++20,
+               --language=c++,
+               --suppressions-list=.cppcheck.suppressions]
   #     - id: cpplint
   #       args: [--root=src,
   #              '--extensions=cxx,cu,hh,cpp,hxx,cuh,h++,cc,c,hpp,c++,h,tpp,txx,cl',

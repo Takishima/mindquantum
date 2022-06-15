@@ -41,7 +41,6 @@ bool recognize_time_evolution_commuting(const instruction_t& inst) {
 
     auto terms = op.get_hamiltonian().get_terms();
 
-    bool do_decomposition(true);
     if (std::size(terms) == 1) {
         return false;
     } else {

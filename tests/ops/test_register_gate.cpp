@@ -32,7 +32,7 @@
 using namespace std::literals::string_view_literals;
 
 namespace {
-using namespace mindquantum::ops::parametric;
+using mindquantum::ops::parametric::AngleParametricBase;
 
 class OneDoubleGate {
  public:
@@ -45,7 +45,7 @@ class OneDoubleGate {
     explicit OneDoubleGate(double alpha) : alpha_(alpha) {
     }
 
-    const auto& param() const {
+    MQ_NODISCARD const auto& param() const {
         return alpha_;
     }
 
@@ -62,7 +62,7 @@ class AngleGate {
     explicit AngleGate(double alpha) : alpha_(alpha) {
     }
 
-    const auto& angle() const {
+    MQ_NODISCARD const auto& angle() const {
         return alpha_;
     }
 

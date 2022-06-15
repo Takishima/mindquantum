@@ -70,7 +70,7 @@ class DecompositionRule {
      * \tparam idx Index of atom in atom list
      */
     template <std::size_t idx>
-    constexpr auto* atom() noexcept MQ_REQUIRES(idx < sizeof...(atoms_t));
+    constexpr auto* atom() noexcept MQ_REQUIRES((idx < sizeof...(atoms_t)));
 
     //! Getter function for the individual atoms
     /*!
