@@ -16,6 +16,8 @@
 #
 # ==============================================================================
 
+# lint_cmake: -whitespace/indent
+
 # Add a Python library (overload of the original python_add_library())
 #
 # python_add_library(<target>)

@@ -1,6 +1,8 @@
 # Distributed under the OSI-approved BSD 3-Clause License.  See accompanying
 # file Copyright.txt or https://cmake.org/licensing for details.
 
+# lint_cmake: -whitespace/indent
+
 # determine the compiler to use for C++ programs NOTE, a generator may set CMAKE_NVCXX_COMPILER before loading this file
 # to force a compiler. use environment variable CXX first if defined by user, next use the cmake variable
 # CMAKE_GENERATOR_NVCXX which can be defined by a generator as a default compiler If the internal cmake variable

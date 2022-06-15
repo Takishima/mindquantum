@@ -16,6 +16,8 @@
 #
 # ==============================================================================
 
+# lint_cmake: -whitespace/indent
+
 include_guard()
 
 include(nvhpc_helpers)
@@ -121,7 +123,7 @@ function(target_cuda_architectures target)
       if(_lopt)
         target_link_options(${target} ${_target_scope} "$<$<COMPILE_LANGUAGE:NVCXX>:${_lopt}>")
       endif()
-    endforeach(_arch)
+    endforeach()
   endif()
 
   # _linker_lang == CUDA || NVCXX

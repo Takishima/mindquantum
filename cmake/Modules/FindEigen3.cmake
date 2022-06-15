@@ -16,6 +16,8 @@
 #
 # ==============================================================================
 
+# lint_cmake: -whitespace/indent,-package/consistency,-convention/filename,-whitespace/extra
+
 #[=======================================================================[.rst:
 FindEigen3
 ---------
@@ -94,17 +96,18 @@ This module reads hints about search locations from variables:
 ``Eigen3_NO_SYSTEM_PATHS``
   Set to ``ON`` to disable searching in locations not specified by these hint variables. Default is ``OFF``.
 
-Users may set these hints or results as ``CACHE`` entries.  Projects should not read these entries directly but
-instead use the above result variables.  Note that some hint names start in upper-case ``Eigen3``.  One may specify these
-as environment variables if they are not specified as CMake variables or cache entries.
+Users may set these hints or results as ``CACHE`` entries.  Projects should not read these entries directly but instead
+use the above result variables.  Note that some hint names start in upper-case ``Eigen3``.  One may specify these as
+environment variables if they are not specified as CMake variables or cache entries.
 
-This module first searches for the Eigen3 header files using the above hint variables (excluding ``Eigen3_LIBRARYDIR``) and
-saves the result in ``Eigen3_INCLUDE_DIR``.  Then it searches for requested component libraries using the above hints
-(excluding ``Eigen3_INCLUDEDIR``), "lib" directories near ``Eigen3_INCLUDE_DIR``, and the library name configuration
-settings below.  It saves the library directories in ``Eigen3_LIBRARY_DIR_DEBUG`` and ``Eigen3_LIBRARY_DIR_RELEASE`` and
-individual library locations in ``Eigen3_<COMPONENT>_LIBRARY_DEBUG`` and ``Eigen3_<COMPONENT>_LIBRARY_RELEASE``.  When one
-changes settings used by previous searches in the same build tree (excluding environment variables) this module
-discards previous search results affected by the changes and searches again.
+This module first searches for the Eigen3 header files using the above hint variables (excluding ``Eigen3_LIBRARYDIR``)
+and saves the result in ``Eigen3_INCLUDE_DIR``.  Then it searches for requested component libraries using the above
+hints (excluding ``Eigen3_INCLUDEDIR``), "lib" directories near ``Eigen3_INCLUDE_DIR``, and the library name
+configuration settings below.  It saves the library directories in ``Eigen3_LIBRARY_DIR_DEBUG`` and
+``Eigen3_LIBRARY_DIR_RELEASE`` and individual library locations in ``Eigen3_<COMPONENT>_LIBRARY_DEBUG`` and
+``Eigen3_<COMPONENT>_LIBRARY_RELEASE``.  When one changes settings used by previous searches in the same build tree
+(excluding environment variables) this module discards previous search results affected by the changes and searches
+again.
 
 Imported Targets
 ^^^^^^^^^^^^^^^^
@@ -157,10 +160,10 @@ Find Eigen3 libraries and use imported targets:
 Eigen3 CMake
 ^^^^^^^^^^^^
 
-If Eigen3 was built using CMake, it provides a package configuration file for use with find_package's config mode.
-This module looks for the package configuration file called ``Eigen3Config.cmake`` and stores the result in ``CACHE``
-entry ``Eigen3_DIR``.  If found, the package configuration file is loaded and this module returns with no further action.
-See documentation of the Eigen3 CMake package configuration for details on what it provides.
+If Eigen3 was built using CMake, it provides a package configuration file for use with find_package's config mode.  This
+module looks for the package configuration file called ``Eigen3Config.cmake`` and stores the result in ``CACHE`` entry
+``Eigen3_DIR``.  If found, the package configuration file is loaded and this module returns with no further action.  See
+documentation of the Eigen3 CMake package configuration for details on what it provides.
 
 Set ``Eigen3_NO_CMAKE`` to ``ON``, to disable the search for Eigen3-cmake.
 

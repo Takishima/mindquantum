@@ -16,6 +16,8 @@
 #
 # ==============================================================================
 
+# lint_cmake: -whitespace/indent
+
 # cmake-lint: disable=C0103
 
 set(CMAKE_OPTION -DBUILD_TESTING=OFF -DJSON_MultipleHeaders=ON -DJSON_BuildTests=OFF

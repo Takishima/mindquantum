@@ -21,6 +21,8 @@
 # file Copyright.txt or https://cmake.org/licensing for details.
 # ==============================================================================
 
+# lint_cmake: -package/consistency,-whitespace/indent
+
 # cmake-lint: disable=C0103,C0111,C0307
 
 #[=======================================================================[.rst:

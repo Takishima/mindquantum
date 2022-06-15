@@ -16,6 +16,8 @@
 #
 # ==============================================================================
 
+# lint_cmake: -whitespace/indent
+
 add_library(include_lib INTERFACE)
 target_include_directories(include_lib INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
                                                  $<INSTALL_INTERFACE:${MQ_INSTALL_INCLUDEDIR}/experimental>)

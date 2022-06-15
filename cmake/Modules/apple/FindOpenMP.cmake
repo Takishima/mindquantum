@@ -1,11 +1,12 @@
 # Distributed under the OSI-approved BSD 3-Clause License.  See accompanying file Copyright.txt or
 # https://cmake.org/licensing for details.
 
-# lint_cmake: -convention/filename,-whitespace/indent,-package/stdargs
+# lint_cmake: -convention/filename,-whitespace/indent,-package/stdargs,-whitespace/extra
 
 # cmake-lint: disable=C0103,C0111,R0912,R0915,E1121
 
 #[=======================================================================[.rst:
+
 FindOpenMP
 ----------
 
