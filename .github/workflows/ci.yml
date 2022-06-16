@@ -493,71 +493,87 @@ jobs:
 
   # ============================================================================
 
-  # NB: Disabled due to compilation error in tweedledum library
-  # mingw64:
-  #   runs-on: windows-2022
-  #   strategy:
-  #     fail-fast: false
-  #   name: "MINGW64 • x64"
-  #   env:
-  #     BOOST_VERSION: 1.78.0
-  #     BOOST_PATH: ${{github.workspace}}/boost/boost
+  mingw64:
+    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+    name: "MINGW64 • x64"
+    env:
+      BOOST_VERSION: 1.78.0
+      BOOST_PATH: ${{github.workspace}}/boost/boost
+      CCACHE_VERSION: 4.6.1
+      CCACHE_URL: https://github.com/ccache/ccache/releases/download/
+    steps:
+      - uses: actions/checkout@v2
 
-  #   steps:
-  #     - uses: actions/checkout@v2
+      - name: Get history and tags for SCM versioning to work
+        run: |
+          git fetch --prune --unshallow
+          git fetch --depth=1 origin +refs/tags/*:refs/tags/*
 
-  #     - name: Get history and tags for SCM versioning to work
-  #       run: |
-  #         git fetch --prune --unshallow
-  #         git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+      - name: Install ninja-build tool
+        uses: seanmiddleditch/gha-setup-ninja@v3
 
-  #     - name: Cache Python virtualenv
-  #       if: env.ACT != 'true'
-  #       uses: actions/cache@v3
-  #       with:
-  #         path: venv
-  #         key: >-
-  #           mingw64-python-venv-${{ hashFiles('build_locally.ps1', 'scripts/build/**.ps1') }}-${{ secrets.cache_ver }}
+      - name: Restore cache for CCache
+        if: env.ACT != 'true'
+        id: ccache-cache
+        uses: martijnhols/actions-cache/restore@v3
+        with:
+          path: ccache
+          key: mingw64-ccache-${{ steps.get-date.outputs.date }}
+          restore-keys: msvc-ccache-
 
-  #     - name: Cache compiled third-party libraries
-  #       if: env.ACT != 'true'
-  #       uses: actions/cache@v3
-  #       with:
-  #         path: build/.mqlibs
-  #         key: mingw64-third-party-libs-${{ hashFiles('third_party/**') }}-${{ secrets.cache_ver }}
+      - name: Cache Python virtualenv
+        if: env.ACT != 'true'
+        uses: actions/cache@v3
+        with:
+          path: venv
+          key: >-
+            mingw64-python-venv-${{ hashFiles('build_locally.ps1', 'scripts/build/**.ps1') }}-${{ secrets.cache_ver }}
 
-  #     # - name: Setup MinGW
-  #     #   uses: egor-tensin/setup-mingw@v2
+      - name: Cache compiled third-party libraries
+        if: env.ACT != 'true'
+        uses: actions/cache@v3
+        with:
+          path: build/.mqlibs
+          key: mingw64-third-party-libs-${{ hashFiles('third_party/**') }}-${{ secrets.cache_ver }}
 
-  #     - name: Cache boost
-  #       uses: actions/cache@v2
-  #       id: cache-boost
-  #       with:
-  #         path: ${{ env.BOOST_PATH }}
-  #         key: boost-${{ env.BOOST_VERSION }}
+      - name: Set up MinGW64
+        uses: egor-tensin/setup-mingw@v2
+        with:
+          platform: x64
 
-  #     - name: Download and install Boost
-  #       uses: MarkusJx/install-boost@v2.2.0
-  #       if: steps.cache-boost.outputs.cache-hit != 'true'
-  #       id: install-boost
-  #       with:
-  #         boost_version: ${{ env.BOOST_VERSION }}
-  #         platform_version: 2022
-  #         toolset: mingw
+      # - name: Cache boost
+      #   uses: actions/cache@v2
+      #   id: cache-boost
+      #   with:
+      #     path: ${{ env.BOOST_PATH }}
+      #     key: boost-${{ env.BOOST_VERSION }}
 
-  #     - name: Configure
-  #       env:
-  #         BOOST_ROOT: ${{ env.BOOST_PATH }}
-  #       run: >-
-  #          ./build_locally.ps1 -Cxx -WithProjectq -DebugCmake -Ninja -Test -CCache -OnlyPytest
-  #          -ConfigureOnly -C -Clean3rdParty -Prefix "${{ github.workspace }}/install"
-  #          -G "MinGW Makefiles" -DUSE_PARALLEL_STL=OFF
+      - name: Download and install Boost
+        uses: MarkusJx/install-boost@v2.3.0
+        if: steps.cache-boost.outputs.cache-hit != 'true'
+        id: install-boost
+        with:
+          boost_version: ${{ env.BOOST_VERSION }}
+          platform_version: 2022
+          toolset: mingw
 
-  #     - name: Build
-  #       run: ./build_locally.ps1 -Cxx -WithProjectq -DebugCmake -Ninja -Test -CCache
+      - name: Configure
+        env:
+          BOOST_ROOT: ${{ env.BOOST_PATH }}
+          CC: cc
+          CXX: c++
+        run: >-
+           ./build_locally.ps1 -Cxx -WithProjectq -DebugCmake -Ninja -Test -CCache -OnlyPytest
+           -ConfigureOnly -C -Clean3rdParty -Prefix "${{ github.workspace }}/install"
+           -G "MinGW Makefiles" -DUSE_PARALLEL_STL=OFF
 
-  #     - name: Install
-  #       run: ./build_locally.ps1 -Install
+      - name: Build
+        run: ./build_locally.ps1 -Cxx -WithProjectq -DebugCmake -Ninja -Test -CCache
+
+      - name: Install
+        run: ./build_locally.ps1 -Install
 
   # ============================================================================
 
