@@ -21,11 +21,21 @@
 file(GLOB _patch_files "${CMAKE_CURRENT_LIST_DIR}/patch/*.patch*")
 list(SORT _patch_files CASE INSENSITIVE)
 
+set(VER 0.5.1)
+
+if(ENABLE_GITEE)
+  set(GIT_URL "https://gitee.com/mirrors/ProjectQ/repository/archive/v${VER}.tar.gz")
+  set(MD5 "0da22cba1e2d693b32473b2eaf7c29d2")
+else()
+  set(GIT_URL "https://github.com/ProjectQ-Framework/ProjectQ/archive/v${VER}.tar.gz")
+  set(MD5 "13430199c253284df8b3d840f11d3560")
+endif()
+
 mindquantum_add_pkg(
   projectq
-  VER 0.5.1
-  MD5 0da22cba1e2d693b32473b2eaf7c29d2
-  URL "https://gitee.com/mirrors/ProjectQ/repository/archive/v0.5.1.tar.gz"
+  VER ${VER}
+  MD5 ${MD5}
+  URL ${GIT_URL}
   ONLY_COPY_DIRS projectq/backends/_sim/_cppkernels
   PATCHES ${_patch_files}
   FORCE_LOCAL_PKG
