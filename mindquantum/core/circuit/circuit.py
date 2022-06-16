@@ -1070,7 +1070,7 @@ parameters and ansatz parameters."
         circ = Circuit()
         for g in self:
             circ += g
-            if not isinstance(g, mq_gates.Measure):
+            if not isinstance(g, (mq_gates.Measure, mq_gates.NoiseGate)):
                 for i in g.obj_qubits:
                     circ += noise_gate.on(i)
         return circ
