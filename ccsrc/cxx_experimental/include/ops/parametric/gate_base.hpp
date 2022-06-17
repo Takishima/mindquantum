@@ -346,15 +346,15 @@ class ParametricBase {
      * \sa non_param_type eval_full(const SymEngine::map_basic_basic& subs_map) const
      */
     MQ_NODISCARD derived_t eval(const subs_map_t& subs_map) const {
-        auto params = base_t::params_;
-        for (auto& param : params) {
+        auto new_params = base_t::params_;
+        for (auto& new_param : new_params) {
             // NB: expand required to normalize the expressions (e.g. required for testing for equality)
-            param = expand(param->subs(subs_map));
+            new_param = expand(new_param->subs(subs_map));
         }
         if constexpr (has_const_num_targets) {
-            return {std::move(params)};
+            return {std::move(new_params)};
         } else {
-            return {num_targets_, std::move(params)};
+            return {num_targets_, std::move(new_params)};
         }
     }
 
@@ -397,18 +397,18 @@ class ParametricBase {
      * \sa non_param_type eval_full(const SymEngine::map_basic_basic& subs_map) const
      */
     MQ_NODISCARD operator_t eval_smart() const {
-        auto params = base_t::params_;
-        for (auto& param : params) {
+        auto new_params = base_t::params_;
+        for (auto& new_param : new_params) {
             // NB: expand required to normalize the expressions (e.g. required for testing for equality)
-            param = expand(param);
+            new_param = expand(new_param);
         }
 
-        if (std::all_of(begin(params), end(params), [](const auto& p) { return is_a_Number(*p); })) {
-            return eval_smart_impl_(std::index_sequence_for<params_t...>{}, std::move(params));
+        if (std::all_of(begin(new_params), end(new_params), [](const auto& p) { return is_a_Number(*p); })) {
+            return eval_smart_impl_(std::index_sequence_for<params_t...>{}, std::move(new_params));
         }
 
         // TODO(dnguyen): Add support for default implementation of `to_param_type`
-        return derived_t::to_param_type(*static_cast<const derived_t*>(this), std::move(params));
+        return derived_t::to_param_type(*static_cast<const derived_t*>(this), std::move(new_params));
     }
 
     //! Evaluate the parameters of this parametric gate using some substitutions
@@ -421,18 +421,18 @@ class ParametricBase {
      * \sa non_param_type eval_full(const SymEngine::map_basic_basic& subs_map) const
      */
     MQ_NODISCARD operator_t eval_smart(const subs_map_t& subs_map) const {
-        auto params = base_t::params_;
-        for (auto& param : params) {
+        auto new_params = base_t::params_;
+        for (auto& new_param : new_params) {
             // NB: expand required to normalize the expressions (e.g. required for testing for equality)
-            param = expand(param->subs(subs_map));
+            new_param = expand(new_param->subs(subs_map));
         }
 
-        if (std::all_of(begin(params), end(params), [](const auto& p) { return is_a_Number(*p); })) {
-            return eval_smart_impl_(std::index_sequence_for<params_t...>{}, std::move(params));
+        if (std::all_of(begin(new_params), end(new_params), [](const auto& p) { return is_a_Number(*p); })) {
+            return eval_smart_impl_(std::index_sequence_for<params_t...>{}, std::move(new_params));
         }
 
         // TODO(dnguyen): Add support for default implementation of `to_param_type`
-        return derived_t::to_param_type(*static_cast<const derived_t*>(this), std::move(params));
+        return derived_t::to_param_type(*static_cast<const derived_t*>(this), std::move(new_params));
     }
 
  protected:

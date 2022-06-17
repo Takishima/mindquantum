@@ -124,7 +124,7 @@ TEST_CASE("CircuitBlock/Add qubits", "[circuit_block][core]") {
     mindquantum::CircuitBlock block;
 
     SECTION("Add qubit") {
-        const auto qubit0 = 10;
+        const auto qubit0 = mindquantum::QubitID{10};
         REQUIRE(block.add_qubit(qubit0));
         REQUIRE(!block.add_qubit(qubit0));
 
@@ -151,7 +151,7 @@ TEST_CASE("CircuitBlock/Add qubits", "[circuit_block][core]") {
 
         // ------------------------------------
 
-        const auto qubit1 = 11;
+        const auto qubit1 = mindquantum::QubitID{11};
         REQUIRE(block.add_qubit(qubit1));
 
         CHECK(std::size(ext_to_td) == 2);
@@ -180,20 +180,20 @@ TEST_CASE("CircuitBlock/Add qubits", "[circuit_block][core]") {
         const auto device = tweedledum::Device::path(3);
         get::device(block) = &device;
 
-        REQUIRE(block.add_qubit(10));
-        REQUIRE(block.add_qubit(11));
-        REQUIRE(block.add_qubit(12));
-        CHECK(!block.add_qubit(13));
-        CHECK(!block.has_qubit(13));
-        CHECK(!block.add_qubit(14));
-        CHECK(!block.has_qubit(14));
+        REQUIRE(block.add_qubit(mindquantum::QubitID{10}));
+        REQUIRE(block.add_qubit(mindquantum::QubitID{11}));
+        REQUIRE(block.add_qubit(mindquantum::QubitID{12}));
+        CHECK(!block.add_qubit(mindquantum::QubitID{13}));
+        CHECK(!block.has_qubit(mindquantum::QubitID{13}));
+        CHECK(!block.add_qubit(mindquantum::QubitID{14}));
+        CHECK(!block.has_qubit(mindquantum::QubitID{14}));
     }
 
     SECTION("Has qubit") {
         const auto qubit_id = 10;
-        REQUIRE(block.add_qubit(qubit_id));
-        CHECK(block.has_qubit(qubit_id));
-        CHECK(!block.has_qubit(qubit_id + 1));
+        REQUIRE(block.add_qubit(mindquantum::QubitID{qubit_id}));
+        CHECK(block.has_qubit(mindquantum::QubitID{qubit_id}));
+        CHECK(!block.has_qubit(mindquantum::QubitID{qubit_id + 1}));
     }
 
     SECTION("Translate IDs") {
@@ -217,9 +217,9 @@ TEST_CASE("CircuitBlock/Add qubits", "[circuit_block][core]") {
 TEST_CASE("CircuitBlock/ID conversion", "[circuit_block][core]") {
     mindquantum::CircuitBlock block;
 
-    const auto qubit0(10);
-    const auto qubit1(200);
-    const auto qubit2(5);
+    const auto qubit0(mindquantum::QubitID{10});
+    const auto qubit1(mindquantum::QubitID{200});
+    const auto qubit2(mindquantum::QubitID{5});
 
     REQUIRE(block.add_qubit(qubit0));
     REQUIRE(block.add_qubit(qubit1));
@@ -251,12 +251,12 @@ TEST_CASE("CircuitBlock/ID conversion", "[circuit_block][core]") {
 TEST_CASE("CircuitBlock/Translate IDs", "[circuit_block][core]") {
     mindquantum::CircuitBlock block;
 
-    const unsigned int qubit0(0), qubit1(10), qubit2(125), qubit3(3541);
+    const auto qubit0(0), qubit1(10), qubit2(125), qubit3(3541);
 
-    REQUIRE(block.add_qubit(qubit0));
-    REQUIRE(block.add_qubit(qubit1));
-    REQUIRE(block.add_qubit(qubit2));
-    REQUIRE(block.add_qubit(qubit3));
+    REQUIRE(block.add_qubit(mindquantum::QubitID{qubit0}));
+    REQUIRE(block.add_qubit(mindquantum::QubitID{qubit1}));
+    REQUIRE(block.add_qubit(mindquantum::QubitID{qubit2}));
+    REQUIRE(block.add_qubit(mindquantum::QubitID{qubit3}));
 
     const auto ext_ids = block.ext_ids();
     const auto td_ids = block.td_ids();
@@ -299,9 +299,9 @@ TEST_CASE("CircuitBlock/Chaining constructors", "[circuit_block][core]") {
 
     mindquantum::CircuitBlock parent;
 
-    const auto qubit0(10);
-    const auto qubit1(200);
-    const auto qubit2(5);
+    const auto qubit0(mindquantum::QubitID{10});
+    const auto qubit1(mindquantum::QubitID{200});
+    const auto qubit2(mindquantum::QubitID{5});
 
     REQUIRE(parent.add_qubit(qubit0));
     REQUIRE(parent.add_qubit(qubit1));
@@ -428,9 +428,9 @@ TEST_CASE("CircuitBlock/Apply operators", "[circuit_block][core]") {
     const auto qubit1(200);
     const auto qubit2(5);
 
-    REQUIRE(block.add_qubit(qubit0));
-    REQUIRE(block.add_qubit(qubit1));
-    REQUIRE(block.add_qubit(qubit2));
+    REQUIRE(block.add_qubit(mindquantum::QubitID{qubit0}));
+    REQUIRE(block.add_qubit(mindquantum::QubitID{qubit1}));
+    REQUIRE(block.add_qubit(mindquantum::QubitID{qubit2}));
     REQUIRE(std::size(block) == 0);
 
     SECTION("General method") {
@@ -473,7 +473,7 @@ TEST_CASE("CircuitBlock/Apply operators", "[circuit_block][core]") {
         CHECK(std::size(block) == 1);
         CHECK(get::circuit(block).num_wires() == 4);  // 3 qubits + 1 cbit
 
-        CHECK(block.has_cbit(qubit0));
+        CHECK(block.has_cbit(mindquantum::QubitID{qubit0}));
 
         std::vector<const instruction_t*> instructions;
         get::circuit(block).foreach_instruction(
@@ -498,7 +498,9 @@ TEST_CASE("CircuitBlock/Mapping", "[circuit_block][core]") {
 
     mindquantum::CircuitBlock block;
 
-    const auto get_td_id = [&](auto ext_id) { return std::get<0>(get::ext_to_td(block).at(ext_id)); };
+    const auto get_td_id = [&](mindquantum::qubit_id_t ext_id) {
+        return std::get<0>(get::ext_to_td(block).at(mindquantum::QubitID{ext_id}));
+    };
 
     const auto qubit0(10);
     const auto qubit1(11);
@@ -508,9 +510,9 @@ TEST_CASE("CircuitBlock/Mapping", "[circuit_block][core]") {
     const auto qubit5(15);
     const auto qubit6(16);
 
-    REQUIRE(block.add_qubit(qubit0));
-    REQUIRE(block.add_qubit(qubit1));
-    REQUIRE(block.add_qubit(qubit2));
+    REQUIRE(block.add_qubit(mindquantum::QubitID{qubit0}));
+    REQUIRE(block.add_qubit(mindquantum::QubitID{qubit1}));
+    REQUIRE(block.add_qubit(mindquantum::QubitID{qubit2}));
 
     SECTION("Simple 3-qubits") {
         const auto device = tweedledum::Device::path(3);
@@ -576,9 +578,9 @@ TEST_CASE("CircuitBlock/Transform", "[circuit_block][core]") {
     const auto qubit1(200);
     const auto qubit2(5);
 
-    REQUIRE(block.add_qubit(qubit0));
-    REQUIRE(block.add_qubit(qubit1));
-    REQUIRE(block.add_qubit(qubit2));
+    REQUIRE(block.add_qubit(mindquantum::QubitID{qubit0}));
+    REQUIRE(block.add_qubit(mindquantum::QubitID{qubit1}));
+    REQUIRE(block.add_qubit(mindquantum::QubitID{qubit2}));
 
     block.apply_operator(tweedledum::Op::X(), {qubit0}, {qubit1});
     block.apply_operator(tweedledum::Op::X(), {qubit1}, {qubit2});

@@ -194,11 +194,11 @@ auto CircuitBlock::apply_operator(const instruction_t& optor, const qureg_t& con
 }
 
 auto CircuitBlock::apply_measurement(qubit_id_t id) -> inst_ref_t {
-    auto& [td_qubit_id, td_cbit_id] = ext_to_td_.at(id);
+    auto& [td_qubit_id, td_cbit_id] = ext_to_td_.at(QubitID{id});
 
     if (!td_cbit_id) {
         td_cbit_id = circuit_.create_cbit("c" + std::to_string(id));
-        ctd_to_ext_.insert({td_cbit_id.value(), id});
+        ctd_to_ext_.insert({td_cbit_id.value(), QubitID{id}});
     }
 
     return circuit_.apply_operator(ops::Measure(), {td_qubit_id}, {td_cbit_id.value()});
@@ -215,12 +215,12 @@ auto CircuitBlock::translate_ext_ids_(const qureg_t& control_qubits, const qureg
     wires.reserve(std::size(control_qubits) + std::size(target_qubits));
 
     for (auto& qubit_id : control_qubits) {
-        assert(has_qubit(qubit_id));
-        wires.emplace_back(std::get<0>(ext_to_td_.at(qubit_id)));
+        assert(has_qubit(QubitID{qubit_id}));
+        wires.emplace_back(std::get<0>(ext_to_td_.at(QubitID{qubit_id})));
     }
     for (auto& qubit_id : target_qubits) {
-        assert(has_qubit(qubit_id));
-        wires.emplace_back(std::get<0>(ext_to_td_.at(qubit_id)));
+        assert(has_qubit(QubitID{qubit_id}));
+        wires.emplace_back(std::get<0>(ext_to_td_.at(QubitID{qubit_id})));
     }
 
     return wires;

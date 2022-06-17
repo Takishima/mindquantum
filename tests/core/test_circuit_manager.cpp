@@ -68,8 +68,8 @@ TEST_CASE("CircuitManager/Add qubits", "[circuit_manager][core]") {
     CHECK(std::size(manager) == 0);
 
     SECTION("Add qubit") {
-        const auto qubit0 = 10;
-        const auto qubit1 = 11;
+        const auto qubit0 = mindquantum::QubitID{10};
+        const auto qubit1 = mindquantum::QubitID{11};
 
         CHECK(manager.add_qubit(qubit0));
         CHECK(!manager.add_qubit(qubit0));
@@ -81,8 +81,8 @@ TEST_CASE("CircuitManager/Add qubits", "[circuit_manager][core]") {
     }
 
     SECTION("Translate IDs") {
-        const auto qubit0 = 10;
-        const auto qubit1 = 11;
+        const auto qubit0 = mindquantum::QubitID{10};
+        const auto qubit1 = mindquantum::QubitID{11};
         REQUIRE(manager.add_qubit(qubit0));
         REQUIRE(manager.add_qubit(qubit1));
 
@@ -104,8 +104,8 @@ TEST_CASE("CircuitManager/Apply operators", "[circuit_manager][core]") {
 
     REQUIRE(std::size(get::blocks(manager)) == 1);
     REQUIRE(std::size(manager) == 0);
-    REQUIRE(manager.add_qubit(qubit0));
-    REQUIRE(manager.add_qubit(qubit1));
+    REQUIRE(manager.add_qubit(mindquantum::QubitID{qubit0}));
+    REQUIRE(manager.add_qubit(mindquantum::QubitID{qubit1}));
 
     SECTION("Single block") {
         using op_t = tweedledum::Op::X;
@@ -228,8 +228,8 @@ TEST_CASE("CircuitManager/Delete qubits", "[circuit_manager][core]") {
     using block_t = mindquantum::CircuitBlock;
 
     CircuitManager manager;
-    const auto qubit0 = 10;
-    const auto qubit1 = 11;
+    const auto qubit0 = mindquantum::QubitID{10};
+    const auto qubit1 = mindquantum::QubitID{11};
 
     REQUIRE(std::size(get::blocks(manager)) == 1);
     REQUIRE(std::size(manager) == 0);
@@ -257,7 +257,7 @@ TEST_CASE("CircuitManager/Delete qubits", "[circuit_manager][core]") {
     SECTION("Empty last block") {
         CHECK(std::size(get::blocks(manager)) == 1);
 
-        manager.apply_operator(tweedledum::Op::X(), {}, {qubit0});
+        manager.apply_operator(tweedledum::Op::X(), {}, {static_cast<unsigned int>(qubit0)});
         manager.commit_changes();
 
         CHECK(std::size(get::blocks(manager)) == 2);
@@ -272,9 +272,10 @@ TEST_CASE("CircuitManager/Delete qubits", "[circuit_manager][core]") {
     }
 
     SECTION("Non empty last block") {
-        manager.apply_operator(tweedledum::Op::X(), {}, {qubit0});
+        manager.apply_operator(tweedledum::Op::X(), {}, {static_cast<unsigned int>(qubit0)});
         manager.commit_changes();
-        manager.apply_operator(tweedledum::Op::Y(), {qubit0}, {qubit1});
+        manager.apply_operator(tweedledum::Op::Y(), {static_cast<unsigned int>(qubit0)},
+                               {static_cast<unsigned int>(qubit1)});
 
         CHECK(std::size(get::blocks(manager)) == 2);
         CHECK(manager.size(committed) == 1);

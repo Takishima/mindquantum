@@ -48,9 +48,9 @@ TEST_CASE("ExternalView/Instructions", "[projectq_view][core]") {
     const auto qubit1 = 11;
     const auto qubit2 = 22;
 
-    REQUIRE(manager.add_qubit(qubit0));
-    REQUIRE(manager.add_qubit(qubit1));
-    REQUIRE(manager.add_qubit(qubit2));
+    REQUIRE(manager.add_qubit(mindquantum::QubitID{qubit0}));
+    REQUIRE(manager.add_qubit(mindquantum::QubitID{qubit1}));
+    REQUIRE(manager.add_qubit(mindquantum::QubitID{qubit2}));
     REQUIRE(!std::empty(get::blocks(manager)));
     REQUIRE(std::size(get::blocks(manager)) == 1);
 
@@ -124,9 +124,9 @@ TEST_CASE("ExternalBlockView/Instructions", "[projectq_view][core]") {
     const auto qubit1 = 11;
     const auto qubit2 = 22;
 
-    REQUIRE(manager.add_qubit(qubit0));
-    REQUIRE(manager.add_qubit(qubit1));
-    REQUIRE(manager.add_qubit(qubit2));
+    REQUIRE(manager.add_qubit(mindquantum::QubitID{qubit0}));
+    REQUIRE(manager.add_qubit(mindquantum::QubitID{qubit1}));
+    REQUIRE(manager.add_qubit(mindquantum::QubitID{qubit2}));
     REQUIRE(!std::empty(get::blocks(manager)));
     REQUIRE(std::size(get::blocks(manager)) == 1);
 

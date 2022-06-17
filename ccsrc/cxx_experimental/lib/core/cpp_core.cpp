@@ -305,7 +305,7 @@ void CppCore::apply_operation_(const gate_t& gate, const qureg_t& control_qubit_
     if (gate.is_one<ops::Measure>()) {
         circuit_manager_.apply_measurement(qubit_ids[0]);
     } else if (gate.is_one<ops::Deallocate>()) {
-        if (circuit_manager_.has_qubit(qubit_ids[0])) {
+        if (circuit_manager_.has_qubit(QubitID{qubit_ids[0]})) {
             deallocations_.emplace_back(qubit_ids[0]);
         } else {
             std::cerr << "Qubit with id: " << qubit_ids[0] << " "
