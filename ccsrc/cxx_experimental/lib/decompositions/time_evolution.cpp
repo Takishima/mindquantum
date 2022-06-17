@@ -40,7 +40,6 @@ bool recognize_time_evolution_commuting(const instruction_t& inst) {
     const auto& op = inst.cast<ops::TimeEvolution>();
 
     auto terms = op.get_hamiltonian().get_terms();
-
     if (std::size(terms) == 1) {
         return false;
     } else {

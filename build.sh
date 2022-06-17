@@ -22,6 +22,8 @@ PROGRAM=$(basename "${BASH_SOURCE[0]:-$0}")
 # ==============================================================================
 # Default values for this particular script
 
+enable_gitee=1
+
 # Load common bash helper functions
 . "$ROOTDIR/scripts/build/common_functions.sh"
 

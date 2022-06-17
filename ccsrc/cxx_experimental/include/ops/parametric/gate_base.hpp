@@ -95,7 +95,6 @@ template <typename derived_t, typename non_param_t, typename... params_t>
 #endif  // MQ_HAS_CONCEPTS
 struct is_param_base<ops::parametric::ParametricBase<derived_t, non_param_t, params_t...>> : std::true_type {
 };
-
 }  // namespace mindquantum::traits
 
 namespace mindquantum::ops::parametric {

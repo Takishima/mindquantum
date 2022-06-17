@@ -293,6 +293,8 @@ if !do_clean_3rdparty! == 1 set cmake_args=!cmake_args! -DCLEAN_3RDPARTY_INSTALL
 
 if !enable_cxx! == 1 set cmake_args=!cmake_args! -DENABLE_CXX_EXPERIMENTAL:BOOL=ON
 
+if !enable_gitee! == 1 set cmake_args=!cmake_args! -DENABLE_GITEE:BOOL=ON
+
 if !enable_gpu! == 1 (
   set cmake_args=!cmake_args! -DENABLE_CUDA:BOOL=ON
   if NOT "!cuda_arch!" == "" set cmake_args=!cmake_args! -DCMAKE_CUDA_ARCHITECTURES:STRING=!cuda_arch!

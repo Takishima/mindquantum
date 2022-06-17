@@ -21,7 +21,7 @@
 
 namespace mindquantum::traits {
 template <typename ref_kind_t, typename... kinds_t>
-static constexpr bool kind_match(ref_kind_t&& ref_kind, kinds_t&&... kinds)
+constexpr bool kind_match(ref_kind_t&& ref_kind, kinds_t&&... kinds)
 #if MQ_HAS_CONCEPTS
     requires(sizeof...(kinds_t) > 0)
 #endif  // MQ_HAS_CONCEPTS

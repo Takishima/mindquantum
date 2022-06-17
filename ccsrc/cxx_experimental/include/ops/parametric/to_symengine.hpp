@@ -30,7 +30,7 @@
 namespace mindquantum::ops::parametric {
 #if MQ_HAS_CONCEPTS
 template <typename T>
-static auto to_symengine(T&& t) {
+auto to_symengine(T&& t) {
     using type = std::remove_cvref_t<T>;
     if constexpr (std::integral<type>) {
         return SymEngine::integer(t);
@@ -44,7 +44,7 @@ static auto to_symengine(T&& t) {
 }
 #else
 template <typename T>
-static auto to_symengine(T&& t) {
+auto to_symengine(T&& t) {
     using type = std::remove_cvref_t<T>;
     if constexpr (std::is_integral_v<type>) {
         return SymEngine::integer(t);

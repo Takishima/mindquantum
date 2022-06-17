@@ -26,6 +26,7 @@ set PROGRAM=%~nx0
 rem ============================================================================
 rem Default values for this particular script
 
+set enable_gitee=1
 set has_build_dir=0
 set delocate_wheel=1
 set build_isolation=1
@@ -282,6 +283,7 @@ set RETVAL=
 call %SCRIPTDIR%\dos\build_cmake_option.bat ENABLE_CMAKE_DEBUG !cmake_debug_mode!
 call %SCRIPTDIR%\dos\build_cmake_option.bat ENABLE_CXX_EXPERIMENTAL !enable_cxx!
 call %SCRIPTDIR%\dos\build_cmake_option.bat ENABLE_CUDA !enable_gpu!
+call %SCRIPTDIR%\dos\build_cmake_option.bat ENABLE_GITEE !enable_gitee!
 call %SCRIPTDIR%\dos\build_cmake_option.bat ENABLE_PROJECTQ !enable_projectq!
 call %SCRIPTDIR%\dos\build_cmake_option.bat BUILD_TESTING !enable_tests!
 call %SCRIPTDIR%\dos\build_cmake_option.bat CLEAN_3RDPARTY_INSTALL_DIR !do_clean_3rdparty!

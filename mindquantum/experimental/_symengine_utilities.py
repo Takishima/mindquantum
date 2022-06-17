@@ -253,9 +253,9 @@ def var(names, **args):
 
     """
 
-    def traverse(symbols, frame):
+    def traverse(symbols_arg, frame):
         """Recursively inject symbols to the global namespace."""
-        for symbol in symbols:
+        for symbol in symbols_arg:
             if isinstance(symbol, symengine.Basic):
                 frame.f_globals[symbol.__str__()] = symbol
             # Once we have an undefined function class implemented, put a check for function here
