@@ -10,7 +10,7 @@
 #
 #     pre-commit autoupdate
 #
-# See https://github.com/pre-commit/pre-commit
+# See https://gitee.com/mirrors_pre-commit/pre-commit-hooks
 
 ---
 
@@ -41,7 +41,7 @@ repos:
         exclude: ^(.*patch[0-9]*)$
 
   # Changes tabs to spaces
-  - repo: https://github.com/Lucas-C/pre-commit-hooks
+  - repo: https://gitee.com/dnguyen/lukas-c-pre-commit-hooks-mirror.git
     rev: v1.2.0
     hooks:
       - id: remove-tabs
@@ -57,7 +57,7 @@ repos:
                --ignore-path-errors,
                docs/api_python/mindquantum.algorithm.nisq.uccsd_singlet_get_packed_amplitudes.rst;D001]
 
-  - repo: https://github.com/shellcheck-py/shellcheck-py
+  - repo: https://gitee.com/dnguyen/shellcheck-py-mirror.git
     rev: v0.8.0.4
     hooks:
       - id: shellcheck
@@ -78,7 +78,7 @@ repos:
       - id: yamllint
         require_serial: false
 
-  - repo: https://github.com/cheshirekow/cmake-format-precommit
+  - repo: https://gitee.com/dnguyen/cmake-format-precommit-mirror.git
     rev: v0.6.13
     hooks:
       - id: cmake-format
@@ -142,7 +142,7 @@ repos:
       - id: check-manifest
         additional_dependencies: ['setuptools-scm[toml]', 'pybind11>=2.6']
 
-  - repo: https://github.com/Takishima/cmake-pre-commit-hooks/
+  - repo: https://gitee.com/dnguyen/cmake-pre-commit-hooks-mirror
     rev: 'v1.5.3'
     hooks:
       - id: clang-format
