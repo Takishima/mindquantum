@@ -44,7 +44,6 @@ class GridMapper {
     DECLARE_ATTRIBUTE(unsigned int, num_rows);
     DECLARE_ATTRIBUTE(unsigned int, num_columns);
 };
-
 }  // namespace mindquantum::cengines::cpp
 
 #include "details/macros_conv_end.hpp"

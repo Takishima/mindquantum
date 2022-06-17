@@ -56,7 +56,6 @@ struct detector<Default, std::void_t<Op<Args...>>, Op, Args...> {
     using value_t = std::true_type;
     using type = Op<Args...>;
 };
-
 }  // namespace detail
 
 template <template <class...> class Op, class... Args>
@@ -87,7 +86,6 @@ using is_detected_convertible = std::is_convertible<To, detected_t<Op, Args...>>
 
 template <class To, template <class...> class Op, class... Args>
 constexpr inline bool is_detected_convertible_v = is_detected_convertible<To, Op, Args...>::value;
-
 }  // namespace mindquantum
 #endif  // COMPILER_TYPE_TRAITS_TS2
 

@@ -48,7 +48,6 @@ struct ResourceCounter {
     // Used for Python interactions
     void* origin_;
 };
-
 }  // namespace mindquantum::cengines
 
 #endif /* CPP_RESOURCE_COUNTER_HPP */

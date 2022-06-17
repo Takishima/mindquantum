@@ -33,7 +33,6 @@
 #include "projectq_utils.h"
 
 namespace mindquantum {
-
 namespace omp {
 #ifdef _MSC_VER
 typedef int64_t idx_t;
@@ -608,7 +607,6 @@ CT<T> InnerProduct(const Projectq<T> &bra, const Projectq<T> &ket) {
     auto res = ComplexInnerProduct<T, ::projectq::Simulator::calc_type>(bra.vec_, ket.vec_, bra.GetLen());
     return res;
 }
-
 }  // namespace projectq
 }  // namespace mindquantum
 #endif  // MINDQUANTUM_BACKENDS_PROJECTQ_PROJECTQ_H_

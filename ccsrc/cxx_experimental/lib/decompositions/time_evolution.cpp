@@ -33,11 +33,11 @@ namespace mindquantum::decompositions {
 namespace td = tweedledum;
 
 bool recognize_time_evolution_commuting(const instruction_t& inst) {
+    using ComplexTermsDict = ops::QubitOperator::ComplexTermsDict;
+
     assert(inst.kind() == "projectq.timeevolution");
 
-    const auto op = inst.cast<ops::TimeEvolution>();
-
-    using ComplexTermsDict = ops::QubitOperator::ComplexTermsDict;
+    const auto& op = inst.cast<ops::TimeEvolution>();
 
     auto terms = op.get_hamiltonian().get_terms();
 
@@ -50,7 +50,7 @@ bool recognize_time_evolution_commuting(const instruction_t& inst) {
             for (const auto& other : terms) {
                 const ops::QubitOperator other_op(num_targets, {other});
                 const auto& commutator = test_op * other_op - other_op * test_op;
-                if (!commutator.is_identity(1e-9)) {
+                if (!commutator.is_identity(1.e-9)) {
                     return false;
                 }
             }
@@ -82,7 +82,7 @@ void decompose_time_evolution_commuting(circuit_t& result, const instruction_t& 
 bool recognize_time_evolution_individual_terms(const instruction_t& inst) {
     assert(inst.kind() == "projectq.timeevolution");
 
-    const auto op = inst.cast<ops::TimeEvolution>();
+    const auto& op = inst.cast<ops::TimeEvolution>();
 
     using ComplexTermsDict = ops::QubitOperator::ComplexTermsDict;
 
@@ -158,7 +158,6 @@ void decompose_time_evolution_individual_terms(CircuitType& result, const instru
         // Automatic uncompute
     }
 }
-
 }  // namespace impl
 
 void decompose_time_evolution_individual_terms(circuit_t& result, const instruction_t& inst) {

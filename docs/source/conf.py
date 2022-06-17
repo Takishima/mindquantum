@@ -49,7 +49,7 @@ if on_rtd:
         mqbackend.write_text('')
     doxygen_cmd = f'cd {conf_path.parent} && mkdir -p doxygen && doxygen'
     print(f'INFO: Calling doxygen: {doxygen_cmd}')
-    subprocess.run(doxygen_cmd, shell=True)  # noqa: SCS103
+    subprocess.run(doxygen_cmd)  # noqa: SCS103
 
 # -- Project information -----------------------------------------------------
 

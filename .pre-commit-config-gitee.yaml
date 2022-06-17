@@ -45,7 +45,7 @@ repos:
     rev: v1.2.0
     hooks:
       - id: remove-tabs
-        exclude: ^(.*patch[0-9]*)$
+        exclude: ^(.*Makefile|.*patch[0-9]*)$
 
   - repo: https://gitee.com/mirrors_PyCQA/doc8.git
     rev: 0.11.2

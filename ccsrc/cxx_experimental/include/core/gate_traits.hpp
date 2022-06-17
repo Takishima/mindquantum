@@ -124,7 +124,6 @@ struct gate_traits {
     }
 };
 #endif  // MQ_HAS_CONCEPTS
-
 }  // namespace mindquantum::traits
 
 #undef CONSTEXPR

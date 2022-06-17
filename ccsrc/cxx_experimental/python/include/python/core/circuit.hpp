@@ -19,11 +19,9 @@
 #include "ops/gates.hpp"
 
 namespace mindquantum::python {
-
 class CircuitBlock : public mindquantum::CircuitBlock {
  public:
 };
-
 }  // namespace mindquantum::python
 
 #endif /* PYTHON_CIRCUIT_HPP */

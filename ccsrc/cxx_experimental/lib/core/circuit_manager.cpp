@@ -134,7 +134,6 @@ auto CircuitManager::apply_operator(const instruction_t& optor, const qureg_t& c
 auto CircuitManager::apply_measurement(qubit_id_t id) -> inst_ref_t {
     return blocks_.back().apply_measurement(id);
 }
-
 }  // namespace mindquantum
 
 // =============================================================================

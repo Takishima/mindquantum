@@ -42,7 +42,6 @@ class PartialPlacer {
     const device_t& device_;
     placement_t& placement_;
 };
-
 }  // namespace mindquantum::mapping
 
 #endif /* PARTIAL_PLACER_HPP */

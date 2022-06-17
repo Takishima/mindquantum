@@ -31,7 +31,6 @@ class TagRemover {};
 
 using engine_t = std::variant<cpp::LocalOptimizer, cpp::LinearMapper, cpp::GridMapper, CppGraphMapper, CppPrinter,
                               ResourceCounter, cpp::TagRemover, cpp::InstructionFilter>;
-
 }  // namespace mindquantum::cengines
 
 #endif /* CPP_ENGINE_LIST_HPP */

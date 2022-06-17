@@ -203,7 +203,6 @@ auto CircuitBlock::apply_measurement(qubit_id_t id) -> inst_ref_t {
 
     return circuit_.apply_operator(ops::Measure(), {td_qubit_id}, {td_cbit_id.value()});
 }
-
 }  // namespace mindquantum
 
 // =============================================================================
@@ -238,5 +237,4 @@ void CircuitBlock::update_mappings_(const std::vector<qubit_t>& old_to_new) {
         assert(!cbit_id || ctd_to_ext_.count(cbit_id.value()) > 0);
     }
 }
-
 }  // namespace mindquantum

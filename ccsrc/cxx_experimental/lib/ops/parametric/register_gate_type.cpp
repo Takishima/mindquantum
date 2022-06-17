@@ -58,7 +58,6 @@ template <typename map_t>
 void register_gate(map_t& map, std::string_view kind, typename map_t::mapped_type&& func) {
     map.emplace(std::string(kind), std::move(func));
 }
-
 }  // namespace
 
 // -----------------------------------------------------------------------------

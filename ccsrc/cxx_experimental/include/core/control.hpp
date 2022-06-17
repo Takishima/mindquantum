@@ -40,6 +40,8 @@ class ControlledCircuit {
 
     ControlledCircuit(const ControlledCircuit&) = delete;
     ControlledCircuit(ControlledCircuit&&) = default;
+    ControlledCircuit& operator=(const ControlledCircuit&) = delete;
+    ControlledCircuit& operator=(ControlledCircuit&&) = delete;
 
     void apply() {
         if (!processed_) {
@@ -94,7 +96,6 @@ class ControlledCircuit {
     circuit_t circuit_;
     const qubits_t& controls_;
 };
-
 }  // namespace mindquantum::cengines
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)

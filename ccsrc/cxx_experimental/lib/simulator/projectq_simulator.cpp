@@ -23,7 +23,6 @@
 #include "projectq/backends/_sim/_cppkernels/simulator.hpp"
 
 namespace mindquantum::simulation::projectq {
-
 Simulator::Simulator(uint32_t seed) : base_t{seed} {
 }
 

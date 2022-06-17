@@ -726,7 +726,6 @@ void BindPR(py::module* m, const std::string& name) {
         .def("to_complex", &ParameterResolver<T>::ToComplexPR)
         .def("is_complex_pr", &ParameterResolver<T>::IsComplexPR);
 }
-
 }  // namespace mindquantum
 
 #endif  // MINDQUANTUM_PR_PARAMETER_RESOLVER_H_

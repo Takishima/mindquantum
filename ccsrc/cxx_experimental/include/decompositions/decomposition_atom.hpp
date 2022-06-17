@@ -314,7 +314,6 @@ struct DecompositionAtom::Model<atom_t, false> {
 
     std::unique_ptr<atom_t> operator_;
 };
-
 }  // namespace mindquantum::decompositions
 
 #endif /* DECOMPOSITION_ATOM_HPP */

@@ -53,7 +53,6 @@ class SqrtSwap {
         return Eigen::Map<td::UMatrix4 const>(mat_.data());
     }
 };
-
 }  // namespace mindquantum::ops
 
 #endif /* SQRTSWAP_HPP */

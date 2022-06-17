@@ -221,7 +221,6 @@ class QubitOperator {
     uint32_t num_targets_;
     ComplexTermsDict terms_;
 };
-
 }  // namespace mindquantum::ops
 
 #endif /* QUBITOPERATOR_OP_HPP */

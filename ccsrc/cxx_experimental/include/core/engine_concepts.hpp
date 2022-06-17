@@ -34,7 +34,6 @@ concept Mapper = requires(mapper_t mapper, tweedledum::Device device, tweedledum
                                                                     tweedledum::Mapping>>;
     // clang-format on
 };
-
 }  // namespace mindquantum::concepts
 
 #endif /* ENGINE_CONCEPTS_HPP */

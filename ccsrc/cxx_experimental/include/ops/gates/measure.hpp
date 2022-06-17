@@ -24,7 +24,6 @@ class Measure {
         return "projectq.measure";
     }
 };
-
 }  // namespace mindquantum::ops
 
 #endif /* MEASURE_OP_HPP */
