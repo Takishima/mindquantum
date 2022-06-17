@@ -26,7 +26,7 @@
 #include "cengines/cpp_engine_list.hpp"
 #include "core/circuit_manager.hpp"
 #include "ops/cpp_command.hpp"
-#include "simulator/_cppkernels/simulator.hpp"
+#include "projectq/backends/_sim/_cppkernels/simulator.hpp"
 
 namespace td = tweedledum;
 

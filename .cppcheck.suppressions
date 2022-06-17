@@ -14,9 +14,4 @@ objectIndex:ccsrc/mq_base/core/utils.h:87
 noExplicitConstructor:ccsrc/cxx_experimental/include/ops/parametric/gate_base.hpp
 useStlAlgorithm:ccsrc/cxx_experimental/lib/core/circuit_manager.cpp
 
-constVariable:ccsrc/cxx_experimental/include/simulator/_cppkernels/*
-cstyleCast:ccsrc/cxx_experimental/include/simulator/_cppkernels/*
-noExplicitConstructor:ccsrc/cxx_experimental/include/simulator/_cppkernels/*
-useInitializationList:ccsrc/cxx_experimental/include/simulator/_cppkernels/*
-
 constParameter:tests/*

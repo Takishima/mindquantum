@@ -53,8 +53,3 @@
 "mindquantum/ccsrc/cxx_experimental/include/decompositions/decomposition_rule.hpp"                    "whitespace/semicolon"
 "mindquantum/ccsrc/cxx_experimental/include/decompositions/details/decomposition_param.hpp"           "whitespace/semicolon"
 "mindquantum/ccsrc/cxx_experimental/include/ops/parametric/register_gate_type.hpp"                    "whitespace/semicolon"
-
-"mindquantum/ccsrc/cxx_experimental/include/simulator/_cppkernels/"                                   "build/include_what_you_use"
-"mindquantum/ccsrc/cxx_experimental/include/simulator/_cppkernels/"                                   "readability/casting"
-"mindquantum/ccsrc/cxx_experimental/include/simulator/_cppkernels/"                                   "readability/fn_size"
-"mindquantum/ccsrc/cxx_experimental/include/simulator/_cppkernels/"                                   "runtime/explicit"
