@@ -24,9 +24,9 @@
 #include "ops/utils.hpp"
 
 #if __has_include(<numbers>) && __cplusplus > 201703L
-#    define PI_VAL std::numbers::pi
+static constexpr auto PI_VAL = std::numbers::pi;
 #else
-#    define PI_VAL 3.1415926535897932
+static constexpr auto PI_VAL = 3.141592653589793;
 #endif  // __has_include(<numbers>) && C++20
 
 // =============================================================================

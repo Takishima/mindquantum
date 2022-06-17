@@ -17,7 +17,7 @@
 #ifndef MINDQUANTUM_UTILS_H_
 #define MINDQUANTUM_UTILS_H_
 
-#include <stdint.h>
+#include <cstdint>
 #ifdef USE_OPENMP
 #    include <omp.h>
 #endif  // USE_OPENMP  // NOLINT
