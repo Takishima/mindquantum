@@ -17,6 +17,8 @@
 
 #include "core/config.hpp"
 
+#include "core/types.hpp"
+
 #if MQ_HAS_CONCEPTS
 #    include "core/concepts.hpp"
 #endif  // MQ_HAS_CONCEPTS
@@ -75,14 +77,14 @@ class QubitID {
     /*!
      * \param id External qubit ID
      */
-    constexpr QubitID(qubit_id_t id) : id_(id) {  // NOLINT(runtime/explicit)
+    constexpr explicit QubitID(qubit_id_t id) : id_(id) {
     }
 
     //! Simple getter
     /*!
      * \return Numeric value of ID
      */
-    constexpr qubit_id_t get() const {
+    MQ_NODISCARD constexpr qubit_id_t get() const {
         return qubit_id_t(*this);
     }
 
@@ -132,6 +134,14 @@ class QubitID {
      */
     constexpr bool operator==(const QubitID& other) const {
         return id_ == other.id_;
+    }
+
+    //! Equality operator
+    /*!
+     * \return True if this is equal to \c other
+     */
+    constexpr bool operator==(qubit_id_t id) const {
+        return id_ == id;
     }
 
  private:

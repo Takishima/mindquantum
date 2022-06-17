@@ -110,8 +110,7 @@ struct BasicGate {
         : parameterized_(parameterized), name_(name), hermitian_prop_(hermitian_prop), base_matrix_(base_matrix) {
     }
     BasicGate(const std::string& name, bool is_pauli_channel, T px, T py, T pz)  // for pauli channel
-        : name_(name), is_pauli_channel_(is_pauli_channel) {
-        probs_ = VT<T>{px, py, pz, 1 - px - py - pz};
+        : name_(name), is_pauli_channel_(is_pauli_channel), probs_{px, py, pz, 1 - px - py - pz} {
         T sum = 0.;
         cumulative_probs_.push_back(sum);
         for (auto it = probs_.begin(); it != probs_.end(); it++) {
