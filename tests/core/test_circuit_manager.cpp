@@ -81,10 +81,10 @@ TEST_CASE("CircuitManager/Add qubits", "[circuit_manager][core]") {
     }
 
     SECTION("Translate IDs") {
-        const auto qubit0 = mindquantum::QubitID{10};
-        const auto qubit1 = mindquantum::QubitID{11};
-        REQUIRE(manager.add_qubit(qubit0));
-        REQUIRE(manager.add_qubit(qubit1));
+        const auto qubit0 = 10;
+        const auto qubit1 = 11;
+        REQUIRE(manager.add_qubit(mindquantum::QubitID{qubit0}));
+        REQUIRE(manager.add_qubit(mindquantum::QubitID{qubit1}));
 
         CHECK(manager.translate_id(td::Qubit(0)) == qubit0);
         CHECK(manager.translate_id(td::Qubit(1)) == qubit1);
