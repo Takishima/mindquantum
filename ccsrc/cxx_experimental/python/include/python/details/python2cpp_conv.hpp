@@ -12,7 +12,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#pragma once
+#ifndef PYTHON2CPP_CONV_HPP
+#define PYTHON2CPP_CONV_HPP
 
 #include <string_view>
 #include <type_traits>
@@ -77,3 +78,5 @@ auto get_attr_from_python(py::handle py_obj, T& cpp_obj, std::string_view attr_n
     return false;
 }
 }  // namespace mindquantum::details
+
+#endif /* PYTHON2CPP_CONV_HPP */

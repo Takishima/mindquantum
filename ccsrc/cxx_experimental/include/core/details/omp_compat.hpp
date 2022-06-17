@@ -19,9 +19,9 @@
 
 namespace omp {
 #ifdef _MSC_VER
-typedef int64_t idx_t;
+using idx_t = int64_t;
 #else
-typedef uint64_t idx_t;
+using idx_t = uint64_t;
 #endif  // _MSC_VER
 }  // namespace omp
 
