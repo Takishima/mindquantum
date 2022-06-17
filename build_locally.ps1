@@ -153,7 +153,7 @@ cd "$ROOTDIR"
 
 if ($do_clean_build_dir) {
     Write-Output "Deleting build folder: $build_dir"
-    Call-Cmd Remove-Item -Force -Recurse "$build_dir" -ErrorAction SilentlyContinue
+    Call-Cmd Remove-Item -Force -Recurse "'$build_dir'" -ErrorAction SilentlyContinue
 }
 
 # NB: `created_venv` variable can be used to detect if a virtualenv was created or not
@@ -273,15 +273,15 @@ if (-Not (Test-Path -Path "$build_dir" -PathType Container) -or $do_clean_build_
 elseif ($do_clean_cache) {
     $do_configure = $true
     Write-Output "Removing CMake cache at: $build_dir/CMakeCache.txt"
-    Call-Cmd Remove-Item -Force "$build_dir/CMakeCache.txt" -ErrorAction SilentlyContinue
+    Call-Cmd Remove-Item -Force "'$build_dir/CMakeCache.txt'" -ErrorAction SilentlyContinue
     Write-Output "Removing CMake files at: $build_dir/CMakeFiles"
-    Call-Cmd Remove-Item -Force -Recurse "$build_dir/CMakeFiles" -ErrorAction SilentlyContinue
+    Call-Cmd Remove-Item -Force -Recurse "'$build_dir/CMakeFiles'" -ErrorAction SilentlyContinue
     Write-Output "Removing CMake files at: $build_dir/cmake-ldtest*"
-    Call-Cmd Remove-Item -Force -Recurse "$build_dir/cmake-ldtest*" -ErrorAction SilentlyContinue
+    Call-Cmd Remove-Item -Force -Recurse "'$build_dir/cmake-ldtest*'" -ErrorAction SilentlyContinue
 }
 
 if ($do_configure) {
-    Call-CMake -S "$source_dir" -B "$build_dir" @cmake_args @unparsed_args
+    Call-CMake -S "'$source_dir'" -B "'$build_dir'" @cmake_args @unparsed_args
 }
 
 if ($configure_only) {
@@ -289,14 +289,14 @@ if ($configure_only) {
 }
 
 if ($do_clean) {
-    Call-CMake --build "$build_dir" --target clean
+    Call-CMake --build "'$build_dir'" --target clean
 }
 
 if($do_docs) {
-    Call-CMake --build "$build_dir" --config "$build_type" --target docs @make_args
+    Call-CMake --build "'$build_dir'" --config "'$build_type'" --target docs @make_args
 }
 
-Call-CMake --build "$build_dir" --config "$build_type" @target_args @make_args
+Call-CMake --build "'$build_dir'" --config "'$build_type'" @target_args @make_args
 
 # ==============================================================================
 
