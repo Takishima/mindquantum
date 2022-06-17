@@ -48,7 +48,6 @@ class Command {
     // TODO(dnguyen): Can we do better than this?
     std::unique_ptr<td::Operator> operation_;
 };
-
 }  // namespace mindquantum::ops
 
 #endif /* CPP_COMMAND_HPP */

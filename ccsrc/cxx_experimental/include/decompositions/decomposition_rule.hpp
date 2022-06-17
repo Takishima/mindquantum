@@ -121,7 +121,6 @@ class DecompositionRule {
 
     std::array<DecompositionAtom*, sizeof...(atoms_t)> atoms_ = {};
 };
-
 }  // namespace mindquantum::decompositions
 
 #include "decompositions/decomposition_rule.tpp"

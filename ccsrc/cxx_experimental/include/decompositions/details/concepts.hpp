@@ -44,8 +44,8 @@ using ops::parametric::param_list_t;
 
 namespace mindquantum::decompositions {
 class AtomStorage;
-
 }  // namespace mindquantum::decompositions
+
 namespace mindquantum::concepts {
 template <typename atom_t>
 concept BaseDecomposition = requires(atom_t atom, decompositions::AtomStorage& storage, const instruction_t& inst) {
@@ -94,7 +94,6 @@ template <typename T>
 concept has_param_list_apply = requires(T t, circuit_t circuit, qubits_t qubits, param_list_t v) {
     {t.apply(circuit, qubits, v)};
 };
-
 }  // namespace mindquantum::concepts
 #else
 namespace mindquantum::concepts {
@@ -177,7 +176,6 @@ struct has_param_list_apply_<
                                                       std::declval<param_list_t&>()))>> : std::true_type {};
 template <class Op>
 static constexpr auto has_param_list_apply = has_param_list_apply_<Op>::value;
-
 }  // namespace mindquantum::concepts
 #endif  // MQ_HAS_CONCEPTS
 

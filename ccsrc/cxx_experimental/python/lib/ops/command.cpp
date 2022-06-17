@@ -179,7 +179,6 @@ td::Operator load_gate(PyObject* src, std::size_t n_targets, std::size_t n_contr
 
     return ops::Invalid();
 }
-
 }  // namespace mindquantum::details
 
 // ==============================================================================

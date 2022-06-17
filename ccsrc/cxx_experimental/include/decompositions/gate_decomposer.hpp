@@ -35,7 +35,6 @@ struct rules_less {  // NOLINT(altera-struct-pack-align)
         return std::forward<T>(lhs).name() < std::forward<U>(rhs).name();
     }
 };
-
 }  // namespace details
 
 class GateDecomposer {

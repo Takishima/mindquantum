@@ -55,9 +55,7 @@ class LinearMapper
 class GridMapper
     : public cengines::cpp::GridMapper
     , public cpp::BasicEngine {};
-
 }  // namespace cpp
-
 }  // namespace mindquantum::python
 
 // ==============================================================================

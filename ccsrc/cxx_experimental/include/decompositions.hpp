@@ -12,6 +12,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+#ifndef DECOMPOSITIONS_HPP
+#define DECOMPOSITIONS_HPP
 #include <tweedledum/IR/Circuit.h>
 #include <tweedledum/Operators/Standard/P.h>
 
@@ -74,3 +76,4 @@ void decompose_time_evolution_individual_terms(circuit_t& result, const instruct
 //! Decompose toffoli gate (ccx) into cx, t, tdg and h gates
 void decompose_toffoli2cnotandtgate(circuit_t& result, const instruction_t& inst);
 }  // namespace mindquantum::decompositions
+#endif /* DECOMPOSITIONS_HPP */

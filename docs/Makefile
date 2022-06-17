@@ -24,24 +24,24 @@ endif
 
 # Put it first so that "make" without argument is like "make help".
 help:
-    @$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 clean: clean_doxygen
-    rm -rf $(BUILDDIR)/*
+	rm -rf $(BUILDDIR)/*
 
 clean_doxygen:
-    rm -rf xml
+	rm -rf xml
 
 .PHONY: help Makefile doxygen
 
 doxygen:
-    $(MKDIR) doxygen $(MKDIR_POSTARGS)
-    doxygen
+	$(MKDIR) doxygen $(MKDIR_POSTARGS)
+	doxygen
 
 %_only: Makefile
-    @$(SPHINXBUILD) -M $(subst _only,,$@) "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+	@$(SPHINXBUILD) -M $(subst _only,,$@) "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: Makefile doxygen
-    @$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

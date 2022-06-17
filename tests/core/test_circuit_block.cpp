@@ -106,7 +106,6 @@ template <typename... idx_t>
 constexpr auto make_qubits(idx_t&&... idx) {
     return std::vector<qubit_t>{conv_helper<idx_t>::value(std::forward<idx_t>(idx))...};
 }
-
 }  // namespace
 
 // =============================================================================

@@ -91,7 +91,6 @@ class DaggeredCircuit {
     circuit_t& original_;
     circuit_t circuit_;
 };
-
 }  // namespace mindquantum
 
 #endif /* DAGGERCIRCUIT_HPP */

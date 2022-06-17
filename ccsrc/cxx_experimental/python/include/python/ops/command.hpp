@@ -54,7 +54,6 @@ class Command : public ops::Command {
         operation_ = std::make_unique<td::Operator>(operation);
     }
 };
-
 }  // namespace mindquantum::python
 
 // ==============================================================================
@@ -65,7 +64,6 @@ bool load_command(pybind11::handle src, python::Command& cmd);
 
 //! Helper function to extract attributes from a Python gate object
 tweedledum::Operator load_gate(PyObject* src, std::size_t n_targets, std::size_t n_controls, bool is_dagger = false);
-
 }  // namespace mindquantum::details
 
 // ==============================================================================

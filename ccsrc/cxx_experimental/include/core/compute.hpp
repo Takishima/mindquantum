@@ -50,7 +50,6 @@ class ComputeCircuit {
     ~ComputeCircuit() {
         no_bits_added_ &= (original_.num_qubits() == non_compute_.num_qubits()
                            && original_.num_cbits() == non_compute_.num_cbits());
-
         if (!no_bits_added_) {
             add_missing_qubits_cbits_(non_compute_, original_);
         }
