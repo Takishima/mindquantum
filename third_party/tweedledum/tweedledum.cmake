@@ -80,6 +80,12 @@ else()
     list(APPEND PATCHES ${CMAKE_CURRENT_LIST_DIR}/patch/fix-missing-std-launder.patch008)
   endif()
 
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
+     AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 8.0
+     AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.2)
+    list(APPEND PATCHES ${CMAKE_CURRENT_LIST_DIR}/patch/gcc-8.1-cleanup-hpp.patch009)
+  endif()
+
   if(Boost_DIR)
     list(APPEND CMAKE_OPTION -DBoost_DIR=${Boost_DIR})
   endif()
