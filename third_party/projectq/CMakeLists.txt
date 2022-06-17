@@ -18,9 +18,6 @@
 
 # lint_cmake: -whitespace/indent
 
-file(GLOB _patch_files "${CMAKE_CURRENT_LIST_DIR}/patch/*.patch*")
-list(SORT _patch_files CASE INSENSITIVE)
-
 set(VER 0.5.1)
 
 if(ENABLE_GITEE)
@@ -31,13 +28,18 @@ else()
   set(MD5 "13430199c253284df8b3d840f11d3560")
 endif()
 
+set(PATCHES
+    ${CMAKE_CURRENT_LIST_DIR}/patch/001-projectq.patch
+    ${CMAKE_CURRENT_LIST_DIR}/patch/002-better-aligned-allocator.patch
+    ${CMAKE_CURRENT_LIST_DIR}/patch/003-projectq-namespace.patch)
+
 mindquantum_add_pkg(
   projectq
   VER ${VER}
   MD5 ${MD5}
   URL ${GIT_URL}
   ONLY_COPY_DIRS projectq/backends/_sim/_cppkernels
-  PATCHES ${_patch_files}
+  PATCHES ${PATCHES}
   FORCE_LOCAL_PKG
   TARGET_ALIAS mindquantum::projectq projectq::projectq)
 target_compile_features(projectq::projectq INTERFACE cxx_std_14)
@@ -65,3 +67,32 @@ install(FILES ${CMAKE_CURRENT_LIST_DIR}/projectq.h ${CMAKE_CURRENT_LIST_DIR}/pro
 append_to_property(mq_install_targets GLOBAL mq_projectq)
 
 # ==============================================================================
+
+if(ENABLE_CXX_EXPERIMENTAL)
+  set(VER 0.7.3)
+
+  if(ENABLE_GITEE)
+    set(GIT_URL "https://gitee.com/mirrors/ProjectQ/repository/archive/v${VER}.tar.gz")
+    set(MD5 "b78f79c02686079bddf0d4e83517bdf4")
+  else()
+    set(GIT_URL "https://github.com/ProjectQ-Framework/ProjectQ/archive/v${VER}.tar.gz")
+    set(MD5 "83c4407e447ff79344d86e8560a49907")
+  endif()
+
+  set(PATCHES ${CMAKE_CURRENT_LIST_DIR}/patch/projectq-exp-simulator.patch001)
+
+  mindquantum_add_pkg(
+    projectq_experimental
+    VER ${VER}
+    MD5 ${MD5}
+    URL ${GIT_URL}
+    PATCHES ${PATCHES}
+    ONLY_COPY_DIRS projectq/backends/_sim/_cppkernels
+    FORCE_LOCAL_PKG
+    TARGET_ALIAS mindquantum::projectq_exp_simulator projectq_experimental::projectq_experimental)
+
+  add_library(mq_projectq_exp INTERFACE)
+  target_compile_definitions(mq_projectq_exp INTERFACE INTRIN)
+  target_link_libraries(mq_projectq_exp INTERFACE mindquantum::projectq_exp_simulator intrin_flag_CXX)
+  append_to_property(mq_install_targets GLOBAL mq_projectq_exp)
+endif()

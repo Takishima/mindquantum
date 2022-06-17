@@ -17,5 +17,3 @@
 # ==============================================================================
 
 target_sources(mindquantum_cxx PRIVATE ${CMAKE_CURRENT_LIST_DIR}/projectq_simulator.cpp)
-target_compile_definitions(mindquantum_cxx INTERFACE INTRIN)
-target_link_libraries(mindquantum_cxx INTERFACE intrin_flag_CXX)
