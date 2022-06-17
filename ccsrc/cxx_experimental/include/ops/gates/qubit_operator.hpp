@@ -26,7 +26,7 @@
 
 namespace mindquantum::ops {
 class QubitOperator {
-    std::map<std::pair<char, char>, std::pair<std::complex<double>, char>> _PAULI_OPERATOR_PRODUCTS = {
+    std::map<std::pair<char, char>, std::pair<std::complex<double>, char>> PAULI_OPERATOR_PRODUCTS_ = {
         {{'I', 'I'}, {1., 'I'}},       {{'I', 'X'}, {1., 'X'}},      {{'X', 'I'}, {1., 'X'}},
         {{'I', 'Y'}, {1., 'Y'}},       {{'Y', 'I'}, {1., 'Y'}},      {{'I', 'Z'}, {1., 'Z'}},
         {{'Z', 'I'}, {1., 'Z'}},       {{'X', 'X'}, {1., 'I'}},      {{'Y', 'Y'}, {1., 'I'}},
@@ -108,7 +108,7 @@ class QubitOperator {
                     if (left_qubit == right_qubit) {
                         left_operator_index += 1;
                         right_operator_index += 1;
-                        auto [scalar, loc_op] = _PAULI_OPERATOR_PRODUCTS.at(std::make_pair(left_loc_op, right_loc_op));
+                        auto [scalar, loc_op] = PAULI_OPERATOR_PRODUCTS_.at(std::make_pair(left_loc_op, right_loc_op));
 
                         // Add new term.
                         if (loc_op != 'I') {
