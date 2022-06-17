@@ -155,7 +155,6 @@ class ComputeCircuitProxy {
     ComputeCircuit& compute_;
 };
 }  // namespace details
-
 }  // namespace mindquantum::cengines
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
