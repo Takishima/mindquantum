@@ -259,13 +259,17 @@ if ($no_build_isolation) {
 if ($_build_dir_was_set) {
     if ($do_clean_build_dir) {
         Write-Output "Deleting build folder: $build_dir"
-        Call-Cmd Remove-Item -Force -Recurse "$build_dir" -ErrorAction SilentlyContinue
+        Call-Cmd Remove-Item -Force -Recurse "'$build_dir'" -ErrorAction SilentlyContinue
     }
     elseif ($do_clean_cache) {
         Write-Output "Removing CMake cache at: $build_dir/CMakeCache.txt"
-        Call-Cmd Remove-Item -Force "$build_dir/CMakeCache.txt" -ErrorAction SilentlyContinue
+        Call-Cmd Remove-Item -Force "'$build_dir/CMakeCache.txt'" -ErrorAction SilentlyContinue
         Write-Output "Removing CMake files at: $build_dir/CMakeFiles"
-        Call-Cmd Remove-Item -Force -Recurse "$build_dir/CMakeFiles" -ErrorAction SilentlyContinue
+        Call-Cmd Remove-Item -Force -Recurse "'$build_dir/CMakeFiles'" -ErrorAction SilentlyContinue
+        Write-Output "Removing CMake files at: $build_dir/CMakeFiles"
+        Call-Cmd Remove-Item -Force -Recurse "'$build_dir/CMakeFiles'" -ErrorAction SilentlyContinue
+        Write-Output "Removing CMake files at: $build_dir/cmake-ldtest*"
+        Call-Cmd Remove-Item -Force -Recurse "'$build_dir/cmake-ldtest*'" -ErrorAction SilentlyContinue
     }
 }
 
@@ -288,12 +292,12 @@ if ($LastExitCode -ne 0) {
 # ------------------------------------------------------------------------------
 
 if (Test-Path -Path "$output_path") {
-    Call-Cmd Remove-Item -Force -Recurse "$output_path" -ErrorAction SilentlyContinue
+    Call-Cmd Remove-Item -Force -Recurse "'$output_path'" -ErrorAction SilentlyContinue
 }
 
-Call-Cmd New-Item -Path "$output_path" -ItemType "directory"
+Call-Cmd New-Item -Path "'$output_path'" -ItemType "directory"
 
-Call-Cmd Move-Item -Path "$ROOTDIR\*" -Destination "$output_path"
+Call-Cmd Move-Item -Path "'$ROOTDIR\*'" -Destination "$output_path"
 
 Call-Cmd Write-Output "------Successfully created mindquantum package------"
 

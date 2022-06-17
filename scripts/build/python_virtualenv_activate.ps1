@@ -37,7 +37,7 @@ if ($python_venv_path -eq $null) {
 
 if ($do_clean_venv) {
     Write-Output "Deleting virtualenv folder: $python_venv_path"
-    Call-Cmd Remove-Item -Force -Recurse "$python_venv_path" -ErrorAction SilentlyContinue
+    Call-Cmd Remove-Item -Force -Recurse "'$python_venv_path'" -ErrorAction SilentlyContinue
 }
 
 # ------------------------------------------------------------------------------
@@ -48,15 +48,15 @@ if ("$Env:VENV_USE_SYSTEM_PACKAGES" -eq '1') {
 }
 
 $created_venv = $false
-if (-Not (Test-Path -Path "$python_venv_path" -PathType Container)) {
+if (-Not (Test-Path -Path "'$python_venv_path'" -PathType Container)) {
     $created_venv = $true
     Write-Output "Creating Python virtualenv: $PYTHON -m venv $venv_args"
-    Call-Cmd $PYTHON -m venv @venv_args
+    Call-Cmd "$PYTHON" -m venv @venv_args
 }
 elseif ($do_update_venv) {
     $venv_args += '--upgrade'
     Write-Output "Updating Python virtualenv: $PYTHON -m venv $venv_args"
-    Call-Cmd $PYTHON -m venv @venv_args
+    Call-Cmd "$PYTHON" -m venv @venv_args
 }
 
 if($IsWinEnv) {

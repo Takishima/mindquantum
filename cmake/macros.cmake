@@ -215,11 +215,6 @@ function(_apply_patch_file)
     APF "" "WORKING_DIRECTORY;INPUT_FILE;OUTPUT_VARIABLE;ERROR_VARIABLE;RESULT_VARIABLE;RESULTS_VARIABLE" "PATCH_ARGS"
     ${ARGN})
 
-  set(_execute_patch_args)
-  if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.18 AND ENABLE_CMAKE_DEBUG)
-    list(APPEND _execute_patch_args ECHO_OUTPUT_VARIABLE ECHO_ERROR_VARIABLE)
-  endif()
-
   debug_print(STATUS "  -> calling patch command (dry-run) with: ${Patch_EXECUTABLE} ${APF_PATCH_ARGS}")
   execute_process(
     COMMAND "${Patch_EXECUTABLE}" ${APF_PATCH_ARGS} --dry-run
@@ -227,9 +222,10 @@ function(_apply_patch_file)
     WORKING_DIRECTORY "${APF_WORKING_DIRECTORY}"
     OUTPUT_VARIABLE _stdout
     ERROR_VARIABLE _stderr RESULTS_VARIABLE _results
-    RESULT_VARIABLE _result ${_execute_patch_args})
+    RESULT_VARIABLE _result)
 
   if(_result EQUAL "0")
+    message("${_stdout}")
     debug_print(STATUS "  -> dry-run patch successful, applying patch for real")
     execute_process(
       COMMAND "${Patch_EXECUTABLE}" ${APF_PATCH_ARGS}
@@ -265,11 +261,6 @@ endfunction()
 # ~~~
 function(apply_patches working_directory)
   # cmake-lint: disable=R0915
-  set(_execute_patch_args)
-  if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.18 AND ENABLE_CMAKE_DEBUG)
-    list(APPEND _execute_patch_args ECHO_OUTPUT_VARIABLE ECHO_ERROR_VARIABLE)
-  endif()
-
   foreach(_patch_file ${ARGN})
     # NB: All these shenanigans with file(CONFIGURE ...) are just to make sure that we get a file with LF line
     # endings...
@@ -335,7 +326,7 @@ function(apply_patches working_directory)
           OUTPUT_VARIABLE _lf_stdout
           ERROR_VARIABLE _lf_stderr
           RESULTS_VARIABLE _lf_results_out
-          RESULT_VARIABLE _result ${_execute_patch_args})
+          RESULT_VARIABLE _result)
       endif()
 
       if(NOT _result EQUAL "0")
@@ -348,7 +339,7 @@ function(apply_patches working_directory)
           OUTPUT_VARIABLE _crlf_stdout
           ERROR_VARIABLE _crlf_stderr
           RESULTS_VARIABLE _crlf_results_out
-          RESULT_VARIABLE _result ${_execute_patch_args})
+          RESULT_VARIABLE _result)
         if(NOT _result EQUAL "0")
           debug_print(SEND_ERROR "STDOUT(LF):\n${_lf_stdout}" "STDERR(LF):\n${_lf_stderr}"
                       "RESULTS OUT (LF):\n${_lf_results_out}")
