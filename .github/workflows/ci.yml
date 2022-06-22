@@ -248,6 +248,11 @@ jobs:
       - name: Install
         run: ./build_locally.sh --install  # NB: no need to pass the other parameters
 
+      - name: Run C++ tests
+        run: |
+          cd build
+          ctest --output-on-failure
+
   # ============================================================================
 
   gcc:
@@ -328,6 +333,10 @@ jobs:
       - name: Install
         run: ./build_locally.sh --install  # NB: no need to pass the other parameters
 
+      - name: Run C++ tests
+        run: |
+          cd build
+          ctest --output-on-failure
 
   # ============================================================================
 
@@ -414,6 +423,11 @@ jobs:
       - name: Install
         run: ./build_locally.sh --install  # NB: no need to pass the other parameters
 
+      - name: Run C++ tests
+        run: |
+          cd build
+          ctest --output-on-failure
+
   # ============================================================================
 
   msvc:
@@ -491,6 +505,11 @@ jobs:
 
       - name: Install
         run: ./build_locally.ps1 -Install
+
+      - name: Run C++ tests
+        run: |
+          cd build
+          ctest --output-on-failure
 
       - name: Print CCache statistics
         run: |
@@ -586,6 +605,11 @@ jobs:
 
       - name: Install
         run: ./build_locally.ps1 -Install
+
+      - name: Run C++ tests
+        run: |
+          cd build
+          ctest --output-on-failure
 
   # ============================================================================
 
@@ -751,6 +775,11 @@ jobs:
           path: ccache
           key: msys2-${{ matrix.msystem }}-ccache-${{ steps.get-date.outputs.date }}
 
+      - name: Run C++ tests
+        run: |
+          cd build
+          ctest --output-on-failure
+
   # ============================================================================
 
   cygwin:
@@ -860,6 +889,11 @@ jobs:
         shell: bash --login -eo pipefail -o igncr {0}
         run: ./build_locally.sh --install
 
+      - name: Run C++ tests
+        run: |
+          cd build
+          ctest --output-on-failure
+
       - name: Print CCache statistics
         shell: bash --login -eo pipefail -o igncr {0}
         run: |
@@ -953,6 +987,11 @@ jobs:
 
       - name: Install
         run: ./build_locally.sh --install
+
+      - name: Run C++ tests
+        run: |
+          cd build
+          ctest --output-on-failure
 
   # ============================================================================
 
