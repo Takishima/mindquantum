@@ -94,8 +94,9 @@ jobs:
 
       - name: Configure
         run: >-
-          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache
+          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --no-gitee
           --configure-only -c --clean-3rdparty --prefix="${{ github.workspace }}/install"
+          -- -DPython_FIND_UNVERSIONED_NAMES:STRING='FIRST'
 
       - name: Build
         run: ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache
@@ -108,7 +109,7 @@ jobs:
       - name: Run C++ tests
         run: |
           cd build
-          ctest --output-on-failure
+          catchsegv ctest --output-on-failure
 
       - name: Run Python tests
         if: matrix.python != '3.6'
@@ -177,7 +178,7 @@ jobs:
           mkdir -p "${{ github.workspace }}/wheel_build"
           cp -r "${{ github.workspace }}/build/.mqlibs" "${{ github.workspace }}/wheel_build"
           ./build.sh --cxx --with-projectq --debug-cmake --test --build="${{ github.workspace }}/wheel_build" \
-            --no-delocate --ccache --cmake-no-registry
+            --no-delocate --ccache --cmake-no-registry --no-gitee
 
   # ============================================================================
 
@@ -240,7 +241,7 @@ jobs:
 
       - name: Configure
         run: >-
-          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --only-pytest
+          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --only-pytest --no-gitee
           --configure-only -c --clean-3rdparty --prefix="${{ github.workspace }}/install"
 
       - name: Build
@@ -325,7 +326,7 @@ jobs:
 
       - name: Configure
         run: >-
-          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --only-pytest
+          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --only-pytest --no-gitee
           --configure-only -c --clean-3rdparty --prefix="${{ github.workspace }}/install"
 
       - name: Build
@@ -337,7 +338,7 @@ jobs:
       - name: Run C++ tests
         run: |
           cd build
-          ctest --output-on-failure
+          catchsegv ctest --output-on-failure
 
   # ============================================================================
 
@@ -415,7 +416,7 @@ jobs:
 
       - name: Configure
         run: >-
-          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --only-pytest
+          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --only-pytest --no-gitee
           --configure-only -c --clean-3rdparty --prefix="${{ github.workspace }}/install"
 
       - name: Build
@@ -427,7 +428,7 @@ jobs:
       - name: Run C++ tests
         run: |
           cd build
-          ctest --output-on-failure
+          catchsegv ctest --output-on-failure
 
   # ============================================================================
 
@@ -497,7 +498,7 @@ jobs:
           CC: cl
           CXX: cl
         run: >-
-           ./build_locally.ps1 -Cxx -WithProjectq -DebugCmake -Ninja -Test -CCache -OnlyPytest
+           ./build_locally.ps1 -Cxx -WithProjectq -DebugCmake -Ninja -Test -CCache -OnlyPytest -NoGitee
            -ConfigureOnly -C -Clean3rdParty -Prefix "${{ github.workspace }}/install"
            -DUSE_PARALLEL_STL=OFF
 
@@ -597,7 +598,7 @@ jobs:
           CC: cc
           CXX: c++
         run: >-
-           ./build_locally.ps1 -Cxx -WithProjectq -DebugCmake -Ninja -Test -CCache -OnlyPytest
+           ./build_locally.ps1 -Cxx -WithProjectq -DebugCmake -Ninja -Test -CCache -OnlyPytest -NoGitee
            -ConfigureOnly -C -Clean3rdParty -Prefix "${{ github.workspace }}/install"
            -G "MinGW Makefiles" -DUSE_PARALLEL_STL=OFF
 
@@ -745,7 +746,7 @@ jobs:
           CC: ${{ matrix.CC }}
           CXX: ${{ matrix.CXX }}
         run: >-
-          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache -v --only-pytest
+          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache -v --only-pytest --no-gitee
           --configure-only -c --clean-3rdparty --prefix="$PWD/install"
           ${{ matrix.cmake_generator }}
 
@@ -876,7 +877,7 @@ jobs:
         shell: bash --login -eo pipefail -o igncr {0}
         run: |
           export PATH="$PATH:$PWD/ccache/bin"
-          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache -v --only-pytest \
+          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache -v --only-pytest --no-gitee \
           --configure-only -c --clean-3rdparty --prefix=$PWD/install \
           ${{ matrix.cmake_generator }}
 
@@ -980,7 +981,7 @@ jobs:
 
       - name: Configure
         run: >-
-          ./build_locally.sh --cxx --with-projectq --debug-cmake --gpu --test --ccache --only-pytest
+          ./build_locally.sh --cxx --with-projectq --debug-cmake --gpu --test --ccache --only-pytest --no-gitee
           --configure-only -c --clean-3rdparty --prefix="${{ github.workspace }}/install"
 
       - name: Build
@@ -992,7 +993,7 @@ jobs:
       - name: Run C++ tests
         run: |
           cd build
-          ctest --output-on-failure
+          catchsegv ctest --output-on-failure
 
   # ============================================================================
 
@@ -1065,7 +1066,7 @@ jobs:
   #         if [ -f /opt/intel/oneapi/tbb/latest/env/vars.sh ]; then
   #           source /opt/intel/oneapi/tbb/latest/env/vars.sh
   #         fi
-  #         ./build_locally.sh --cxx --with-projectq --debug-cmake --test --gpu \
+  #         ./build_locally.sh --cxx --with-projectq --debug-cmake --test --gpu --no-gitee \
   #         --configure-only -c --clean-3rdparty  --prefix="${{ github.workspace }}/install"
 
   #     - name: Build

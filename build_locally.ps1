@@ -40,6 +40,7 @@ Param(
     [Alias("J")][ValidateRange("Positive")][int]$Jobs,
     [switch]$Ninja,
     [switch]$NoConfig,
+    [switch]$NoGitee,
     [switch]$OnlyPytest,
     [ValidateNotNullOrEmpty()][string]$Prefix,
     [switch]$Quiet,
@@ -395,6 +396,9 @@ Build using Ninja instead of make
 
 .PARAMETER NoConfig
 Ignore any configuration file
+
+.PARAMETER NoGitee
+Do not favor Gitee over Github/Gitlab
 
 .PARAMETER OnlyPytest
 Only install pytest and its dependencies when creating/building the virtualenv
