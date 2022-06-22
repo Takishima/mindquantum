@@ -94,7 +94,7 @@ jobs:
 
       - name: Configure
         run: >-
-          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --only-pytest
+          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache
           --configure-only -c --clean-3rdparty --prefix="${{ github.workspace }}/install"
 
       - name: Build
