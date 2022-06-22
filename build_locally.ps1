@@ -39,6 +39,7 @@ Param(
     [switch]$Install,
     [Alias("J")][ValidateRange("Positive")][int]$Jobs,
     [switch]$Ninja,
+    [switch]$NoConfig,
     [switch]$OnlyPytest,
     [ValidateNotNullOrEmpty()][string]$Prefix,
     [switch]$Quiet,
@@ -387,6 +388,12 @@ Number of parallel jobs for building
 
 .PARAMETER LocalPkgs
 Compile third-party dependencies locally
+
+.PARAMETER Ninja
+Build using Ninja instead of make
+
+.PARAMETER NoConfig
+Ignore any configuration file
 
 .PARAMETER OnlyPytest
 Only install pytest and its dependencies when creating/building the virtualenv

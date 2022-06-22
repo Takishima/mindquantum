@@ -39,6 +39,7 @@ if(ENABLE_CUDA)
 else()
   add_library(mq_base STATIC ${MQ_BASE_SOURCES})
 endif()
+force_at_least_cxx17_workaround(mq_base)
 target_sources(mq_base PRIVATE $<BUILD_INTERFACE:${MQ_BASE_HEADERS}>)
 target_include_directories(mq_base PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
                                           $<INSTALL_INTERFACE:${MQ_INSTALL_INCLUDEDIR}>)

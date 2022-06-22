@@ -19,10 +19,19 @@ BASEPATH=$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}" )" &> /dev/null && pwd 
 ROOTDIR="$BASEPATH"
 PROGRAM=$(basename "${BASH_SOURCE[0]:-$0}")
 
+# Test for MindSpore CI
+_IS_MINDSPORE_CI=0
+if [[ "${JENKINS_URL:-0}" =~ https?://build.mindspore.cn && ! "${CI:-0}" =~ ^(false|0)$ ]]; then
+    echo "Detected MindSpore/MindQuantum CI"
+    _IS_MINDSPORE_CI=1
+fi
+
 # ==============================================================================
 # Default values for this particular script
 
 enable_gitee=1
+
+# ------------------------------------------------------------------------------
 
 # Load common bash helper functions
 . "$ROOTDIR/scripts/build/common_functions.sh"
@@ -263,6 +272,15 @@ fi
 
 call_cmd mkdir -pv "${output_path}"
 
-call_cmd mv -v "$ROOTDIR/dist/"* "${output_path}"
+call_cmd mv -v "$ROOTDIR/dist/"*whl* "${output_path}"
+
+if [[ "$_IS_MINDSPORE_CI" -eq 1 && "$(uname)" == 'Linux' ]]; then
+    suffix="-manylinux_2_27_$(uname -m)"
+    for ext in ".whl" ".whl.sha256"; do
+        for wheel in "${output_path}"/*"${suffix}${ext}"; do
+            call_cmd cp -v "$wheel" "${wheel%"${suffix}${ext}"}-linux_$(uname -m)${ext}"
+        done
+    done
+fi
 
 echo "------Successfully created mindquantum package------"

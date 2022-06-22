@@ -17,7 +17,10 @@
 
 import pytest
 
-from mindquantum.experimental import symengine
+try:
+    from mindquantum.experimental import symengine
+except ImportError:
+    pytest.skip("MindQuantum experimental C++ module not present", allow_module_level=True)
 
 
 @pytest.mark.symengine

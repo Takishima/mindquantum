@@ -80,6 +80,7 @@ function Help-Message() {
     Write-Output '  -J,-Jobs [N]        Number of parallel jobs for building'
     Write-Output ("                      Defaults to: {0}" -f $n_jobs_default)
     Write-Output '  -LocalPkgs          Compile third-party dependencies locally'
+    Write-Output '  -NoConfig           Ignore any configuration file'
     Write-Output '  -Ninja              Build using Ninja instead of make'
     Write-Output '  -Quiet              Disable verbose build rules'
     Write-Output '  -ShowLibraries      Show all known third-party libraries'
@@ -201,6 +202,9 @@ if ([bool]$Build) {
 if ([bool]$Config) {
     Set-Value 'config_file' "$Config"
 }
+if ($NoConfig.IsPresent) {
+    Set-Value 'config_file' '__disabled_config__'
+}
 
 if ([bool]$CudaArch) {
     Set-Value 'cuda_arch' $CudaArch.Replace(' ', ';').Replace(',', ';')
@@ -265,6 +269,9 @@ if (Test-Path -Path "$config_file") {
     Write-Debug 'NB: overriding values only if not specified on the command line'
 
     Set-VariableFromIni -Path "$config_file" -CheckSet
+}
+else {
+    Write-Debug "Configuration file ($config_file) ignored because file does not exist"
 }
 
 # NB: in case it was set to true in the configuration file

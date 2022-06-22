@@ -38,12 +38,6 @@ endif()
 # ==============================================================================
 
 if(ENABLE_CXX_EXPERIMENTAL)
-  add_test(NAME pytest COMMAND ${Python_EXECUTABLE} -m pytest -v ${CMAKE_CURRENT_LIST_DIR})
-endif()
-
-# ==============================================================================
-
-if(ENABLE_CXX_EXPERIMENTAL)
   install(FILES ${CMAKE_CURRENT_LIST_DIR}/utils.hpp DESTINATION ${MQ_INSTALL_INCLUDEDIR}/tests)
   install(
     DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/core ${CMAKE_CURRENT_LIST_DIR}/ops

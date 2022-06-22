@@ -116,7 +116,7 @@ class QubitID {
     /*!
      * \return True if numerical values is less than \c other
      */
-    constexpr bool operator<(const QubitID& other) const {
+    MQ_NODISCARD constexpr bool operator<(const QubitID& other) const {
         return id_ < other.id_;
     }
 
@@ -124,7 +124,7 @@ class QubitID {
     /*!
      * \return True if numerical values is less than \c other
      */
-    constexpr bool operator<(qubit_id_t id) const {
+    MQ_NODISCARD constexpr bool operator<(qubit_id_t id) const {
         return id_ < id;
     }
 
@@ -132,7 +132,7 @@ class QubitID {
     /*!
      * \return True if this is equal to \c other
      */
-    constexpr bool operator==(const QubitID& other) const {
+    MQ_NODISCARD constexpr bool operator==(const QubitID& other) const {
         return id_ == other.id_;
     }
 
@@ -140,7 +140,7 @@ class QubitID {
     /*!
      * \return True if this is equal to \c other
      */
-    constexpr bool operator==(qubit_id_t id) const {
+    MQ_NODISCARD constexpr bool operator==(qubit_id_t id) const {
         return id_ == id;
     }
 

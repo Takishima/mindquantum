@@ -261,8 +261,10 @@ function set_variable_from_ini {
 
 call_cmd() {
     if [ "${dry_run:-0}" -ne 1 ]; then
-        "$@"
-        return $?
+        if ! "$@"; then
+            die "Command failed: $*"
+        fi
+        return 0
     else
         echo "$@"
         return 0

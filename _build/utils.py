@@ -25,7 +25,9 @@ import sys
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent.parent / 'mindquantum' / 'utils'))
-from fdopen import fdopen  # noqa: E402
+from fdopen import (  # noqa: E402 pylint: disable=wrong-import-position,import-error
+    fdopen,
+)
 
 # ==============================================================================
 
@@ -36,7 +38,9 @@ def remove_tree(directory):
     def remove_read_only(func, path, exc_info):
         excvalue = exc_info[1]
         if func in (os.rmdir, os.remove) and excvalue.errno == errno.EACCES:
-            os.chmod(path, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)  # noqa: SCS119
+            os.chmod(  # noqa: SCS119 pylint: disable=os-chmod-unsafe-permissions
+                path, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO
+            )
             func(path)
         else:
             raise exc_info[0].with_traceback(exc_info[1], exc_info[2])
@@ -70,7 +74,7 @@ def get_executable(exec_name):
             with fdopen(os.devnull, 'w') as devnull:
                 subprocess.check_call([cmd, '--version'], stdout=devnull, stderr=devnull)
         except (OSError, subprocess.CalledProcessError):
-            logging.info('  failed in %s', base_path)
+            logging.info('  failed with %s', cmd)
         else:
             logging.info('  command found:%s', cmd)
             return cmd
@@ -82,7 +86,7 @@ def get_executable(exec_name):
             with fdopen(os.devnull, 'w') as devnull:
                 subprocess.check_call(cmd + ['--version'], stdout=devnull, stderr=devnull)
         except (OSError, subprocess.CalledProcessError):
-            logging.info('  failed in %s', base_path)
+            logging.info('  failed with %s', cmd)
         else:
             logging.info('  command found: %s', cmd)
             return cmd

@@ -105,6 +105,18 @@ jobs:
 
       # ------------------------------------------------------------------------
 
+      - name: Run C++ tests
+        run: |
+          cd build
+          ctest --output-on-failure
+
+      - name: Run Python tests
+        run: |
+          . venv/bin/activate
+          python3 -m pytest -v
+
+      # ------------------------------------------------------------------------
+
       - name: In-build config files
         if: matrix.test_install
         run: |

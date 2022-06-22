@@ -59,6 +59,12 @@ markers = [
     "symengine: test using the mindquantum.symengine module",
     "cxx_exp_projectq: tests involving the ProjectQ simulator",
 ]
+filterwarnings = [
+    'ignore:.*Please use `OptimizeResult`.*is deprecated:DeprecationWarning',
+    'ignore:.*`np.str` is a deprecated alias for the builtin `str`.*:DeprecationWarning',
+    'ignore:.*MindSpore not installed.*:UserWarning',
+]
+
 
 [tool.doc8]
 
@@ -108,3 +114,6 @@ manylinux-x86_64-image = 'manylinux2014'
 [[tool.cibuildwheel.overrides]]
 select = 'cp3{6,7,8,9}-*'
 manylinux-x86_64-image = 'manylinux2010'
+
+# [tool.cibuildwheel.linux]
+# repair-wheel-command = "auditwheel -v repair -w {dest_dir} {wheel}"

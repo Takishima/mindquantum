@@ -115,6 +115,7 @@ help_message() {
     echo '  -j,--jobs [N]        Number of parallel jobs for building'
     echo "                       Defaults to: $n_jobs_default"
     echo '  --local-pkgs         Compile third-party dependencies locally'
+    echo '  --no-config          Ignore any configuration file'
     echo '  --ninja              Build using Ninja instead of make'
     echo '  --quiet              Disable verbose build rules'
     echo '  --show-libraries     Show all known third-party libraries'
@@ -238,6 +239,9 @@ while getopts "${getopts_args}" OPT; do
         n )                 no_arg;
                             set_var dry_run
                             ;;
+        no-config )         no_arg;
+                            set_var config_file '__disabled_config__'
+                            ;;
         ninja )             no_arg;
                             set_var cmake_generator 'Ninja'
                             ;;
@@ -291,6 +295,8 @@ if [ -f "$config_file" ]; then
 
     # NB: Check whether the variables were set from the command line and do not override those
     set_variable_from_ini -c "$config_file"
+else
+    debug_print "Configuration file ($config_file) ignored because file does not exist"
 fi
 
 if [[ $n_jobs -eq -1 && ! $cmake_generator == "Ninja"  ]]; then

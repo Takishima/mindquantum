@@ -15,9 +15,12 @@
 
 import pytest
 
-from mindquantum.experimental import optimizer
-from mindquantum.experimental.circuit import Circuit
-from mindquantum.experimental.ops import X
+try:
+    from mindquantum.experimental import optimizer
+    from mindquantum.experimental.circuit import Circuit
+    from mindquantum.experimental.ops import X
+except ImportError:
+    pytest.skip("MindQuantum experimental C++ module not present", allow_module_level=True)
 
 # ==============================================================================
 

@@ -27,7 +27,7 @@ import shutil
 import subprocess
 import sys
 import sysconfig
-from distutils.command.clean import clean
+from distutils.command.clean import clean  # pylint: disable=deprecated-module
 from pathlib import Path
 
 import setuptools
@@ -83,8 +83,7 @@ def get_extra_cmake_options():
                 var_name = arg.strip()
                 sys.argv.remove(arg)
                 continue
-            else:
-                _cmake_extra_options.append(f'-D{var_name}:STRING={arg.strip()}')
+            _cmake_extra_options.append(f'-D{var_name}:STRING={arg.strip()}')
 
         elif opt_key == 'G':
             has_generator = True
@@ -189,6 +188,7 @@ class CMakeBuildExt(build_ext):
     def finalize_options(self):
         """Finalize all options."""
         super().finalize_options()
+        # pylint: disable=attribute-defined-outside-init
         self.no_arch_native = self.no_arch_native or False
         self.clean_build = self.clean_build or False
         self.build_dir = self.build_dir or None
@@ -204,7 +204,7 @@ class CMakeBuildExt(build_ext):
                 dest_path = pathlib.Path(self.get_ext_fullpath(ext.lib_filepath).rstrip(ext_suffix)).with_suffix('.py')
                 if not dest_path.exists():
                     logging.info('creating empty file at %s', dest_path)
-                    dest_path.write_text('')
+                    dest_path.write_text('', encoding='utf-8')
             return
         cmake_cmd = get_cmake_command()
         if cmake_cmd is None:
@@ -224,8 +224,11 @@ class CMakeBuildExt(build_ext):
         def _src_dir_pred(ext):
             return ext.src_dir
 
+        python_exec = get_python_executable()
+        if not python_exec:
+            raise RuntimeError('Unable to locate Python executable!')
         cmake_args = [
-            '-DPython_EXECUTABLE:FILEPATH=' + get_python_executable(),
+            '-DPython_EXECUTABLE:FILEPATH=' + python_exec,
             '-DBUILD_TESTING:BOOL=OFF',
             '-DIN_PLACE_BUILD:BOOL=OFF',
             '-DIS_PYTHON_BUILD:BOOL=ON',
@@ -402,6 +405,7 @@ class GenerateRequirementFile(setuptools.Command):
 
     def initialize_options(self):
         """Initialize this command's options."""
+        # pylint: disable=attribute-defined-outside-init
         self.include_extras = None
         self.include_all_extras = None
         self.output = None
@@ -409,6 +413,7 @@ class GenerateRequirementFile(setuptools.Command):
 
     def finalize_options(self):
         """Finalize this command's options."""
+        # pylint: disable=attribute-defined-outside-init
         if not self.output:
             self.output = Path(__file__).parent.resolve() / 'requirements.txt'
         else:

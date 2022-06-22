@@ -18,19 +18,22 @@ import warnings
 
 import pytest
 
-from mindquantum.experimental import ops, simulator, symengine
-from mindquantum.experimental.circuit import Circuit
+try:
+    from mindquantum.experimental import ops, simulator, symengine
+    from mindquantum.experimental.circuit import Circuit
+except ImportError:
+    pytest.skip("MindQuantum experimental C++ module not present", allow_module_level=True)
 
-_has_projectq = True
+_HAS_PROJECTQ = True
 try:
     import projectq  # noqa: F401
     from projectq import ops as pq_ops
     from projectq.backends import Simulator as PQ_Simulator
     from projectq.cengines import MainEngine
 except ImportError:
-    _has_projectq = False
+    _HAS_PROJECTQ = False
 
-has_projectq = pytest.mark.skipif(not _has_projectq, reason='ProjectQ is not installed')
+has_projectq = pytest.mark.skipif(not _HAS_PROJECTQ, reason='ProjectQ is not installed')
 
 with warnings.catch_warnings():
     warnings.simplefilter('ignore', category=PendingDeprecationWarning)
@@ -176,11 +179,6 @@ def test_two_qubit_gates(mq_gate, pq_gate):
         4.1,
         2 * math.pi,
         4 * math.pi,
-        # sympy.Float(0),
-        # sympy.Float(2.1),
-        # 2 * sympy.pi,
-        # 4 * sympy.pi,
-        # sympy.Symbol('x'),
     ],
     ids=angle_idfn,
 )
@@ -218,11 +216,6 @@ def test_single_qubit_param_gates(angle, mq_gate, pq_gate):
         4.1,
         2 * math.pi,
         4 * math.pi,
-        # sympy.Float(0),
-        # sympy.Float(2.1),
-        # 2 * sympy.pi,
-        # 4 * sympy.pi,
-        # sympy.Symbol('x'),
     ],
     ids=angle_idfn,
 )

@@ -22,6 +22,8 @@
 
 """Sphinx configuration file for MindQuantum."""
 
+# pylint: disable=invalid-name  # Sphinx variables
+
 # -- Path setup --------------------------------------------------------------
 
 import os
@@ -49,7 +51,7 @@ if on_rtd:
         mqbackend.write_text('')
     doxygen_cmd = f'cd {conf_path.parent} && mkdir -p doxygen && doxygen'
     print(f'INFO: Calling doxygen: {doxygen_cmd}')
-    subprocess.run(doxygen_cmd)  # noqa: SCS103
+    subprocess.check_call(doxygen_cmd)  # noqa: SCS103
 
 # -- Project information -----------------------------------------------------
 
@@ -60,7 +62,7 @@ Huawei and High-performance automatic differentiation ability of MindSpore, Mind
 problems such as quantum machine learning, quantum chemistry simulation, and quantum optimization, which provides an
 efficient platform for researchers, teachers and students to quickly design and verify quantum machine learning
 algorithms.'''
-copyright = '2020, Huawei HiQ'
+copyright = '2020, Huawei HiQ'  # pylint: disable=redefined-builtin
 author = 'Huawei HiQ developers'
 
 # -- General configuration ---------------------------------------------------
@@ -135,20 +137,20 @@ htmlhelp_basename = 'mqdoc'
 # Grouping the document tree into LaTeX files. List of tuples (source start file, target name, title, author,
 # documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'MindQuantum.tex', '{} Documentation'.format(project), 'a', 'manual'),
+    (master_doc, 'MindQuantum.tex', f'{project} Documentation', 'a', 'manual'),
 ]
 
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, project, '{} Documentation'.format(project), [author], 1)]
+man_pages = [(master_doc, project, f'{project} Documentation', [author], 1)]
 
 # -- Options for Texinfo output -------------------------------------------
 
 # Grouping the document tree into Texinfo files. List of tuples (source start file, target name, title, author, dir
 # menu entry, description, category)
 texinfo_documents = [
-    (master_doc, project, '{} Documentation'.format(project), author, project, description),
+    (master_doc, project, f'{project} Documentation', author, project, description),
 ]
 
 # -- Options for sphinx.ext.linkcode --------------------------------------

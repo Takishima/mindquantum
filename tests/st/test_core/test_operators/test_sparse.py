@@ -15,6 +15,8 @@
 # ============================================================================
 """Test operator sparsing."""
 
+from pathlib import Path
+
 import numpy as np
 from openfermion import get_sparse_operator
 from openfermion.chem import MolecularData
@@ -29,9 +31,10 @@ def test_sparsing_operator():
     Description: Test sparsing operator
     Expectation: success
     """
-    molecular = "./tests/st/H4.hdf5"
 
-    mol = MolecularData(filename=molecular)
+    molecular = Path(__file__).parent.parent.parent / 'H4.hdf5'
+
+    mol = MolecularData(filename=str(molecular))
     mol.load()
 
     ham_of = mol.get_molecular_hamiltonian()

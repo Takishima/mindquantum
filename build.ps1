@@ -33,6 +33,7 @@ Param(
     [switch]$Gpu,
     [Alias("H")][switch]$Help,
     [Alias("J")][ValidateRange("Positive")][int]$Jobs,
+    [switch]$NoConfig,
     [switch]$Ninja,
     [switch]$NoBuildIsolation,
     [switch]$NoDelocate,
@@ -50,6 +51,13 @@ Param(
 $BASEPATH = Split-Path $MyInvocation.MyCommand.Path -Parent
 $ROOTDIR = $BASEPATH
 $PROGRAM = Split-Path $MyInvocation.MyCommand.Path -Leaf
+
+# Test for MindSpore CI
+$_IS_MINDSPORE_CI=0
+if ("$Env:JENKINS_URL" -Match 'https?://build.mindspore.cn' -And [bool]$Env:CI) {
+    Write-Output "Detected MindSpore/MindQuantum CI"
+    $_IS_MINDSPORE_CI=1
+}
 
 # ==============================================================================
 # Default values
@@ -199,7 +207,7 @@ if ($_build_dir_was_set) {
 }
 
 if ($force_local_pkgs) {
-    $build_args += '--var', 'MQ_FORCE_LOCAL_PKGS' "all"
+    $build_args += '--var', 'MQ_FORCE_LOCAL_PKGS', 'all'
 }
 elseif ([bool]"$local_pkgs") {
     $build_args += '--var', 'MQ_FORCE_LOCAL_PKGS', "`"$local_pkgs`""
@@ -379,11 +387,17 @@ Number of parallel jobs for building
 .PARAMETER LocalPkgs
 Compile third-party dependencies locally
 
-.PARAMETER NoDelocate
-Do not delocate the binary wheels after build is finished (pass -Delocate to enable)
+.PARAMETER Ninja
+Build using Ninja instead of make
 
 .PARAMETER NoBuildIsolation
 Pass --no-isolation to python3 -m build
+
+.PARAMETER NoConfig
+Ignore any configuration file
+
+.PARAMETER NoDelocate
+Do not delocate the binary wheels after build is finished (pass -Delocate to enable)
 
 .PARAMETER OnlyPytest
 Only install pytest and its dependencies when creating/building the virtualenv
