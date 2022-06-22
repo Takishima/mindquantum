@@ -111,12 +111,6 @@ jobs:
           cd build
           catchsegv ctest --output-on-failure
 
-      - name: Run Python tests
-        if: matrix.python != '3.6'
-        run: |
-          . venv/bin/activate
-          python3 -m pytest -v
-
       # ------------------------------------------------------------------------
 
       - name: In-build config files
