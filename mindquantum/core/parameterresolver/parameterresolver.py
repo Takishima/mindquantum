@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2021 Huawei Technologies Co., Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -269,7 +268,7 @@ resolver discards the imaginary part."
         """
         Check whether this parameter resolver represents a constant number.
 
-        This means that there is no non zero parameter in this parameter resolver.
+        This means that there is no parameter with non zero coefficient in this parameter resolver.
 
         Returns:
             bool, whether this parameter resolver represent a constant number.
@@ -326,7 +325,7 @@ resolver discards the imaginary part."
             for k, v in zip(keys, values):
                 self[k] = v
         else:
-            raise TypeError("Parameter name should be a string, but get {}!".format(type(keys)))
+            raise TypeError(f"Parameter name should be a string, but get {type(keys)}!")
 
     def __getitem__(self, key):
         """
@@ -354,8 +353,7 @@ resolver discards the imaginary part."
             >>> list(pr)
             ['a', 'b']
         """
-        for i in self.keys():
-            yield i
+        yield from self.keys()
 
     def __contains__(self, key):
         """

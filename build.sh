@@ -29,6 +29,8 @@ fi
 # ==============================================================================
 # Default values for this particular script
 
+python_extra_pkgs=('wheel-filename>1.2')
+
 if [ "$_IS_MINDSPORE_CI" -eq 1 ]; then
     enable_gitee=1
 fi
@@ -103,6 +105,8 @@ function parse_extra_args() {
 # ==============================================================================
 
 set -e
+
+echo "Called with: $*"
 
 cd "${ROOTDIR}"
 
