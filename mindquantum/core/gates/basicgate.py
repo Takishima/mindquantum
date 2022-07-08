@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
+
+# pylint: disable=abstract-method,import-outside-toplevel
+
 """Basic module for quantum gate."""
 
 import numbers
@@ -21,7 +24,11 @@ from scipy.linalg import fractional_matrix_power
 
 from mindquantum import mqbackend as mb
 from mindquantum.config.config import _GLOBAL_MAT_VALUE
-from mindquantum.core.gates.basic import (
+from mindquantum.utils.f import is_power_of_two
+from mindquantum.utils.type_value_check import _check_gate_type, _check_input_type
+
+from ..parameterresolver import ParameterResolver
+from .basic import (
     BasicGate,
     FunctionalGate,
     NoneParamNonHermMat,
@@ -32,9 +39,6 @@ from mindquantum.core.gates.basic import (
     PauliStringGate,
     RotSelfHermMat,
 )
-from mindquantum.core.parameterresolver import ParameterResolver
-from mindquantum.utils.f import is_power_of_two
-from mindquantum.utils.type_value_check import _check_gate_type, _check_input_type
 
 
 class UnivMathGate(NoneParamNonHermMat):
@@ -68,7 +72,6 @@ class UnivMathGate(NoneParamNonHermMat):
         super().__init__(name=name, n_qubits=n_qubits, matrix_value=matrix_value)
 
     def get_cpp_obj(self):
-        """Get the underlying C++ object."""
         mat = mb.dim2matrix(self.matrix())
         cpp_gate = mb.basic_gate(False, self.name, 1, mat)
         cpp_gate.daggered = self.hermitianed
@@ -114,11 +117,11 @@ class XGate(PauliGate):
         {\rm X}=\begin{pmatrix}0&1\\1&0\end{pmatrix}
 
     For simplicity, we define ```X``` as a instance of ```XGate()```. For more
-    redefine, please refer the functional table below.
+    redefine, please refer to the functional table below.
 
     Note:
         For simplicity, you can do power operator on pauli gate (only works
-        for pauli gate at this time). The rules is set below as:
+        for pauli gate at this time). The rule is set below as:
 
         .. math::
 
@@ -250,7 +253,6 @@ class CNOTGate(NoneParamSelfHermMat):
         )
 
     def on(self, obj_qubits, ctrl_qubits=None):
-        """Define which qubit the gate act on and the control qubit."""
         if ctrl_qubits is None:
             raise ValueError("A control qubit is needed for CNOT gate!")
         if isinstance(ctrl_qubits, (int, np.int64)):
@@ -298,7 +300,7 @@ class ISWAPGate(NoneParamNonHermMat):
     r"""
     ISWAP gate.
 
-    ISWAP gate that swap two different qubits and phase the :math:`\left|01\right>` and :math:`\left|10\right>`
+    ISWAP gate that swaps two different qubits and phase the :math:`\left|01\right>` and :math:`\left|10\right>`
     amplitudes by :math:`i`.
 
     More usage, please see :class:`mindquantum.core.gates.XGate`.
@@ -498,16 +500,14 @@ class ZZ(RotSelfHermMat):
         )
 
     def matrix(self, pr=None, frac=1):
-        """Matrix of parameterized gate."""
         return super().matrix(pr, frac)
 
     def diff_matrix(self, pr=None, about_what=None, frac=1):
-        """Differential form of this parameterized gate."""
         return super().diff_matrix(pr, about_what, frac)
 
     def __decompose__(self):
         """Gate decomposition method."""
-        from mindquantum.core import Circuit
+        from ..circuit import Circuit  # pylint: disable=cyclic-import
 
         out = []
         out.append(Circuit())
@@ -544,16 +544,14 @@ class XX(RotSelfHermMat):
         )
 
     def matrix(self, pr=None, frac=1):
-        """Matrix of parameterized gate."""
         return super().matrix(pr, frac)
 
     def diff_matrix(self, pr=None, about_what=None, frac=1):
-        """Differential form of this parameterized gate."""
         return super().diff_matrix(pr, about_what, frac)
 
     def __decompose__(self):
         """Gate decomposition method."""
-        from mindquantum.core import Circuit
+        from ..circuit import Circuit  # pylint: disable=cyclic-import
 
         out = []
         out.append(Circuit())
@@ -598,16 +596,14 @@ class YY(RotSelfHermMat):
         )
 
     def matrix(self, pr=None, frac=1):
-        """Matrix of parameterized gate."""
         return super().matrix(pr, frac)
 
     def diff_matrix(self, pr=None, about_what=None, frac=1):
-        """Differential form of this parameterized gate."""
         return super().diff_matrix(pr, about_what, frac)
 
     def __decompose__(self):
         """Gate decomposition method."""
-        from mindquantum.core import Circuit
+        from ..circuit import Circuit  # pylint: disable=cyclic-import
 
         out = []
         out.append(Circuit())
@@ -630,7 +626,14 @@ class YY(RotSelfHermMat):
 
 
 class BarrierGate(FunctionalGate):
-    """Barrier gate."""
+    """
+    Barrier gate do nothing but set a barrier for drawing circuit.
+
+    The system will not draw quantum gates around barrier gate.
+
+    Args:
+        show (bool): whether show the barrier gate. Default: True.
+    """
 
     def __init__(self, show=True):
         """Initialize a BarrierGate object."""
@@ -638,7 +641,6 @@ class BarrierGate(FunctionalGate):
         self.show = show
 
     def on(self, obj_qubits, ctrl_qubits=None):
-        """Define which qubit the gate act on and the control qubit."""
         raise RuntimeError("Cannot call on for BarrierGate.")
 
 
@@ -665,11 +667,11 @@ class GlobalPhase(RotSelfHermMat):
             core=IGate(),
         )
 
-    def matrix(self, pr=None, **kwargs):
+    def matrix(self, pr=None, **kwargs):  # pylint: disable=arguments-differ,unused-argument
         """Matrix of parameterized gate."""
         return RotSelfHermMat.matrix(self, pr, 1)
 
-    def diff_matrix(self, pr=None, about_what=None, **kwargs):
+    def diff_matrix(self, pr=None, about_what=None, **kwargs):  # pylint: disable=arguments-differ,unused-argument
         """Differential form of this parameterized gate."""
         return RotSelfHermMat.diff_matrix(self, pr, about_what, 1)
 
@@ -699,7 +701,7 @@ class PhaseShift(ParameterOppsGate):
             n_qubits=1,
         )
 
-    def matrix(self, pr=None):
+    def matrix(self, pr=None):  # pylint: disable=arguments-differ
         """
         Get the matrix of this none parameterized gate.
 
@@ -717,13 +719,7 @@ class PhaseShift(ParameterOppsGate):
         return np.array([[1, 0], [0, np.exp(1j * val)]])
 
     def diff_matrix(self, pr=None, about_what=None):
-        """
-        Get the matrix of this none parameterized gate.
-
-        Args:
-            pr (Union[ParameterResolver, dict]): The parameter value for parameterized gate. Defaults, None.
-            about_what (str): The parameter you want to calculate gradient.
-        """
+        """Differential form of this parameterized gate."""
         if self.coeff.is_const():
             return np.zeros((2, 2))
         new_pr = self.coeff.combination(pr)
@@ -754,22 +750,21 @@ class Power(NoneParamNonHermMat):
         >>> assert np.all(np.isclose(Power(rx2,0.5).matrix(), rx1.matrix()))
     """
 
-    def __init__(self, gate, t=0.5):
+    def __init__(self, gate, exponent=0.5):
         """Initialize a Power object."""
-        _check_input_type('t', numbers.Number, t)
-        name = f'{gate}^{t}'
+        _check_input_type('t', numbers.Number, exponent)
+        name = f'{gate}^{exponent}'
         n_qubits = gate.n_qubits
-        matrix_value = fractional_matrix_power(gate.matrix(), t)
+        matrix_value = fractional_matrix_power(gate.matrix(), exponent)
         super().__init__(
             name=name,
             n_qubits=n_qubits,
             matrix_value=matrix_value,
         )
         self.gate = gate
-        self.t = t
+        self.t = exponent  # pylint: disable=invalid-name
 
     def get_cpp_obj(self):
-        """Get the underlying C++ object."""
         mat = mb.dim2matrix(self.matrix())
         cpp_gate = mb.basic_gate(False, self.name, 1, mat)
         cpp_gate.daggered = self.hermitianed
@@ -821,8 +816,8 @@ def gene_univ_parameterized_gate(name, matrix_generator, diff_matrix_generator):
         >>> circ.get_qs(pr={'a': 1.2})
         array([0.25622563+0.65905116j, 0.25622563-0.65905116j])
     """
-    m = matrix_generator(0)
-    n_qubits = int(np.log2(m.shape[0]))
+    matrix = matrix_generator(0)
+    n_qubits = int(np.log2(matrix.shape[0]))
 
     class _ParamNonHerm(ParamNonHerm):
         """The customer parameterized gate."""

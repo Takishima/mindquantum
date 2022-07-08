@@ -17,16 +17,16 @@
 
 import openfermion.ops as ofops
 
-from mindquantum.core.operators.fermion_operator import FermionOperator
-from mindquantum.core.operators.polynomial_tensor import PolynomialTensor
-from mindquantum.core.operators.qubit_excitation_operator import QubitExcitationOperator
-from mindquantum.core.operators.qubit_operator import QubitOperator
+from ..operators.fermion_operator import FermionOperator
+from ..operators.polynomial_tensor import PolynomialTensor
+from ..operators.qubit_excitation_operator import QubitExcitationOperator
+from ..operators.qubit_operator import QubitOperator
 
 try:
     from projectq.ops import QubitOperator as PQOperator
 except ImportError:
 
-    class PQOperator:
+    class PQOperator:  # pylint: disable=too-few-public-methods
         """Dummy class for ProjectQ operators."""
 
 
@@ -166,7 +166,7 @@ def normal_ordered(fermion_operator):
         fermion_operator(FermionOperator): Only Fermion type Operator has such forms.
 
     Returns:
-        FermionOperator, the normal_ordered FermionOperator.
+        FermionOperator, the FermionOperator with normal order.
 
     Examples:
         >>> from mindquantum.core.operators import FermionOperator
@@ -190,7 +190,7 @@ def get_fermion_operator(operator):
         operator (PolynomialTensor): The `PolynomialTensor` you want to convert to `FermionOperator`.
 
     Returns:
-        fermion_operator, An instance of the FermionOperator class.
+        FermionOperator, An instance of the FermionOperator class.
     """
     fermion_operator = FermionOperator()
 
@@ -232,8 +232,8 @@ def number_operator(n_modes=None, mode=None, coefficient=1.0):
 
     operator = FermionOperator()
     if mode is None:
-        for m in range(n_modes):
-            operator += FermionOperator(((m, 1), (m, 0)), coefficient)
+        for mode_idx in range(n_modes):
+            operator += FermionOperator(((mode_idx, 1), (mode_idx, 0)), coefficient)
     else:
         operator = FermionOperator(((mode, 1), (mode, 0)), coefficient)
     return operator
@@ -282,7 +282,7 @@ def hermitian_conjugated(operator):
 
     # Unsupported type
     else:
-        raise TypeError('Taking the hermitian conjugate of a {} is not ' 'supported.'.format(type(operator).__name__))
+        raise TypeError(f'Taking the hermitian conjugate of a {type(operator).__name__} is not supported.')
 
     return conjugate_operator
 
@@ -298,7 +298,7 @@ def up_index(index):
         index (int): spatial orbital index.
 
     Returns:
-        int, an integer that is the index of the associated spin-up orbital.
+        int, the index of the associated spin-up orbital.
 
     Examples:
         >>> from mindquantum.core.operators import up_index
@@ -319,7 +319,7 @@ def down_index(index):
         index (int): spatial orbital index.
 
     Returns:
-        int, an integer that is the index of the associated spin-down orbital.
+        int, the index of the associated spin-down orbital.
 
     Examples:
         >>> from mindquantum.core.operators import down_index
@@ -333,16 +333,16 @@ def sz_operator(n_spatial_orbitals):
     """
     Return the sz operator.
 
+    Note:
+        The default index order spin_up (alpha) corresponds to even index,
+        while the spin_down (beta) corresponds to odd.
+
     Args:
         n_spatial_orbitals (int): number of spatial orbitals (n_qubits // 2).
 
     Returns:
         FermionOperator, corresponding to the sz operator over
         n_spatial_orbitals.
-
-    Note:
-        The default index order spin_up(alpha) corresponds to even index,
-        while the spin_down(beta) corresponds to odd index.rpartition()
 
     Examples:
         >>> from mindquantum.core.operators import sz_operator

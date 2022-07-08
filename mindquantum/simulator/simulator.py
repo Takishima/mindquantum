@@ -18,14 +18,14 @@ import warnings
 import numpy as np
 
 import mindquantum.mqbackend as mb
-from mindquantum.core.circuit import Circuit
-from mindquantum.core.gates import BarrierGate, Measure, MeasureResult
-from mindquantum.core.gates.basic import BasicGate
-from mindquantum.core.operators import Hamiltonian
-from mindquantum.core.operators.hamiltonian import MODE
-from mindquantum.core.parameterresolver import ParameterResolver
-from mindquantum.utils import ket_string
-from mindquantum.utils.type_value_check import (
+
+from ..core.circuit import Circuit
+from ..core.gates import BarrierGate, Measure, MeasureResult
+from ..core.gates.basic import BasicGate
+from ..core.operators.hamiltonian import Hamiltonian, HowTo
+from ..core.parameterresolver import ParameterResolver
+from ..utils.string_utils import ket_string
+from ..utils.type_value_check import (
     _check_and_generate_pr_type,
     _check_input_type,
     _check_int_type,
@@ -34,8 +34,6 @@ from mindquantum.utils.type_value_check import (
 )
 
 SUPPORTED_SIMULATOR = ['projectq']
-
-# pylint: disable=bad-continuation
 
 
 def get_supported_simulator():
@@ -118,13 +116,13 @@ class Simulator:
     def __str__(self):
         """Return a string representation of the object."""
         state = self.get_qs()
-        s = f"{self.backend} simulator with {self.n_qubits} qubit{'s' if self.n_qubits > 1 else ''} (little endian)."
-        s += "\nCurrent quantum state:\n"
+        ret = f"{self.backend} simulator with {self.n_qubits} qubit{'s' if self.n_qubits > 1 else ''} (little endian)."
+        ret += "\nCurrent quantum state:\n"
         if self.n_qubits < 4:
-            s += '\n'.join(ket_string(state))
+            ret += '\n'.join(ket_string(state))
         else:
-            s += state.__str__()
-        return s
+            ret += state.__str__()
+        return ret
 
     def __repr__(self):
         """Return a string representation of the object."""
@@ -368,7 +366,6 @@ class Simulator:
             >>> sim.apply_hamiltonian(ham1)
             >>> sim.get_qs()
             array([ 0.70710678+0.j, -0.70710678+0.j])
-
             >>> sim.reset()
             >>> ham2 = Hamiltonian(sp.csr_matrix([[1, 2], [3, 4]]))
             >>> sim.apply_hamiltonian(ham2)
@@ -462,7 +459,8 @@ class Simulator:
             raise ValueError(f"{n_qubits} qubits vec does not match with simulation qubits ({self.n_qubits})")
         self.sim.set_qs(quantum_state / np.sqrt(np.sum(np.abs(quantum_state) ** 2)))
 
-    def get_expectation_with_grad(
+    # pylint: disable=too-many-arguments
+    def get_expectation_with_grad(  # pylint: disable=too-many-locals,too-many-branches,too-many-statements
         self,
         hams,
         circ_right,
@@ -564,11 +562,13 @@ class Simulator:
             raise ValueError("circuit for variational algorithm cannot have measure gate")
         if parallel_worker is not None:
             _check_int_type("parallel_worker", parallel_worker)
+        url = "https://mindspore.cn/mindquantum/docs/zh-CN/master/get_gradient_of_PQC_with_mindquantum.html"
         if encoder_params_name is not None:
             warnings.warn(
                 (
                     "Setting encoder_params_name is perecated from version 0.7.0, please call '.as_encoder()'"
-                    " of the circuit you want to work as encoder, and do not set in this API.",
+                    " of the circuit you want to work as encoder, and do not set in this API. "
+                    f"Please refer to tutorial {url}"
                 ),
                 DeprecationWarning,
                 stacklevel=2,
@@ -580,7 +580,8 @@ class Simulator:
             warnings.warn(
                 (
                     "Setting ansatz_params_name is perecated from version 0.7.0, please call '.as_ansatz()' "
-                    "of the circuit you want to work as ansatz, and do not set in this API.",
+                    "of the circuit you want to work as ansatz, and do not set in this API. "
+                    f"Please refer to tutorial {url}"
                 ),
                 DeprecationWarning,
                 stacklevel=2,
@@ -604,15 +605,15 @@ class Simulator:
                     encoder_params_name.append(i)
         if set(ansatz_params_name) & set(encoder_params_name):
             raise RuntimeError("Parameter cannot be both encoder and ansatz parameter.")
-        if set(ansatz_params_name_old_api) != set(ansatz_params_name):
-            raise RuntimeError(
-                "You set wrong ansatz parameters. Please do not set ansatz_params_name anymore, "
-                "but call '.as_ansatz()' of circuit that you want to work as ansatz."
-            )
         if set(encoder_params_name_old_api) != set(encoder_params_name):
             raise RuntimeError(
                 "You set wrong encoder parameters. Please do not set encoder_params_name anymore, "
                 "but call '.as_encoder()' of circuit that you want to work as encoder."
+            )
+        if set(ansatz_params_name_old_api) != set(ansatz_params_name):
+            raise RuntimeError(
+                "You set wrong ansatz parameters. Please do not set ansatz_params_name anymore, "
+                "but call '.as_ansatz()' of circuit that you want to work as ansatz."
             )
         version = "both"
         if not ansatz_params_name:
@@ -675,20 +676,19 @@ class Simulator:
                 )
             res = np.array(f_g1_g2)
             if version == 'both':
-                f = res[:, :, 0]
-                g1 = res[:, :, 1 : 1 + len(encoder_params_name)]  # noqa:E203
-                g2 = res[:, :, 1 + len(encoder_params_name) :]  # noqa:E203
-                return f, g1, g2
-            f = res[:, :, 0]
-            g = res[:, :, 1:]
-            return f, g
+                return (
+                    res[:, :, 0],
+                    res[:, :, 1 : 1 + len(encoder_params_name)],  # noqa:E203
+                    res[:, :, 1 + len(encoder_params_name) :],  # noqa:E203
+                )  # f, g1, g2
+            return res[:, :, 0], res[:, :, 1:]  # f, g
 
         grad_wrapper = GradOpsWrapper(
             grad_ops, hams, circ_right, circ_left, encoder_params_name, ansatz_params_name, parallel_worker
         )
-        s = f'{self.n_qubits} qubit' + ('' if self.n_qubits == 1 else 's')
-        s += f' {self.backend} VQA Operator'
-        grad_wrapper.set_str(s)
+        grad_str = f'{self.n_qubits} qubit' + ('' if self.n_qubits == 1 else 's')
+        grad_str += f' {self.backend} VQA Operator'
+        grad_wrapper.set_str(grad_str)
         return grad_wrapper
 
 
@@ -738,7 +738,7 @@ def _thread_balance(n_prs, n_meas, parallel_worker):
 
 def _check_hamiltonian_qubits_number(hamiltonian, sim_qubits):
     """Check hamiltonian qubits number."""
-    if hamiltonian.how_to != MODE['origin']:
+    if hamiltonian.how_to != HowTo.ORIGIN:
         if hamiltonian.n_qubits != sim_qubits:
             raise ValueError(
                 f"Hamiltonian qubits is {hamiltonian.n_qubits}, not match with simulator qubits number {sim_qubits}"
@@ -748,7 +748,7 @@ def _check_hamiltonian_qubits_number(hamiltonian, sim_qubits):
             raise ValueError(f"Hamiltonian qubits is {hamiltonian.n_qubits}, which is bigger than simulator qubits.")
 
 
-class GradOpsWrapper:
+class GradOpsWrapper:  # pylint: disable=too-many-instance-attributes
     """
     Wrapper the gradient operator that with the information that generate this gradient operator.
 
@@ -763,7 +763,9 @@ class GradOpsWrapper:
         parallel_worker (int): The number of parallel worker to run the batch.
     """
 
-    def __init__(self, grad_ops, hams, circ_right, circ_left, encoder_params_name, ansatz_params_name, parallel_worker):
+    def __init__(
+        self, grad_ops, hams, circ_right, circ_left, encoder_params_name, ansatz_params_name, parallel_worker
+    ):  # pylint: disable=too-many-arguments
         """Initialize a GradOpsWrapper object."""
         self.grad_ops = grad_ops
         self.hams = hams
@@ -778,14 +780,14 @@ class GradOpsWrapper:
         """Definition of a function call operator."""
         return self.grad_ops(*args)
 
-    def set_str(self, s):
+    def set_str(self, grad_str):
         """
         Set expression for gradient operator.
 
         Args:
             s (str): The string of QNN operator.
         """
-        self.str = s
+        self.str = grad_str
 
 
 def inner_product(bra_simulator: Simulator, ket_simulator: Simulator):

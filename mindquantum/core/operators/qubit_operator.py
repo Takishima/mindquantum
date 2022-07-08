@@ -16,7 +16,6 @@
 #   This module we develop is default being licensed under Apache 2.0 license,
 #   and also uses or refactor Fermilib and OpenFermion licensed under
 #   Apache 2.0 license.
-
 """This is the module for the Qubit Operator."""
 
 import json
@@ -24,9 +23,9 @@ import json
 import numpy as np
 from scipy.sparse import csr_matrix, kron
 
-from mindquantum.core.operators._base_operator import _Operator
-from mindquantum.core.parameterresolver import ParameterResolver
-from mindquantum.utils.type_value_check import _check_input_type, _check_int_type
+from ...utils.type_value_check import _check_input_type, _check_int_type
+from ..operators._base_operator import _Operator
+from ..parameterresolver import ParameterResolver
 
 EQ_TOLERANCE = 1e-8
 
@@ -52,23 +51,23 @@ _PAULI_OPERATOR_PRODUCTS = {
 }
 
 
-def _check_valid_qubit_operator_term(term):
+def _check_valid_qubit_operator_term(qo_term):
     """Check valid qubit operator term."""
-    if term is not None and term != '':
-        if not isinstance(term, (str, tuple)):
-            raise ValueError(f'Qubit operator requires a string or a tuple, but get {type(term)}')
+    if qo_term is not None and qo_term != '':
+        if not isinstance(qo_term, (str, tuple)):
+            raise ValueError(f'Qubit operator requires a string or a tuple, but get {type(qo_term)}')
 
         operators = ('X', 'Y', 'Z')
-        if isinstance(term, str):
-            terms = term.split(' ')
-            for t in terms:
-                if len(t) < 2 or t[0].upper() not in operators or not t[1:].isdigit():
-                    if t:
-                        raise ValueError(f'Invalid qubit operator term {t}.')
-        if isinstance(term, tuple):
-            for t in term:
-                if len(t) != 2 or not isinstance(t[0], int) or t[0] < 0 or t[1].upper() not in operators:
-                    raise ValueError(f'Invalid qubit operator term {t}.')
+        if isinstance(qo_term, str):
+            terms = qo_term.split(' ')
+            for term in terms:
+                if len(term) < 2 or term[0].upper() not in operators or not term[1:].isdigit():
+                    if term:
+                        raise ValueError(f'Invalid qubit operator term {term}.')
+        if isinstance(qo_term, tuple):
+            for term in qo_term:
+                if len(term) != 2 or not isinstance(term[0], int) or term[0] < 0 or term[1].upper() not in operators:
+                    raise ValueError(f'Invalid qubit operator term {term}.')
 
 
 class QubitOperator(_Operator):
@@ -145,6 +144,7 @@ class QubitOperator(_Operator):
 
     def to_openfermion(self):
         """Convert qubit operator to openfermion format."""
+        # pylint: disable=import-outside-toplevel
         from openfermion import QubitOperator as OFQubitOperator
 
         terms = {}
@@ -152,14 +152,14 @@ class QubitOperator(_Operator):
             if not v.is_const():
                 raise ValueError("Cannot convert parameteized fermion operator to openfermion format")
             terms[k] = v.const
-        of = OFQubitOperator()
-        of.terms = terms
-        return of
+        qubit_operator = OFQubitOperator()
+        qubit_operator.terms = terms
+        return qubit_operator
 
     @staticmethod
     def from_openfermion(of_ops):
         """
-        Convert qubit operator from openfermion.
+        Convert qubit operator from openfermion to mindquantum format.
 
         Args:
             of_ops (openfermion.QubitOperator): Qubit operator from openfermion.
@@ -167,13 +167,14 @@ class QubitOperator(_Operator):
         Returns:
             QubitOperator, qubit operator from mindquantum.
         """
+        # pylint: disable=import-outside-toplevel
         from openfermion import QubitOperator as OFQubitOperator
 
         _check_input_type('of_ops', OFQubitOperator, of_ops)
-        out = QubitOperator()
+        qubit_operator = QubitOperator()
         for k, v in of_ops.terms.items():
-            out.terms[k] = ParameterResolver(v)
-        return out
+            qubit_operator.terms[k] = ParameterResolver(v)
+        return qubit_operator
 
     def _parse_string(self, terms_string):
         """Parse a term given as a string type.
@@ -195,30 +196,30 @@ class QubitOperator(_Operator):
             index = sub_term[1:]
             if operator.upper() not in self.operators:
                 raise ValueError(
-                    'Invalid type of operator {}.'
-                    'The Qubit Pauli operator should be one of this {}'.format(operator, self.operators)
+                    f'Invalid type of operator {operator}.'
+                    'The Qubit Pauli operator should be one of this {self.operators}'
                 )
             if not index.isdigit() or int(index) < 0:
-                raise ValueError(
-                    "Invalid index {}.The qubit index should be\
-                    nonnegative integer".format(
-                        self.operators
-                    )
-                )
+                raise ValueError(f"Invalid index {self.operators}.The qubit index should be nonnegative integer")
 
             terms_to_tuple.append((int(index), operator))
             terms_to_tuple = sorted(terms_to_tuple, key=lambda item: item[0])
         return tuple(terms_to_tuple)
 
-    def matrix(self, n_qubits=None):
+    def matrix(self, n_qubits=None):  # pylint: disable=too-many-locals
         """
         Convert this qubit operator to csr_matrix.
 
         Args:
-            n_qubits (int): The total qubit of final matrix. If None, the value will be
+            n_qubits (int): The total qubits of final matrix. If None, the value will be
                 the maximum local qubit number. Default: None.
         """
-        from mindquantum import I, X, Y, Z
+        from mindquantum import (  # pylint: disable=import-outside-toplevel,cyclic-import
+            I,
+            X,
+            Y,
+            Z,
+        )
 
         pauli_map = {
             'X': csr_matrix(X.matrix().astype(np.complex128)),
@@ -251,8 +252,8 @@ class QubitOperator(_Operator):
             else:
                 tmp = np.array([1], dtype=np.complex128) * coeff
                 total = [pauli_map['I'] for _ in range(n_qubits)]
-                for idx, s in term:
-                    total[idx] = pauli_map[s]
+                for idx, local_op in term:
+                    total[idx] = pauli_map[local_op]
                 for i in total:
                     tmp = kron(i, tmp)
                 out += tmp
@@ -261,7 +262,7 @@ class QubitOperator(_Operator):
     @property
     def real(self):
         """
-        Convert the coeff to its real part.
+        Convert the coefficient to its real part.
 
         Returns:
             QubitOperator, the real part of this qubit operator.
@@ -282,7 +283,7 @@ class QubitOperator(_Operator):
     @property
     def imag(self):
         """
-        Convert the coeff to its imag part.
+        Convert the coefficient to its imag part.
 
         Returns:
             QubitOperator, the imag part of this qubit operator.
@@ -397,9 +398,9 @@ class QubitOperator(_Operator):
         if indent is not None:
             _check_int_type('indent', indent)
         dic = {}
-        for o, c in self.terms.items():
-            s = _qubit_tuple_to_string(o)
-            dic[s] = c.dumps(indent)
+        for term, coeff in self.terms.items():
+            string = _qubit_tuple_to_string(term)
+            dic[string] = coeff.dumps(indent)
         return json.dumps(dic, indent=indent)
 
     @staticmethod
@@ -411,7 +412,7 @@ class QubitOperator(_Operator):
             strs (str): The dumped qubit operator string.
 
         Returns:
-            FermionOperator, the QubitOperator load from strings
+            QubitOperator`, the QubitOperator load from strings
 
         Examples:
             >>> from mindquantum.core.operators import QubitOperator
@@ -445,10 +446,10 @@ class QubitOperator(_Operator):
 
 
 def _qubit_tuple_to_string(term):
-    s = []
+    string = []
     for i in term:
-        s.append(f'{i[1]}{i[0]}')
-    return ' '.join(s)
+        string.append(f'{i[1]}{i[0]}')
+    return ' '.join(string)
 
 
 __all__ = ['QubitOperator']

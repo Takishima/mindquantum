@@ -102,10 +102,10 @@ class CircuitEngine:
             <class 'mindquantum.core.circuit.circuit.Circuit'>
         """
 
-        def deco(fn):
+        def deco(func):
             eng = CircuitEngine()
             qubits = eng.allocate_qureg(n_qubits)
-            fn(qubits, *args, **kwds)
+            func(qubits, *args, **kwds)
             return eng.circuit
 
         return deco
@@ -115,7 +115,7 @@ def circuit_generator(n_qubits, *args, **kwds):
     """
     Generate quantum circuit as projectq style.
 
-        Args:
-            n_qubits (int): qubit number of quantum circuit.
+    Args:
+        n_qubits (int): qubit number of quantum circuit.
     """
     return CircuitEngine().generator(n_qubits, *args, **kwds)

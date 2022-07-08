@@ -1,11 +1,11 @@
 .. py:class:: mindquantum.simulator.Simulator(backend, n_qubits, seed=None)
 
-    模拟量子电路的量子模拟器。
+    模拟量子线路的量子模拟器。
 
     **参数：**
 
     - **backend** (str) - 想要的后端。通过调用 `get_supported_simulator()` 可以返回支持的后端。
-    - **n_qubits** (int) - 量子模拟器的数量。
+    - **n_qubits** (int) - 量子模拟器的量子比特数量。
     - **seed** (int) - 模拟器的随机种子，如果为None，种子将由 `numpy.random.randint` 生成。默认值：None。
 
     **异常：**
@@ -15,7 +15,7 @@
     - **TypeError** - 如果 `seed` 不是int。
     - **ValueError** - 如果不支持 `backend` 。
     - **ValueError** - 如果 `n_qubits` 为负数。
-    - **ValueError** - 如果 `seed` 小于0或大于2**23 - 1。
+    - **ValueError** - 如果 `seed` 小于0或大于 :math:`2^23 - 1` 。
 
     .. py:method:: apply_circuit(circuit, pr=None)
 
@@ -47,7 +47,7 @@
         **异常：**
 
         - **TypeError** - 如果 `gate` 不是BasicGate。
-        - **ValueError** - 如果 `gate` 的任何量子位高于模拟器量子位。
+        - **ValueError** - 如果 `gate` 的某个量子比特大于模拟器本身的量子比特。
         - **ValueError** - 如果 `gate` 是含参的，但没有提供参数。
         - **TypeError** - 如果 `gate` 是含参的，但 `pr` 不是ParameterResolver。
 
@@ -72,11 +72,11 @@
 
     .. py:method:: flush()
 
-        适用于projectq模拟器的flush门。 projectq模拟器将缓存一些门并将这些门融合到一个更大的门中，然后作用在量子态上。 flush命令使模拟器刷新当前存储的门并作用在量子状态上。
+        适用于projectq模拟器的flush门。 projectq模拟器将缓存一些门并将这些门融合到一个更大的门中，然后作用在量子态上。 flush命令使模拟器刷新当前存储的门并作用在量子态上。
 
     .. py:method:: get_expectation(hamiltonian)
 
-        得到给定hamiltonian的期望。hamiltonian可能是非厄密共轭的。
+        得到给定hamiltonian的期望。hamiltonian可能是非厄米共轭的。
 
         .. math::
 
@@ -92,7 +92,7 @@
 
     .. py:method:: get_expectation_with_grad(hams, circ_right, circ_left=None, simulator_left=None, encoder_params_name=None, ansatz_params_name=None, parallel_worker=None)
 
-        获取一个返回前向值和关于线路参数梯度的函数。该方法旨在计算期望值及其梯度，如下所示。
+        获取一个返回前向值和关于线路参数梯度的函数。该方法旨在计算期望值及其梯度，如下所示：
 
         .. math::
 
@@ -107,7 +107,7 @@
         - **circ_left** (Circuit) - 上述 :math:`U_l` 电路，默认情况下，这个线路将为None，在这种情况下， :math:`U_l` 将等于 :math:`U_r` 。默认值：None。
         - **simulator_left** (Simulator) - 包含 :math:`\left|\varphi\right>` 的模拟器。如果无，则 :math:`\left|\varphi\right>` 被假定等于 :math:`\left|\psi\right>`。默认值：None。
         - **encoder_params_name** (list[str]) - 指定哪些参数属于encoder，被编码成量子态。encoder数据可以是一个batch。默认值：None。
-        - **ansatz_params_name** (list[str]) - 指定哪些参数属于ansatz，被在训练期间训练。默认值：None。
+        - **ansatz_params_name** (list[str]) - 指定哪些参数属于ansatz，在训练期间被训练。默认值：None。
         - **parallel_worker** (int) - 并行器数目。并行器可以在并行线程中处理batch。默认值：None。
 
         **返回：**
@@ -120,7 +120,7 @@
 
         **参数：**
 
-        - **ket** (bool) - 是否以ket格式返回量子状态。默认值：False。
+        - **ket** (bool) - 是否以ket格式返回量子态。默认值：False。
 
         **返回：**
 
