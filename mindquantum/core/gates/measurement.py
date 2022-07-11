@@ -39,9 +39,10 @@ class Measure(FunctionalGate):
 
     Examples:
         >>> import numpy as np
-        >>> from mindquantum import qft, Circuit
-        >>> from mindquantum import Measure
-        >>> from mindquantum import Simulator
+        >>> from mindquantum.algorithm.library import qft
+        >>> from mindquantum.core.circuit import Circuit
+        >>> from mindquantum.core.gates import Measure
+        >>> from mindquantum.simulator import Simulator
         >>> circ = qft(range(2))
         >>> circ += Measure('q0').on(0)
         >>> circ += Measure().on(1)
@@ -126,7 +127,16 @@ class Measure(FunctionalGate):
         return f"M({self.key})"
 
     def on(self, obj_qubits, ctrl_qubits=None):
-        """Define which qubit the gate act on and the control qubit."""
+        """
+        Define which qubit the gate act on and the control qubit.
+
+        Args:
+            obj_qubits (Union[int, list[int]]): measure on which qubit.
+            ctrl_qubits (Union[int, list[int]]): for measurement, we can not set control qubits. Default: None.
+
+        Returns:
+            Measure, a measurement gate with will defined `obj_qubits` .
+        """
         new = super().on(obj_qubits, ctrl_qubits)
         if len(new.obj_qubits) != 1:
             raise ValueError("Measure gate only apply on a single qubit")
@@ -146,8 +156,8 @@ class MeasureResult:
     Measurement result container.
 
     Examples:
-        >>> from mindquantum import qft
-        >>> from mindquantum import Simulator
+        >>> from mindquantum.algorithm.library import qft
+        >>> from mindquantum.simulator import Simulator
         >>> sim = Simulator('projectq', 2)
         >>> res = sim.sampling(qft(range(2)).measure_all(), shots=1000, seed=42)
         >>> res
@@ -230,8 +240,9 @@ class MeasureResult:
             keys (tuple[str]): The key you want to select.
 
         Examples:
-            >>> from mindquantum import Simulator
-            >>> from mindquantum import qft, H
+            >>> from mindquantum.algorithm.library import qft
+            >>> from mindquantum.core.gates import H
+            >>> from mindquantum.simulator import Simulator
             >>> circ = qft(range(2)).measure('q0_0', 0).measure('q1_0', 1)
             >>> circ.h(0).measure('q0_1', 0)
             >>> circ
