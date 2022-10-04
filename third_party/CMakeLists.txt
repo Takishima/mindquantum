@@ -28,7 +28,7 @@ include(external_targets)
 # ==============================================================================
 
 if(ENABLE_PROJECTQ)
-  add_subdirectory(projectq)
+  include(${CMAKE_CURRENT_LIST_DIR}/projectq/projectq.cmake)
 endif()
 
 # =============================================================================

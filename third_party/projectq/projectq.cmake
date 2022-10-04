@@ -70,25 +70,27 @@ append_to_property(mq_install_targets GLOBAL mq_projectq)
 # ==============================================================================
 
 if(ENABLE_CXX_EXPERIMENTAL)
-  set(VER 0.7.3)
+  set(VER 1.0.0)
+  set(GIT_TAG 47ad8fef5636f3623f3bc7595aff430da092109a)
+  set(MD5 "0da22cba1e2d693b32473b2eaf7c29d2")
 
   if(ENABLE_GITEE)
-    set(GIT_URL "https://gitee.com/mirrors/ProjectQ/repository/archive/v${VER}.tar.gz")
-    set(MD5 "b78f79c02686079bddf0d4e83517bdf4")
+    set(GIT_REPOSITORY "https://gitee.com/dmikushin/cppsim.git")
   else()
-    set(GIT_URL "https://github.com/ProjectQ-Framework/ProjectQ/archive/v${VER}.tar.gz")
-    set(MD5 "83c4407e447ff79344d86e8560a49907")
+    set(GIT_REPOSITORY "https://github.com/dmikushin/cppsim.git")
   endif()
 
-  set(PATCHES ${CMAKE_CURRENT_LIST_DIR}/patch/projectq-exp-simulator.patch001)
+  set(PATCHES "")
+  #set(PATCHES ${CMAKE_CURRENT_LIST_DIR}/patch/projectq-exp-simulator.patch001)
 
   mindquantum_add_pkg(
     projectq_experimental
     VER ${VER}
     MD5 ${MD5}
-    URL ${GIT_URL}
+    GIT_REPOSITORY ${GIT_REPOSITORY}
+    GIT_TAG ${GIT_TAG}
     PATCHES ${PATCHES}
-    ONLY_COPY_DIRS projectq/backends/_sim/_cppkernels
+    CMAKE_OPTION " "
     FORCE_LOCAL_PKG
     TARGET_ALIAS mindquantum::projectq_exp_simulator projectq_experimental::projectq_experimental)
 
