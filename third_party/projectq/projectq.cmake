@@ -71,7 +71,7 @@ append_to_property(mq_install_targets GLOBAL mq_projectq)
 
 if(ENABLE_CXX_EXPERIMENTAL)
   set(VER 1.0.0)
-  set(GIT_TAG 47ad8fef5636f3623f3bc7595aff430da092109a)
+  set(GIT_TAG 0871e3c114287d178b49f199b089acb389f4921a)
   set(MD5 "0da22cba1e2d693b32473b2eaf7c29d2")
 
   if(ENABLE_GITEE)
