@@ -68,34 +68,3 @@ install(FILES ${CMAKE_CURRENT_LIST_DIR}/projectq.h ${CMAKE_CURRENT_LIST_DIR}/pro
 append_to_property(mq_install_targets GLOBAL mq_projectq)
 
 # ==============================================================================
-
-if(ENABLE_CXX_EXPERIMENTAL)
-  set(VER 1.0.0)
-  set(GIT_TAG 0871e3c114287d178b49f199b089acb389f4921a)
-  set(MD5 "0da22cba1e2d693b32473b2eaf7c29d2")
-
-  if(ENABLE_GITEE)
-    set(GIT_REPOSITORY "https://gitee.com/dmikushin/cppsim.git")
-  else()
-    set(GIT_REPOSITORY "https://github.com/dmikushin/cppsim.git")
-  endif()
-
-  set(PATCHES "")
-  #set(PATCHES ${CMAKE_CURRENT_LIST_DIR}/patch/projectq-exp-simulator.patch001)
-
-  mindquantum_add_pkg(
-    projectq_experimental
-    VER ${VER}
-    MD5 ${MD5}
-    GIT_REPOSITORY ${GIT_REPOSITORY}
-    GIT_TAG ${GIT_TAG}
-    PATCHES ${PATCHES}
-    CMAKE_OPTION " "
-    FORCE_LOCAL_PKG
-    TARGET_ALIAS mindquantum::projectq_exp_simulator projectq_experimental::projectq_experimental)
-
-  add_library(mq_projectq_exp INTERFACE)
-  target_compile_definitions(mq_projectq_exp INTERFACE INTRIN)
-  target_link_libraries(mq_projectq_exp INTERFACE mindquantum::projectq_exp_simulator intrin_flag_CXX)
-  append_to_property(mq_install_targets GLOBAL mq_projectq_exp)
-endif()

@@ -69,6 +69,13 @@ if(ENABLE_CXX_EXPERIMENTAL)
   if(BUILD_TESTING)
     include(${CMAKE_CURRENT_LIST_DIR}/catch2/catch2.cmake)
   endif()
+
+  # cppsim dependencies
+  if(ENABLE_CPPSIM)
+    include(${CMAKE_CURRENT_LIST_DIR}/digestpp/digestpp.cmake)
+    include(${CMAKE_CURRENT_LIST_DIR}/res_embed/res_embed.cmake)
+    include(${CMAKE_CURRENT_LIST_DIR}/cppsim/cppsim.cmake)
+  endif()
 endif()
 
 # ==============================================================================
