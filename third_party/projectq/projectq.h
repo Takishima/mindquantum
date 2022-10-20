@@ -33,7 +33,7 @@
 #include "ops/basic_gate.hpp"
 #include "ops/gates.hpp"
 #include "ops/hamiltonian.hpp"
-#include "include/simulator.hpp"
+#include "projectq/backends/_sim/_cppkernels/simulator.hpp"
 #include "projectq_utils.h"
 
 namespace mindquantum {

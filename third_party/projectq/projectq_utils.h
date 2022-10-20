@@ -19,9 +19,9 @@
 #include <vector>
 
 #include "core/utils.hpp"
-#include "include/fusion.hpp"
-#include "include/intrin/alignedallocator.hpp"
-#include "include/simulator.hpp"
+#include "projectq/backends/_sim/_cppkernels/fusion.hpp"
+#include "projectq/backends/_sim/_cppkernels/intrin/alignedallocator.hpp"
+#include "projectq/backends/_sim/_cppkernels/simulator.hpp"
 
 namespace mindquantum {
 namespace projectq {
