@@ -52,7 +52,9 @@ if(ENABLE_CXX_EXPERIMENTAL)
            mindquantum::symengine
            mindquantum::tweedledum
            mq_base
-           mq_projectq_exp
+           # TODO(dnguyen): Modify this once cppsim is working
+           #
+           # mq_projectq_exp
            mindquantum_setup)
 endif()
 

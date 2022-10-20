@@ -37,7 +37,9 @@ pybind11_add_module(
   ${CMAKE_CURRENT_LIST_DIR}/lib/core/symengine.cpp
   ${CMAKE_CURRENT_LIST_DIR}/lib/ops/ops.cpp
   ${CMAKE_CURRENT_LIST_DIR}/lib/optimizer/optimizer.cpp
-  ${CMAKE_CURRENT_LIST_DIR}/lib/simulator/simulator.cpp
+  # TODO(dnguyen): Re-enable once cppsim is sorted
+  #
+  # ${CMAKE_CURRENT_LIST_DIR}/lib/simulator/simulator.cpp
   MODULE
   OUTPUT_HINT "${MQ_PYTHON_PACKAGE_NAME}/experimental")
 target_link_libraries(_mindquantum_cxx PRIVATE mq_cxx_nextgen mq_cxx_python_interface mq_python_core)

@@ -40,7 +40,9 @@ install(
             ${CMAKE_CURRENT_LIST_DIR}/details
             ${CMAKE_CURRENT_LIST_DIR}/mapping
             ${CMAKE_CURRENT_LIST_DIR}/ops
-            ${CMAKE_CURRENT_LIST_DIR}/simulator
+            # TODO(dnguyen): Re-enable this once cppsim is working
+            #
+            # ${CMAKE_CURRENT_LIST_DIR}/simulator
   DESTINATION ${MQ_INSTALL_INCLUDEDIR}/experimental)
 
 # ==============================================================================
