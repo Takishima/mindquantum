@@ -73,6 +73,7 @@ function Help-Message() {
     Write-Output '  -Config [dir]       Path to INI configuration file with default values for the parameters'
     Write-Output ("                      Defaults to: {0}" -f $config_file)
     Write-Output '                      NB: command line arguments always take precedence over configuration file values'
+    Write-Output '  -CppSim             (experimental) Enable the use of cppsim to generate simulation kernels'
     Write-Output '  -Cxx                (experimental) Enable MindQuantum C++ support'
     Write-Output '  -Debug              Build in debug mode'
     Write-Output '  -DebugCMake         Enable debugging mode for CMake configuration step'
@@ -177,6 +178,10 @@ if (([bool]$CleanCache)) {
 }
 if (([bool]$CleanVenv)) {
     Set-Value 'do_clean_venv'
+}
+
+if (([bool]$CppSim)) {
+    Set-Value 'enable_cppsim'
 }
 
 if (([bool]$Cxx)) {

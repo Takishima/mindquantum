@@ -165,20 +165,21 @@ cmake_args=(-DIN_PLACE_BUILD:BOOL=ON
             -DIS_PYTHON_BUILD:BOOL=OFF
             -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=ON
             -DCMAKE_BUILD_TYPE:STRING="$build_type"
-            -DENABLE_PROJECTQ:BOOL="${CMAKE_BOOL[$enable_projectq]}"
+            -DCMAKE_FIND_USE_PACKAGE_REGISTRY:BOOL="${CMAKE_BOOL[! $cmake_no_registry]}"
+            -DCMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY:BOOL="${CMAKE_BOOL[! $cmake_no_registry]}"
+            -DBUILD_TESTING:BOOL="${CMAKE_BOOL[$enable_tests]}"
+            -DCLEAN_3RDPARTY_INSTALL_DIR:BOOL="${CMAKE_BOOL[$do_clean_3rdparty]}"
             -DENABLE_CMAKE_DEBUG:BOOL="${CMAKE_BOOL[$cmake_debug_mode]}"
             -DENABLE_CUDA:BOOL="${CMAKE_BOOL[$enable_gpu]}"
+            -DENABLE_CPPSIM:BOOL="${CMAKE_BOOL[$enable_cppsim]}"
             -DENABLE_CXX_EXPERIMENTAL:BOOL="${CMAKE_BOOL[$enable_cxx]}"
             -DENABLE_DOCUMENTATION:BOOL="${CMAKE_BOOL[$do_docs]}"
             -DENABLE_GITEE:BOOL="${CMAKE_BOOL[$enable_gitee]}"
             -DENABLE_LOGGING:BOOL="${CMAKE_BOOL[$enable_logging]}"
             -DENABLE_LOGGING_DEBUG_LEVEL:BOOL="${CMAKE_BOOL[$logging_enable_debug]}"
             -DENABLE_LOGGING_TRACE_LEVEL:BOOL="${CMAKE_BOOL[$logging_enable_trace]}"
-            -DBUILD_TESTING:BOOL="${CMAKE_BOOL[$enable_tests]}"
-            -DCLEAN_3RDPARTY_INSTALL_DIR:BOOL="${CMAKE_BOOL[$do_clean_3rdparty]}"
-            -DUSE_VERBOSE_MAKEFILE:BOOL="${CMAKE_BOOL[! $cmake_make_silent]}"
-            -DCMAKE_FIND_USE_PACKAGE_REGISTRY:BOOL="${CMAKE_BOOL[! $cmake_no_registry]}"
-            -DCMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY:BOOL="${CMAKE_BOOL[! $cmake_no_registry]}")
+            -DENABLE_PROJECTQ:BOOL="${CMAKE_BOOL[$enable_projectq]}"
+            -DUSE_VERBOSE_MAKEFILE:BOOL="${CMAKE_BOOL[! $cmake_make_silent]}")
 make_args=()
 
 if [[ -n "$cmake_generator" ]]; then

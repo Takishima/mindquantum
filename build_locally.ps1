@@ -236,9 +236,12 @@ $CMAKE_BOOL = @('OFF', 'ON')
 $cmake_args = @('-DIN_PLACE_BUILD:BOOL=ON'
                 '-DIS_PYTHON_BUILD:BOOL=OFF'
                 '-DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=ON'
+                "-DBUILD_TESTING:BOOL={0}" -f $CMAKE_BOOL[$enable_tests]
                 "-DCMAKE_BUILD_TYPE:STRING={0}" -f $build_type
-                "-DENABLE_PROJECTQ:BOOL={0}" -f $CMAKE_BOOL[$enable_projectq]
+                "-DCMAKE_FIND_USE_PACKAGE_REGISTRY:BOOL={0}" -f $CMAKE_BOOL[-not $cmake_no_registry]
+                "-DCMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY:BOOL:BOOL={0}" -f $CMAKE_BOOL[-not $cmake_no_registry]
                 "-DENABLE_CMAKE_DEBUG:BOOL={0}" -f $CMAKE_BOOL[$cmake_debug_mode]
+                "-DENABLE_CPPSIM:BOOL={0}" -f $CMAKE_BOOL[$enable_cppsim]
                 "-DENABLE_CUDA:BOOL={0}" -f $CMAKE_BOOL[$enable_gpu]
                 "-DENABLE_CXX_EXPERIMENTAL:BOOL={0}" -f $CMAKE_BOOL[$enable_cxx]
                 "-DENABLE_DOCUMENTATION:BOOL={0}" -f $CMAKE_BOOL[$do_docs]
@@ -246,11 +249,9 @@ $cmake_args = @('-DIN_PLACE_BUILD:BOOL=ON'
                 "-DENABLE_LOGGING:BOOL={0}" -f $CMAKE_BOOL[$enable_logging]
                 "-DENABLE_LOGGING_DEBUG_LEVEL:BOOL={0}" -f $CMAKE_BOOL[$logging_enable_debug]
                 "-DENABLE_LOGGING_TRACE_LEVEL:BOOL={0}" -f $CMAKE_BOOL[$logging_enable_trace]
-                "-DBUILD_TESTING:BOOL={0}" -f $CMAKE_BOOL[$enable_tests]
+                "-DENABLE_PROJECTQ:BOOL={0}" -f $CMAKE_BOOL[$enable_projectq]
                 "-DCLEAN_3RDPARTY_INSTALL_DIR:BOOL={0}" -f $CMAKE_BOOL[$do_clean_3rdparty]
                 "-DUSE_VERBOSE_MAKEFILE:BOOL={0}" -f $CMAKE_BOOL[-not $cmake_make_silent]
-                "-DCMAKE_FIND_USE_PACKAGE_REGISTRY:BOOL={0}" -f $CMAKE_BOOL[-not $cmake_no_registry]
-                "-DCMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY:BOOL:BOOL={0}" -f $CMAKE_BOOL[-not $cmake_no_registry]
                )
 $make_args = @()
 
@@ -412,6 +413,9 @@ Path to INI configuration file with default values for the parameters
 
 .PARAMETER ConfigureOnly
 Stop after the CMake configure and generation steps (ie. before building MindQuantum)
+
+.PARAMETER Cxx
+(experimental) Enable the use of cppsim to generate simulation kernels
 
 .PARAMETER Cxx
 (experimental) Enable MindQuantum C++ support
