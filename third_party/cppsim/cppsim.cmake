@@ -43,7 +43,7 @@ mindquantum_add_pkg(
   MD5 "xxxx" # NB: would be required if local server is enabled for downloads
   CMAKE_OPTION ${CMAKE_OPTION}
   FORCE_LOCAL_PKG
-  TARGET_ALIAS mindquantum::cppsim cppsim::cppsim)
+  TARGET_ALIAS mindquantum::cppsim cppsim::kernelgen)
 
 # ~~~
 # TODO(dnguyen): This about this once cppsim is working
