@@ -17,7 +17,7 @@
 # ==============================================================================
 
 set(VER 1.0.0)
-set(GIT_TAG "7ae0b94a8d5f42c84fc5af3ad0b45d634c39b964")
+set(GIT_TAG "44a85ac39f06d27c85b7031e938b89a8ae441a56")
 
 if(ENABLE_GITEE)
   set(GIT_REPOSITORY "https://gitee.com/dmikushin/cppsim.git")
@@ -44,11 +44,3 @@ mindquantum_add_pkg(
   CMAKE_OPTION ${CMAKE_OPTION}
   FORCE_LOCAL_PKG
   TARGET_ALIAS mindquantum::cppsim cppsim::kernelgen)
-
-# ~~~
-# TODO(dnguyen): This about this once cppsim is working
-# add_library(mq_projectq_exp INTERFACE)
-# target_compile_definitions(mq_projectq_exp INTERFACE INTRIN)
-# target_link_libraries(mq_projectq_exp INTERFACE mindquantum::projectq_exp_simulator intrin_flag_CXX)
-# append_to_property(mq_install_targets GLOBAL mq_projectq_exp)
-# ~~~
