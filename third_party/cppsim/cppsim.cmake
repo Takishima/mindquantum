@@ -17,7 +17,7 @@
 # ==============================================================================
 
 set(VER 1.0.0)
-set(GIT_TAG "564ecece60d7d5f77eb8f3684d05ce7ca3f2fbdd")
+set(GIT_TAG "7ae0b94a8d5f42c84fc5af3ad0b45d634c39b964")
 
 if(ENABLE_GITEE)
   set(GIT_REPOSITORY "https://gitee.com/dmikushin/cppsim.git")
@@ -26,16 +26,12 @@ else()
   set(GIT_REPOSITORY "https://gitee.com/dmikushin/cppsim.git")
 endif()
 
-if("${res_embed_CMAKE_DIR}" STREQUAL "")
-  message(FATAL_ERROR "Missing res_embed_CMAKE_DIR CMake variable!")
-endif()
-
 set(CMAKE_OPTION
     -DBUILD_TESTING=OFF
     -Dpybind11_DIR=${pybind11_DIR}
     -DEigen3_DIR=${Eigen3_DIR}
     -Ddigestpp_DIR=${digestpp_DIR}
-    -Dres_embed_CMAKE_DIR=${res_embed_CMAKE_DIR}
+    -Dres_embed_DIR=${res_embed_DIR}
     -DPython_EXECUTABLE=${Python_EXECUTABLE}
     -DPython3_EXECUTABLE=${Python_EXECUTABLE})
 

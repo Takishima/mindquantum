@@ -16,14 +16,16 @@
 #
 # ==============================================================================
 
-set(VER 0.0.1)
+set(VER 1.0.0)
 
 if(ENABLE_GITEE)
   set(GIT_URL "https://github.com/dmikushin/res_embed.git")
 else()
   set(GIT_URL "https://github.com/dmikushin/res_embed.git")
 endif()
-set(GIT_TAG "26a18b27794c1fcf698e603beb8b122218dae490")
+set(GIT_TAG "b803e4df20b09bdd65477a9662530a6feeb228e6")
+
+set(CMAKE_OPTION -DBUILD_EXAMPLE=OFF)
 
 mindquantum_add_pkg(
   res_embed
@@ -31,11 +33,5 @@ mindquantum_add_pkg(
   GIT_REPOSITORY ${GIT_URL}
   GIT_TAG ${GIT_TAG}
   MD5 "xxxx" # NB: would be required if local server is enabled for downloads
-  ONLY_COPY_DIRS cmake
+  CMAKE_OPTION ${CMAKE_OPTION}
   FORCE_LOCAL_PKG)
-
-if(res_embed_DIR)
-  # cmake-lint: disable=C0103
-  set(res_embed_CMAKE_DIR ${res_embed_BASE_DIR}/cmake)
-  message(STATUS "res_embed_CMAKE_DIR = ${res_embed_CMAKE_DIR}")
-endif()
