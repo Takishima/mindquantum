@@ -95,13 +95,13 @@ jobs:
 
       - name: Configure
         run: |
-          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --no-gitee --debug \
+          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --no-gitee --debug --cppsim \
           --configure-only -c --clean-3rdparty --prefix="${{ github.workspace }}/install" \
           --cmake-no-registry \
           -- -DPython_FIND_UNVERSIONED_NAMES:STRING='FIRST'
 
       - name: Build
-        run: ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache
+        run: ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --cppsim
 
       - name: Install
         run: ./build_locally.sh --install  # NB: no need to pass the other parameters
@@ -243,11 +243,11 @@ jobs:
       - name: Configure
         run: >-
           ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --only-pytest --no-gitee --debug
-          --configure-only -c --clean-3rdparty --prefix="${{ github.workspace }}/install"
+          --cppsim --configure-only -c --clean-3rdparty --prefix="${{ github.workspace }}/install"
           --cmake-no-registry
 
       - name: Build
-        run: ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache
+        run: ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --cppsim
 
       - name: Install
         run: ./build_locally.sh --install  # NB: no need to pass the other parameters
@@ -326,11 +326,11 @@ jobs:
       - name: Configure
         run: >-
           ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --only-pytest --no-gitee --debug
-          --configure-only -c --logging --clean-3rdparty --prefix="${{ github.workspace }}/install"
+          --cppsim --configure-only -c --logging --clean-3rdparty --prefix="${{ github.workspace }}/install"
           --cmake-no-registry -- -DENABLE_STACK_PROTECTION=ON
 
       - name: Build
-        run: ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache
+        run: ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --cppsim
 
       - name: Install
         run: ./build_locally.sh --install  # NB: no need to pass the other parameters
@@ -467,7 +467,7 @@ jobs:
         if: matrix.clang != '8'
         run: >-
           ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --only-pytest --no-gitee --debug
-          --configure-only -c --clean-3rdparty --prefix="${{ github.workspace }}/install"
+          --cppsim --configure-only -c --clean-3rdparty --prefix="${{ github.workspace }}/install"
           --cmake-no-registry -- -DENABLE_STACK_PROTECTION=ON
 
       # Due to compiler segmentation fault with Clang 8 in debug mode
@@ -475,11 +475,11 @@ jobs:
         if: matrix.clang == '8'
         run: >-
           ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --only-pytest --no-gitee
-          --configure-only -c --clean-3rdparty --prefix="${{ github.workspace }}/install"
+          --cppsim --configure-only -c --clean-3rdparty --prefix="${{ github.workspace }}/install"
           --cmake-no-registry -- -DENABLE_STACK_PROTECTION=ON
 
       - name: Build
-        run: ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache
+        run: ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --cppsim
 
       - name: Install
         run: ./build_locally.sh --install  # NB: no need to pass the other parameters
@@ -607,13 +607,13 @@ jobs:
           CC: cl
           CXX: cl
         run: >-
-           ./build_locally.ps1 -Cxx -WithProjectq -DebugCmake -Ninja -Test -CCache -OnlyPytest -NoGitee
+           ./build_locally.ps1 -Cxx -WithProjectq -DebugCmake -Ninja -Test -CCache -OnlyPytest -NoGitee -CppSim
            -ConfigureOnly -C -Clean3rdParty -Prefix "${{ github.workspace }}/install"
            -CMakeNoRegistry
            -DUSE_PARALLEL_STL=OFF
 
       - name: Build
-        run: ./build_locally.ps1 -Cxx -WithProjectq -DebugCmake -Ninja -Test -CCache
+        run: ./build_locally.ps1 -Cxx -WithProjectq -DebugCmake -Ninja -Test -CCache -CppSim
 
       - name: Install
         run: ./build_locally.ps1 -Install
@@ -701,13 +701,13 @@ jobs:
           CC: ${{ steps.mingw64-setup.outputs.gcc }}
           CXX: ${{ steps.mingw64-setup.outputs.gxx }}
         run: >-
-           ./build_locally.ps1 -Cxx -WithProjectq -DebugCmake -Ninja -Test -OnlyPytest -NoGitee
+           ./build_locally.ps1 -Cxx -WithProjectq -DebugCmake -Ninja -Test -OnlyPytest -NoGitee -CppSim
            -ConfigureOnly -C -Clean3rdParty -Prefix "${{ github.workspace }}/install"
            -CMakeNoRegistry
            -G "MinGW Makefiles" -DUSE_PARALLEL_STL=OFF
 
       - name: Build
-        run: ./build_locally.ps1 -Cxx -WithProjectq -DebugCmake -Ninja -Test
+        run: ./build_locally.ps1 -Cxx -WithProjectq -DebugCmake -Ninja -Test -CppSim
 
       - name: Install
         run: ./build_locally.ps1 -Install
@@ -852,7 +852,7 @@ jobs:
           CC: ${{ matrix.CC }}
           CXX: ${{ matrix.CXX }}
         run: >-
-          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache -v --only-pytest --no-gitee
+          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache -v --only-pytest --no-gitee --cppsim
           --configure-only -c --clean-3rdparty --prefix="$PWD/install"
           --cmake-no-registry
           ${{ matrix.cmake_generator }}
@@ -862,7 +862,7 @@ jobs:
         env:
           CC: ${{ matrix.CC }}
           CXX: ${{ matrix.CXX }}
-        run: ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache
+        run: ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --cppsim
 
       - name: Install
         shell: msys2 {0}
@@ -979,7 +979,7 @@ jobs:
         shell: bash --login -eo pipefail -o igncr {0}
         run: |
           export PATH="$PATH:$PWD/ccache/bin"
-          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache -v --only-pytest --no-gitee \
+          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache -v --only-pytest --no-gitee --cppsim \
           --configure-only -c --clean-3rdparty --prefix=$PWD/install \
           --cmake-no-registry
           ${{ matrix.cmake_generator }}
@@ -988,7 +988,7 @@ jobs:
         shell: bash --login -eo pipefail -o igncr {0}
         run: |
           export PATH="$PATH:$PWD/ccache/bin"
-          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache
+          ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache --cppsim
 
       - name: Install
         shell: bash --login -eo pipefail -o igncr {0}
@@ -1079,12 +1079,12 @@ jobs:
 
       - name: Configure
         run: >-
-          ./build_locally.sh --cxx --with-projectq --debug-cmake --gpu --test --ccache --only-pytest --no-gitee
+          ./build_locally.sh --cxx --with-projectq --debug-cmake --gpu --test --ccache --only-pytest --no-gitee --cppsim
           --configure-only -c --clean-3rdparty --prefix="${{ github.workspace }}/install"
           --cmake-no-registry
 
       - name: Build
-        run: ./build_locally.sh --cxx --with-projectq --debug-cmake --gpu --test --ccache
+        run: ./build_locally.sh --cxx --with-projectq --debug-cmake --gpu --test --ccache --cppsim
 
       - name: Install
         run: ./build_locally.sh --install
@@ -1160,12 +1160,12 @@ jobs:
 
       - name: Configure
         run: >-
-          ./build_locally.sh --cxx --with-projectq --debug-cmake --gpu --test --ccache --only-pytest --no-gitee
+          ./build_locally.sh --cxx --with-projectq --debug-cmake --gpu --test --ccache --only-pytest --no-gitee --cppsim
           --configure-only -c --clean-3rdparty --prefix="${{ github.workspace }}/install"
           --cmake-no-registry
 
       - name: Build
-        run: ./build_locally.sh --cxx --with-projectq --debug-cmake --gpu --test --ccache
+        run: ./build_locally.sh --cxx --with-projectq --debug-cmake --gpu --test --ccache --cppsim
 
       - name: Install
         run: ./build_locally.sh --install
@@ -1246,7 +1246,7 @@ jobs:
   #         if [ -f /opt/intel/oneapi/tbb/latest/env/vars.sh ]; then
   #           source /opt/intel/oneapi/tbb/latest/env/vars.sh
   #         fi
-  #         ./build_locally.sh --cxx --with-projectq --debug-cmake --test --gpu --no-gitee \
+  #         ./build_locally.sh --cxx --with-projectq --debug-cmake --test --gpu --no-gitee --cppsim \
   #         --configure-only -c --clean-3rdparty  --prefix="${{ github.workspace }}/install"
 
   #     - name: Build
@@ -1255,7 +1255,7 @@ jobs:
   #         if [ -f /opt/intel/oneapi/tbb/latest/env/vars.sh ]; then
   #           source /opt/intel/oneapi/tbb/latest/env/vars.sh
   #         fi
-  #         ./build_locally.sh --cxx --with-projectq --debug-cmake --test --gpu
+  #         ./build_locally.sh --cxx --with-projectq --debug-cmake --test --gpu --cppsim
 
   #     - name: Install
   #       run: ./build_locally.sh --install
