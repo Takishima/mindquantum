@@ -33,8 +33,9 @@ PYBIND11_MODULE(_mindquantum_cxx, module) {
     py::module optimizer = module.def_submodule("optimizer", "MindQuantum-C++ C++ optimisation");
     python::init_optimizer(optimizer);
 
-    py::module simulator = module.def_submodule("simulator", "MindQuantum-C++ C++ simulators");
-    python::init_simulator(simulator);
+    // TODO(dnguyen): Re-enable once cppsim is sorted
+    // py::module simulator = module.def_submodule("simulator", "MindQuantum-C++ C++ simulators");
+    // python::init_simulator(simulator);
 
     py::module symengine = module.def_submodule("symengine", "MindQuantum light wrapper for SymEngine");
     python::init_symengine(symengine);
