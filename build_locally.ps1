@@ -26,6 +26,7 @@ Param(
     [ValidateNotNullOrEmpty()][string]$Config,
     [Alias("C")][switch]$Configure,
     [switch]$ConfigureOnly,
+    [switch]$CppSim,
     [ValidateNotNullOrEmpty()][string]$CudaArch,
     [switch]$Cxx,
     [switch]$Debug,
@@ -414,7 +415,7 @@ Path to INI configuration file with default values for the parameters
 .PARAMETER ConfigureOnly
 Stop after the CMake configure and generation steps (ie. before building MindQuantum)
 
-.PARAMETER Cxx
+.PARAMETER CppSim
 (experimental) Enable the use of cppsim to generate simulation kernels
 
 .PARAMETER Cxx

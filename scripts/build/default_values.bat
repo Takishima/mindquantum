@@ -26,6 +26,7 @@ if NOT DEFINED do_clean_venv set do_clean_venv=0
 if NOT DEFINED do_update_venv set do_update_venv=0
 if NOT DEFINED dry_run set dry_run=0
 if NOT DEFINED enable_ccache set enable_ccache=0
+if NOT DEFINED enable_cppsim set enable_cppsim=0
 if NOT DEFINED enable_cxx set enable_cxx=0
 if NOT DEFINED enable_gitee set enable_gitee=0
 if NOT DEFINED enable_gpu set enable_gpu=0
