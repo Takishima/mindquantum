@@ -17,7 +17,7 @@
 # ==============================================================================
 
 set(VER 1.0.0)
-set(GIT_TAG "dbdf7c8daec8726b81949d600a22fbbf3674e0e5")
+set(GIT_TAG "2ce80d89c8d9b2480a23cacb55a22bb347fbe22f")
 
 if(ENABLE_GITEE)
   set(GIT_REPOSITORY "https://gitee.com/dmikushin/cppsim.git")
@@ -32,6 +32,7 @@ set(CMAKE_OPTION
     -DEigen3_DIR=${Eigen3_DIR}
     -Ddigestpp_DIR=${digestpp_DIR}
     -Dres_embed_DIR=${res_embed_DIR}
+    -DPYTHON_EXECUTABLE=${Python_EXECUTABLE}
     -DPython_EXECUTABLE=${Python_EXECUTABLE}
     -DPython3_EXECUTABLE=${Python_EXECUTABLE})
 
