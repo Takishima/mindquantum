@@ -36,6 +36,24 @@ set(CMAKE_OPTION
     -DPython_EXECUTABLE=${Python_EXECUTABLE}
     -DPython3_EXECUTABLE=${Python_EXECUTABLE})
 
+if(APPLE)
+  foreach(
+    _var
+    OpenMP_C_FLAGS
+    OpenMP_C_INCLUDE_DIR
+    OpenMP_C_LIB_NAMES
+    OpenMP_CXX_FLAGS
+    OpenMP_CXX_INCLUDE_DIR
+    OpenMP_CXX_LIB_NAMES
+    OpenMP_gomp_LIBRARY
+    OpenMP_libomp_LIBRARY
+    OpenMP_pthread_LIBRARY)
+    if(NOT "${${_var}}" STREQUAL "")
+      list(APPEND CMAKE_OPTION -D${_var}=${${_var}})
+    endif()
+  endforeach()
+endif()
+
 if(NOT _Boost_SYSTEM)
   # Boost was locally built, make sure we use that one
   list(APPEND CMAKE_OPTION -DBOOST_ROOT=${Boost_DIRPATH} -DBoost_NO_SYSTEM_PATHS:BOOL=ON)
