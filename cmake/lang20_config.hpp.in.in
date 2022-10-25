@@ -12,6 +12,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+// clang-format off
+
 #ifndef MQ_@LANG@20_CONFIG_HPP
 #define MQ_@LANG@20_CONFIG_HPP
 
@@ -70,3 +72,5 @@
 #define MQ_STD_ACCUMULATE_USE_MOVE MQ_@LANG@_STD_ACCUMULATE_USE_MOVE
 
 #endif /* MQ_@LANG@20_CONFIG_HPP */
+
+    // clang-format on
