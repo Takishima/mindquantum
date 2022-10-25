@@ -17,7 +17,7 @@
 # ==============================================================================
 
 set(VER 1.0.0)
-set(GIT_TAG "62a62d804d18f67239f7a123c03f967752bf6ab4")
+set(GIT_TAG "dbdf7c8daec8726b81949d600a22fbbf3674e0e5")
 
 if(ENABLE_GITEE)
   set(GIT_REPOSITORY "https://gitee.com/dmikushin/cppsim.git")
