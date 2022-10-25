@@ -17,7 +17,7 @@
 # ==============================================================================
 
 set(VER 1.0.0)
-set(GIT_TAG "5cefe57e8d3ac9c86cf153ba01c31d3117a57e03")
+set(GIT_TAG "62a62d804d18f67239f7a123c03f967752bf6ab4")
 
 if(ENABLE_GITEE)
   set(GIT_REPOSITORY "https://gitee.com/dmikushin/cppsim.git")
@@ -34,6 +34,11 @@ set(CMAKE_OPTION
     -Dres_embed_DIR=${res_embed_DIR}
     -DPython_EXECUTABLE=${Python_EXECUTABLE}
     -DPython3_EXECUTABLE=${Python_EXECUTABLE})
+
+if(NOT _Boost_SYSTEM)
+  # Boost was locally built, make sure we use that one
+  list(APPEND CMAKE_OPTION -DBOOST_ROOT=${Boost_DIRPATH} -DBoost_NO_SYSTEM_PATHS:BOOL=ON)
+endif()
 
 mindquantum_add_pkg(
   cppsim
