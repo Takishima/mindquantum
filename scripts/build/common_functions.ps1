@@ -159,6 +159,9 @@ function Call-CMake {
         Write-Output "**********"
     }
     Call-Cmd $CMAKE @args
+    if ($LastExitCode -ne 0) {
+        exit $LastExitCode
+    }
 }
 
 # ==============================================================================
