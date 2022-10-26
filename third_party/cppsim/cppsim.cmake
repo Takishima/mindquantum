@@ -17,7 +17,7 @@
 # ==============================================================================
 
 set(VER 1.0.0)
-set(GIT_TAG "2ce80d89c8d9b2480a23cacb55a22bb347fbe22f")
+set(GIT_TAG "da551c9af8d1795019d515cba8791b9c0d15fb79")
 
 if(ENABLE_GITEE)
   set(GIT_REPOSITORY "https://gitee.com/dmikushin/cppsim.git")
@@ -28,13 +28,13 @@ endif()
 
 set(CMAKE_OPTION
     -DBUILD_TESTING=OFF
-    -Dpybind11_DIR=${pybind11_DIR}
     -DEigen3_DIR=${Eigen3_DIR}
-    -Ddigestpp_DIR=${digestpp_DIR}
-    -Dres_embed_DIR=${res_embed_DIR}
     -DPYTHON_EXECUTABLE=${Python_EXECUTABLE}
+    -DPython3_EXECUTABLE=${Python_EXECUTABLE}
     -DPython_EXECUTABLE=${Python_EXECUTABLE}
-    -DPython3_EXECUTABLE=${Python_EXECUTABLE})
+    -Ddigestpp_DIR=${digestpp_DIR}
+    -Dpybind11_DIR=${pybind11_DIR}
+    -Dres_embed_DIR=${res_embed_DIR})
 
 if(APPLE)
   foreach(
