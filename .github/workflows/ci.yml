@@ -92,6 +92,7 @@ jobs:
           key: >-
             ${{ matrix.runs-on }}-python-${{ matrix.python }}-third-party-libs-${{ hashFiles('third_party/**') }}
             -${{ secrets.cache_ver }}
+          restore-keys: ${{ matrix.runs-on }}-python-${{ matrix.python }}-third-party-libs-
 
       - name: Configure
         run: |
@@ -239,6 +240,7 @@ jobs:
         with:
           path: build/.mqlibs
           key: macos-${{ matrix.xcode }}-third-party-libs-${{ hashFiles('third_party/**') }}-${{ secrets.cache_ver }}
+          restore-keys: macos-${{ matrix.xcode }}-third-party-libs-
 
       - name: Configure
         run: >-
@@ -322,6 +324,7 @@ jobs:
         with:
           path: build/.mqlibs
           key: gcc-${{ matrix.gcc }}-third-party-libs-${{ hashFiles('third_party/**') }}-${{ secrets.cache_ver }}
+          restore-keys: gcc-${{ matrix.gcc }}-third-party-libs-
 
       - name: Configure
         run: >-
@@ -462,6 +465,7 @@ jobs:
         with:
           path: build/.mqlibs
           key: clang-${{ matrix.clang }}-third-party-libs-${{ hashFiles('third_party/**') }}-${{ secrets.cache_ver }}
+          restore-keys: clang-${{ matrix.clang }}-third-party-libs-
 
       - name: Configure (Clang)
         if: matrix.clang != '8'
@@ -601,6 +605,7 @@ jobs:
         with:
           path: build/.mqlibs
           key: msvc-third-party-libs-${{ hashFiles('third_party/**') }}-${{ secrets.cache_ver }}
+          restore-keys: msvc-third-party-libs-
 
       - name: Configure
         env:
@@ -675,6 +680,7 @@ jobs:
         with:
           path: build/.mqlibs
           key: mingw64-third-party-libs-${{ hashFiles('third_party/**') }}-${{ secrets.cache_ver }}
+          restore-keys: mingw64-third-party-libs-
 
       - name: Set up MinGW64
         uses: egor-tensin/setup-mingw@v2
@@ -851,6 +857,7 @@ jobs:
         with:
           path: build/.mqlibs
           key: msys2-${{ matrix.msystem }}-third-party-libs-${{ hashFiles('third_party/**') }}-${{ secrets.cache_ver }}
+          restore-keys: msys2-${{ matrix.msystem }}-third-party-libs-
 
       - name: Configure
         shell: msys2 {0}
@@ -978,6 +985,7 @@ jobs:
         with:
           path: build/.mqlibs
           key: cygwin-third-party-libs-${{ hashFiles('third_party/**') }}-${{ secrets.cache_ver }}
+          restore-keys: cygwin-third-party-libs-
 
       - name: Configure
         env:
@@ -1082,6 +1090,7 @@ jobs:
         with:
           path: build/.mqlibs
           key: cuda-${{ matrix.cuda }}-third-party-libs-${{ hashFiles('third_party/**') }}-${{ secrets.cache_ver }}
+          restore-keys: cuda-${{ matrix.cuda }}-third-party-libs-
 
       - name: Configure
         run: >-
@@ -1163,6 +1172,7 @@ jobs:
         with:
           path: build/.mqlibs
           key: nvhpc-${{ matrix.nvhpc }}-third-party-libs-${{ hashFiles('third_party/**') }}-${{ secrets.cache_ver }}
+          restore-keys: nvhpc-${{ matrix.nvhpc }}-third-party-libs-
 
       - name: Configure
         run: >-
