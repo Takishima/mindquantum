@@ -1163,7 +1163,7 @@ function(mindquantum_add_pkg pkg_name)
     # Package is not from the system and from a previous CMake run -> check if the config hash has changed
     if(EXISTS "${${pkg_name}_BASE_DIR}/options.txt")
       file(MD5 "${${pkg_name}_BASE_DIR}/options.txt" _old_config_hash)
-      if(NOT _old_config_hash STREQUAL ${pkg_name}_CONFIG_HASH)
+      if(NOT _old_config_hash STREQUAL ${pkg_name}_CONFIG_HASH AND CLEAN_3RDPARTY_INSTALL_DIR)
         # Config hash has changed -> remove all relevant directories:
         #
         # * local install prefix (BASE_DIR)
