@@ -652,6 +652,9 @@ jobs:
           git fetch --prune --unshallow
           git fetch --depth=1 origin +refs/tags/*:refs/tags/*
 
+      - name: Install NASM
+        uses: ilammy/setup-nasm@v1
+
       # - name: Setup CCache
       #   uses: hendrikmuhs/ccache-action@v1.2.3
       #   with:
@@ -735,6 +738,7 @@ jobs:
               mingw-w64-x86_64-ccache
               mingw-w64-x86_64-gmp
               mingw-w64-x86_64-boost
+              mingw-w64-x86_64-nasm
               mingw-w64-x86_64-python
               mingw-w64-x86_64-python-pip
             cmake_generator: -- -G "MSYS Makefiles"
@@ -752,6 +756,7 @@ jobs:
               mingw-w64-clang-x86_64-ccache
               mingw-w64-clang-x86_64-gmp
               mingw-w64-clang-x86_64-boost
+              mingw-w64-clang-x86_64-nasm
               mingw-w64-clang-x86_64-python
               mingw-w64-clang-x86_64-python-pip
             cmake_generator: -- -G "MSYS Makefiles"
@@ -768,6 +773,7 @@ jobs:
               mingw-w64-ucrt-x86_64-ccache
               mingw-w64-ucrt-x86_64-gmp
               mingw-w64-ucrt-x86_64-boost
+              mingw-w64-ucrt-x86_64-nasm
               mingw-w64-ucrt-x86_64-python
               mingw-w64-ucrt-x86_64-python-pip
             cmake_generator: -- -G "MSYS Makefiles"
@@ -910,7 +916,7 @@ jobs:
             cygwin cygwin-devel
             autoconf automake coreutils m4 make cmake patch git
             gawk sed libtool gettext wget curl grep dos2unix
-            gzip bzip2 tar xz
+            gzip bzip2 tar xz nasm
             binutils gcc-core gcc-g++
             libgmp-devel libzstd-devel
             python3 python3-devel python3-pip python3-virtualenv
