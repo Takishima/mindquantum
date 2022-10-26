@@ -27,6 +27,11 @@ set(GIT_TAG "b803e4df20b09bdd65477a9662530a6feeb228e6")
 
 set(CMAKE_OPTION -DBUILD_EXAMPLE=OFF)
 
+set(PATCHES)
+if(GIT_TAG STREQUAL "b803e4df20b09bdd65477a9662530a6feeb228e6")
+  set(PATCHES ${CMAKE_CURRENT_LIST_DIR}/patch/use-nasm-for-mingw64-and-cygwin.patch001)
+endif()
+
 mindquantum_add_pkg(
   res_embed
   VER ${VER}
@@ -34,4 +39,5 @@ mindquantum_add_pkg(
   GIT_TAG ${GIT_TAG}
   MD5 "xxxx" # NB: would be required if local server is enabled for downloads
   CMAKE_OPTION ${CMAKE_OPTION}
+  PATCHES ${PATCHES}
   FORCE_LOCAL_PKG)
