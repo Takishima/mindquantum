@@ -748,7 +748,6 @@ jobs:
               mingw-w64-x86_64-nasm
               mingw-w64-x86_64-python
               mingw-w64-x86_64-python-pip
-            cmake_generator: -- -G "MSYS Makefiles"
             CC: gcc
             CXX: g++
 
@@ -767,7 +766,6 @@ jobs:
               mingw-w64-clang-x86_64-nasm
               mingw-w64-clang-x86_64-python
               mingw-w64-clang-x86_64-python-pip
-            cmake_generator: -- -G "MSYS Makefiles"
             CC: clang
             CXX: clang++
 
@@ -785,20 +783,6 @@ jobs:
               mingw-w64-ucrt-x86_64-nasm
               mingw-w64-ucrt-x86_64-python
               mingw-w64-ucrt-x86_64-python-pip
-            cmake_generator: -- -G "MSYS Makefiles"
-            CC: gcc
-            CXX: g++
-
-          - msystem: MSYS
-            installdeps: >-
-              git
-              base-devel
-              gcc
-              cmake
-              python-devel
-              python-pip
-              gmp-devel
-            cmake_generator:
             CC: gcc
             CXX: g++
 
@@ -825,7 +809,7 @@ jobs:
         run: echo "::set-output name=date::$(date -Iseconds)"
 
       - name: Restore cache for CCache
-        if: env.ACT != 'true' && matrix.msystem != 'MSYS'
+        if: env.ACT != 'true'
         id: ccache-cache
         uses: martijnhols/actions-cache/restore@v3.0.11b
         with:
@@ -834,7 +818,6 @@ jobs:
           restore-keys: msys2-${{ matrix.msystem }}-ccache-
 
       - name: Configure CCache
-        if: matrix.msystem != 'MSYS'
         shell: msys2 {0}
         run: |
           which ccache
@@ -870,8 +853,7 @@ jobs:
         run: >-
           ./build_locally.sh --cxx --with-projectq --debug-cmake --test --ccache -v --only-pytest --no-gitee --cppsim
           --configure-only -c --clean-3rdparty --prefix="$PWD/install"
-          --cmake-no-registry
-          ${{ matrix.cmake_generator }}
+          --cmake-no-registry -- -G "MSYS Makefiles"
 
       - name: Build
         shell: msys2 {0}
@@ -888,13 +870,12 @@ jobs:
         run: ./build_locally.sh --install
 
       - name: Print CCache statistics
-        if: matrix.msystem != 'MSYS'
         shell: msys2 {0}
         run: |
           ccache -sv
 
       - name: Save cache for CCache
-        if: env.ACT != 'true' && matrix.msystem != 'MSYS'
+        if: env.ACT != 'true'
         uses: martijnhols/actions-cache/save@v3.0.11b
         with:
           path: ccache
