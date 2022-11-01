@@ -23,7 +23,7 @@ if(ENABLE_GITEE)
 else()
   set(GIT_URL "https://github.com/dmikushin/res_embed.git")
 endif()
-set(GIT_TAG "b803e4df20b09bdd65477a9662530a6feeb228e6")
+set(GIT_TAG "bf1a143e12dda57a5cb45cb1dc4413b9d6846cb2")
 
 set(CMAKE_OPTION -DBUILD_EXAMPLE=OFF)
 
