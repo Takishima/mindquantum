@@ -169,7 +169,6 @@ cmake_args=(-DIN_PLACE_BUILD:BOOL=ON
             -DENABLE_PROJECTQ:BOOL="${CMAKE_BOOL[$enable_projectq]}"
             -DENABLE_CMAKE_DEBUG:BOOL="${CMAKE_BOOL[$cmake_debug_mode]}"
             -DENABLE_CUDA:BOOL="${CMAKE_BOOL[$enable_gpu]}"
-            -DENABLE_CPPSIM:BOOL="${CMAKE_BOOL[$enable_cppsim]}"
             -DENABLE_CXX_EXPERIMENTAL:BOOL="${CMAKE_BOOL[$enable_cxx]}"
             -DENABLE_DOCUMENTATION:BOOL="${CMAKE_BOOL[$do_docs]}"
             -DENABLE_GITEE:BOOL="${CMAKE_BOOL[$enable_gitee]}"

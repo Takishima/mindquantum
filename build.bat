@@ -372,7 +372,6 @@ call %SCRIPTDIR%\dos\build_cmake_option.bat BUILD_TESTING !enable_tests!
 call %SCRIPTDIR%\dos\build_cmake_option.bat CLEAN_3RDPARTY_INSTALL_DIR !do_clean_3rdparty!
 call %SCRIPTDIR%\dos\build_cmake_option.bat ENABLE_ANALYZER !enable_analyzer!
 call %SCRIPTDIR%\dos\build_cmake_option.bat ENABLE_CMAKE_DEBUG !cmake_debug_mode!
-call %SCRIPTDIR%\dos\build_cmake_option.bat ENABLE_CPPSIM !enable_cppsim!
 call %SCRIPTDIR%\dos\build_cmake_option.bat ENABLE_CUDA !enable_gpu!
 call %SCRIPTDIR%\dos\build_cmake_option.bat ENABLE_CXX_EXPERIMENTAL !enable_cxx!
 call %SCRIPTDIR%\dos\build_cmake_option.bat ENABLE_GITEE !enable_gitee!
@@ -504,7 +503,6 @@ rem ============================================================================
   echo   /CleanBuildDir      Delete build directory before building
   echo   /CleanCache         Re-run CMake with a clean CMake cache
   echo   /CleanVenv          Delete Python virtualenv before building
-  echo   /CppSim             (experimental) Enable the use of cppsim to generate simulation kernels
   echo   /Cxx                (experimental) Enable MindQuantum C++ support
   echo   /Debug              Build in debug mode
   echo   /Delocate           Delocate the binary wheels after build is finished

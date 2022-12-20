@@ -1,0 +1,55 @@
+@PACKAGE_INIT@
+
+# ------------------------------------------------------------------------------
+
+# NB: PACKAGE_PREFIX_DIR might get overwritten by the find_package() calls below
+set(CPPSIM_PREFIX_DIR "${PACKAGE_PREFIX_DIR}")
+
+if(TARGET cppsim::cppsim)
+  # Protect against double definitions due to previous call or add_subdirectory()
+  return()
+endif()
+
+# ==============================================================================
+
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/commands)
+
+find_package(res_embed CONFIG REQUIRED)
+find_package(OpenMP REQUIRED)
+find_package(
+  Python @CPPSIM_PYTHON_VERSION_MIN@
+  COMPONENTS Interpreter Development.Embed
+  REQUIRED)
+find_package(pybind11 CONFIG REQUIRED)
+
+include(${CMAKE_CURRENT_LIST_DIR}/compiler_has_std_filesystem.cmake)
+
+if(NOT CPPSIM_HAS_STD_FILESYSTEM)
+  find_package(Boost REQUIRED COMPONENTS filesystem)
+endif()
+
+list(POP_BACK CMAKE_MODULE_PATH)
+
+# ------------------------------------------------------------------------------
+
+if(NOT TARGET digestpp::digestpp)
+  add_library(digestpp::digestpp INTERFACE IMPORTED)
+  target_include_directories(digestpp::digestpp
+                             INTERFACE "${CPPSIM_PREFIX_DIR}/@CPPSIM_INSTALL_INCLUDEDIR@/third_party/digestpp-src")
+endif()
+
+# ==============================================================================
+
+set(CPPSIM_INCLUDE_DIR
+    "${CPPSIM_PREFIX_DIR}/@CPPSIM_INSTALL_INCLUDEDIR@"
+    CACHE FILEPATH "Path to include files for cppsim" FORCE)
+
+include(${CMAKE_CURRENT_LIST_DIR}/cppsimTargets.cmake)
+
+include(${CMAKE_CURRENT_LIST_DIR}/commands/kernelgen.cmake)
+
+# ==============================================================================
+
+unset(CPPSIM_PREFIX_DIR)
+
+# ==============================================================================

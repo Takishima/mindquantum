@@ -103,7 +103,6 @@ help_message() {
     echo '  --config=[dir]         Path to INI configuration file with default values for the parameters'
     echo "                         Defaults to: $config_file"
     echo '                         NB: command line arguments always take precedence over configuration file values'
-    echo '  --cppsim               (experimental) Enable the use of cppsim to generate simulation kernels'
     echo '  --cxx                  (experimental) Enable MindQuantum C++ support'
     echo '  --debug                Build in debug mode'
     echo '  --debug-cmake          Enable debugging mode for CMake configuration step'
@@ -227,9 +226,6 @@ while getopts "${getopts_args}" OPT; do
                             ;;
         cuda-arch )         needs_arg;
                             set_var cuda_arch "$(echo "$OPTARG" | tr ',' ';')"
-                            ;;
-        cppsim )            no_arg;
-                            set_var enable_cppsim $flag_value
                             ;;
         cxx )               no_arg;
                             set_var enable_cxx $flag_value
